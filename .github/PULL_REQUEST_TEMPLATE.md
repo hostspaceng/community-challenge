@@ -1,6 +1,6 @@
 ### Submission Pull Request Template
 
-**Title:** [Submission] - [Your Name/Team Name]
+**Title:** [Submission] - [Your Name]
 
 **Description:**
 

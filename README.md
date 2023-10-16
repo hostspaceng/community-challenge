@@ -45,7 +45,7 @@ python3 -m pip install -r requirements.txt
 
 #### Set Environment Variables
 
-Replace the placeholders in the `.env` sample file with your actual Cloudflare credentials and configurations.
+Replace the placeholders in the `.env` sample file with your actual Cloudflare credentials and configurations or copy from  `.env.sample`
 
 ```plaintext
 ZONE_ID=your_zone_id_here
@@ -70,7 +70,6 @@ Navigate to the frontend directory, install the required packages, and start the
 #### Install Dependencies
 
 ```bash
-cd ../frontend
 npm install
 ```
 

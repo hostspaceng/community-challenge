@@ -39,7 +39,6 @@ Navigate to the backend directory, install the required packages, and start the 
 #### Install Dependencies
 
 ```bash
-cd backend
 python3 -m pip install -r requirements.txt
 ```
 
@@ -100,36 +99,6 @@ yarn serve
 ```
 
 Access the application on [http://localhost:8080](http://localhost:8080).
-
-### 4. Building for Production
-
-Compile the application for production.
-
-```bash
-npm run build
-```
-
-Or with Yarn:
-
-```bash
-yarn build
-```
-
-The production-ready app will be in the `dist/` folder.
-
-### 5. Linting and Formatting
-
-To lint and format files:
-
-```bash
-npm run lint
-```
-
-Or with Yarn:
-
-```bash
-yarn lint
-```
 
 ## Participation in the Challenge
 

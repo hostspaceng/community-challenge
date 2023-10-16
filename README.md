@@ -83,7 +83,7 @@ yarn install
 Ensure that your `.env` file is populated with the necessary environment variables for development.
 
 ```plaintext
-VUE_APP_PROXY_URL=http://localhost:5000/proxy
+VUE_APP_PROXY_URL=http://localhost:5000/
 ```
 
 #### Start the Development Server

@@ -25,11 +25,11 @@ Follow these instructions to set up the development environment on your local ma
 
 ### 1. Clone the Repository
 
-Clone the repository from [https://github.com/hostspaceng/challenge](https://github.com/hostspaceng/challenge).
+Clone the repository from [https://github.com/hostspaceng/community-challenge](https://github.com/hostspaceng/community-challenge).
 
 ```bash
-git clone https://github.com/hostspaceng/challenge.git
-cd challenge
+git clone https://github.com/hostspaceng/communuty-challenge.git
+cd community-challenge
 ```
 
 ### 2. Backend Setup

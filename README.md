@@ -19,85 +19,56 @@ Follow these instructions to set up the development environment on your local ma
 
 ### 1. Clone the Repository
 
-Clone the repository from [https://github.com/hostspaceng/community-challenge](https://github.com/hostspaceng/community-challenge).
+Clone the repository from https://github.com/Okeybukks/community-challenge.git .
 
 ```bash
-git clone https://github.com/hostspaceng/communuty-challenge.git
+git clone https://github.com/Okeybukks/community-challenge.git
 cd community-challenge
 ```
 
-### 2. Backend Setup
+### 2. Machine Setup
 
-Navigate to the backend directory, install the required packages, and start the Flask development server.
+The test environment I used is Ubuntu 20.04.6 LTS. Whatever machine is used, ensure you have docker and docker compose installed by running this command.
 
-#### Install Dependencies
-
-```bash
-python3 -m pip install -r requirements.txt
+```
+docker version
+docker compose version
 ```
 
 #### Set Environment Variables
 
-Replace the placeholders in the `.env` sample file with your actual Cloudflare credentials and configurations or copy from  `.env.sample`
+Replace the placeholders in the `.env` sample file with your actual Cloudflare credentials and configurations or copy from  `.env.sample`. To use the environment file during the deployment with docker, rememeber to rename to `.env`.
 
 ```plaintext
 ZONE_ID=your_zone_id_here
 CF_API_KEY=your_CF_API_KEY_here
 CF_API_EMAIL=your_CF_API_EMAIL_here
+VUE_APP_PROXY_URL=IP_ADDRESS_OF_MACHINE
 ```
 
-#### Start the Development Server
+For my test environment, the IP of the Linux machine is 192.168.56.28
+
+#### Start the Application
 
 ```bash
-export FLASK_APP=main.py
-export FLASK_ENV=development
-flask run
+docker compose -f dockercompose.yaml up
 ```
+The command builds the docker images specified in the dockercompose.yaml file and the starts up the application.
 
-The Flask API server will be running on [http://localhost:5000](http://localhost:5000).
-
-### 3. Frontend Setup
-
-Navigate to the frontend directory, install the required packages, and start the development server.
-
-#### Install Dependencies
+If you want to only build the application images only with out starting the applications, run this command.
 
 ```bash
-npm install
+docker compose -f dockercompose.yaml build
 ```
 
-Or if you're using Yarn:
+The above command creates two images; the Vue application and Flask application. You can see the created docker images using this command.
 
 ```bash
-yarn install
+docker images
 ```
+Because the application is served using Nginx, the Flask API server will be running on [http://IP/proxy/](http://IP/proxy/).
 
-#### Set Environment Variables
+In my case, the Flask API is running on [http://192.168.56.28/proxy/](http://192.168.56.28/proxy/). The Falsk application is also running on [http://192.168.56.28:5000](http://192.168.56.28:5000)
 
-Ensure that your `.env` file is populated with the necessary environment variables for development.
+The Vue application is runing on [http://IP](http://IP), In my case, the Flask API is running on [http://192.168.56.28](http://192.168.56.28) 
 
-```plaintext
-VUE_APP_PROXY_URL=http://localhost:5000/
-```
-
-#### Start the Development Server
-
-```bash
-npm run serve
-```
-
-Or for Yarn users:
-
-```bash
-yarn serve
-```
-
-Access the application on [http://localhost:8080](http://localhost:8080).
-
-## Participation in the Challenge
-
-For details on participating in the challenge, including writing a Dockerfile, setting up a CI/CD pipeline, and implementing Infrastructure as Code (IaC), please refer to the detailed challenge instructions provided.
-
-Make sure to use the provided pull request template when submitting your solutions to facilitate a uniform and organized evaluation process.
-
-For any questions or clarifications, reach out on the dedicated Slack channel. Happy coding!

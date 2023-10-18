@@ -1,23 +1,17 @@
 # Cloudflare Domains Manager
 
-Manage your Cloudflare domains with ease using the Cloudflare Domains Manager. This responsive and efficient application is built with a Vue.js frontend and a Python Flask backend.
+Manage your Cloudflare domains with ease using the Cloudflare Domains Manager. This responsive and efficient application is built with a Vue.js frontend and a Python Flask backend. 
 
 ![Screenshot](screenshot.png)
 
 
 ## Prerequisites
 
-Ensure the following prerequisites are installed on your machine:
+The applications are deployed using docker compose locally. Ensure the following prerequisite is installed on your local machine:
 
-### Backend
-
-- Python 3.9+
-- Flask
-
-### Frontend
-
-- Node.js 14+
-- npm or yarn
+### Backend and Frontend
+- Docker
+- Docker Compose
 
 ## Setup & Installation
 

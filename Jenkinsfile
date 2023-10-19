@@ -6,7 +6,7 @@ pipeline {
             steps {
                 // This step checks out your source code from a version control system (e.g., Git).
                 // You can specify your VCS and credentials here.
-                scripts{
+                script{
                     sh """
                         echo "hello world!"
                     """
@@ -17,7 +17,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Add build commands here (e.g., compiling code, running tests, etc.).
-                 scripts{
+                 script{
                     sh """
                         echo "hello world!"
                     """
@@ -28,7 +28,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Add testing commands here.
-                 scripts{
+                 script{
                     sh """
                         echo "hello world!"
                     """
@@ -39,7 +39,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 // Add deployment commands here (e.g., deploying to a server or cloud service).
-                 scripts{
+                 script{
                     sh """
                         echo "hello world!"
                     """

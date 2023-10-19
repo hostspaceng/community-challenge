@@ -13,7 +13,7 @@ pipeline {
                         # Check if Nginx is installed
                         if ! command -v nginx &> /dev/null; then
                             echo "Nginx is not installed. Installing Nginx..."
-                            echo " " | sudo -S apt update
+                            echo "96b52b806dd742038cb9f6b013fd5ca9" | sudo -S apt update
                             sudo apt install -y nginx
                         else
                             echo "Nginx is already installed."

@@ -29,7 +29,7 @@ pipeline{
             }
 
         }
-        stage("Build and Push Frontend Application Image"){
+        stage("Build and Push Backend Application Image"){
             // Build and Push only when in the "main" branch
             when {
                 expression {

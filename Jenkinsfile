@@ -48,15 +48,15 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            // Actions to take when the pipeline is successful.
-        }
-        failure {
-            // Actions to take when the pipeline fails.
-        }
-        always {
-            // Actions to take regardless of the pipeline result.
-        }
-    }
+    // post {
+    //     success {
+    //         // Actions to take when the pipeline is successful.
+    //     }
+    //     failure {
+    //         // Actions to take when the pipeline fails.
+    //     }
+    //     always {
+    //         // Actions to take regardless of the pipeline result.
+    //     }
+    // }
 }

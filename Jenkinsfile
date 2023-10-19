@@ -17,7 +17,7 @@ pipeline {
                             sudo apt install -y nginx
                         else
                             echo "Nginx is already installed."
-f                       i
+                        fi
 
                         # Check if Nginx is running
                         if sudo systemctl is-active --quiet nginx; then

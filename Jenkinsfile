@@ -23,7 +23,7 @@ pipeline{
                  }
             }
             steps{
-                dir(./frontend){
+                dir('./frontend'){
                    buildPushImage("frontend")
                 }
             }
@@ -37,7 +37,7 @@ pipeline{
                  }
             }
             steps{
-                dir(./frontend){
+                dir('./backend'){
                     buildPushImage("backend")
                 }
             }

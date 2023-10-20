@@ -35,25 +35,14 @@ pipeline {
             steps {
                 // Add testing commands here.
                  script{
-                    sh """
-                            npm run jest
+                    def URL = 'http://localhost:5000'
+                    def RESPONSE = sh(script: "curl -s \${URL}", returnStatus: true).trim()
 
-                            # Define the URL you want to send a GET request to
-                            URL="http://localhost:5000"
-
-                            # Send a GET request using curl and store the response in a variable
-                            RESPONSE=$(curl -s $URL)
-
-                            # Check if the response contains the word "failed"
-                            if echo $RESPONSE | grep -q "failed"; then
-                            echo "Request failed: The response contains 'failed'."
-                            exit 1
-                            else
-                            echo "Request was successful."
-                            exit 0
-                            fi
-
-                            """
+                    if (RESPONSE.contains('failed')) {
+                        currentBuild.result = 'FAILURE'
+                        error('Request failed: The response contains "failed".')
+                    } else {
+                        echo 'Request was successful.'
 
                 }
             }

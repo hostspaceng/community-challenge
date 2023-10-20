@@ -18,6 +18,7 @@ pipeline {
                     sh """
                         docker build -t python-project -f pyDockerfile .
                         docker build -t vue-project -f vueDockerfile .
+                        docker build -t nginx-http-proxy -f nginxDockerfile .
                         docker-compose -f docker-compose.yaml up -d
                     """
                 }

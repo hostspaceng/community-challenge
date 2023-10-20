@@ -1,57 +1,48 @@
 pipeline {
-    agent any  // You can specify the Jenkins agent here (e.g., 'docker', 'node', etc.)
+    agent any
 
     stages {
         stage('Checkout') {
             steps {
-                // This step checks out your source code from a version control system (e.g., Git).
-                // You can specify your VCS and credentials here.
-                script{
+                script {
                     sh """
                         echo "Checking out!!"
-                        
                     """
                 }
             }
         }
-        
+
         stage('Build and run Docker Images') {
             steps {
-                // Add build commands here (e.g., compiling code, running tests, etc.).
-                 script{
+                script {
                     sh """
                         docker build -t python-project -f pyDockerfile .
-
                         docker build -t vue-project -f vueDockerfile .
-
-                        docker compose -f docker-compose.yaml up
-
+                        docker-compose -f docker-compose.yaml up -d
                     """
                 }
             }
         }
-        
+
         stage('Test') {
             steps {
-                // Add testing commands here.
-                 script{
+                script {
                     def URL = 'http://localhost:5000'
                     def RESPONSE = sh(script: "curl -s \${URL}", returnStatus: true).trim()
 
-                    if (RESPONSE.contains('failed')) {
+                    if (RESPONSE == 0) {
                         currentBuild.result = 'FAILURE'
                         error('Request failed: The response contains "failed".')
                     } else {
                         echo 'Request was successful.'
-
+                    }
                 }
             }
         }
-        
+
         stage('Deploy') {
             steps {
-                // Add deployment commands here (e.g., deploying to a server or cloud service).
-                 script{
+                script {
                     sh """
                         echo "hello world!"
                     """
@@ -62,20 +53,22 @@ pipeline {
 
     post {
         success {
-            // Actions to take when the pipeline is successful.
-
-            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
+            script {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
                     sh """
-                        echo "hello world!"
+                            echo 'hello world'
                     """
                 }
+            }
         }
         failure {
             // Actions to take when the pipeline fails.
+
+            sh "echo 'hello world'"
         }
         always {
             // Actions to take regardless of the pipeline result.
+            sh "echo 'hello world'"
         }
     }
-}
 }

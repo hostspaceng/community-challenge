@@ -8,47 +8,24 @@ pipeline {
                 // You can specify your VCS and credentials here.
                 script{
                     sh """
-                        #!/bin/bash
-
-                        # Check if Nginx is installed
-                        if ! command -v nginx &> /dev/null; then
-                            echo "Nginx is not installed. Installing Nginx..."
-                            echo "96b52b806dd742038cb9f6b013fd5ca9" | sudo -S apt update
-                            sudo apt install -y nginx
-                        else
-                            echo "Nginx is already installed."
-                        fi
-
-                        # Check if Nginx is running
-                        if sudo systemctl is-active --quiet nginx; then
-                            echo "Nginx is running."
-                        else
-                            echo "Nginx is not running. Starting Nginx..."
-                            sudo systemctl start nginx
-                        fi
-
-                        # Check if Nginx is enabled to start at boot
-                        if sudo systemctl is-enabled --quiet nginx; then
-                            echo "Nginx is enabled to start at boot."
-                        else
-                            echo "Nginx is not enabled to start at boot. Enabling Nginx..."
-                            sudo systemctl enable nginx
-                        fi
-
-                        echo "Nginx status:"
-                        sudo systemctl status nginx
-
+                        echo "Checking out!"
+                        
                     """
                 }
             }
         }
         
-        stage('Build') {
+        stage('Build and run Docker Images') {
             steps {
                 // Add build commands here (e.g., compiling code, running tests, etc.).
                  script{
                     sh """
-                        echo "hello world!"
+                        docker build -t python-project -f pyDockerfile .
+
+                        docker build -t vue-project -f vueDockerfile .
+
+                        docker compose -f docker-compose.yaml up
+
                     """
                 }
             }
@@ -59,7 +36,23 @@ pipeline {
                 // Add testing commands here.
                  script{
                     sh """
-                        echo "hello world!"
+                            npm run jest
+
+                            # Define the URL you want to send a GET request to
+                            URL="http://localhost:5000"
+
+                            # Send a GET request using curl and store the response in a variable
+                            RESPONSE=$(curl -s "$URL")
+
+                            # Check if the response contains the word "failed"
+                            if echo "$RESPONSE" | grep -q "failed"; then
+                            echo "Request failed: The response contains 'failed'."
+                            exit 1
+                            else
+                            echo "Request was successful."
+                            exit 0
+                            fi
+
                     """
                 }
             }
@@ -77,15 +70,21 @@ pipeline {
         }
     }
 
-    // post {
-    //     success {
-    //         // Actions to take when the pipeline is successful.
-    //     }
-    //     failure {
-    //         // Actions to take when the pipeline fails.
-    //     }
-    //     always {
-    //         // Actions to take regardless of the pipeline result.
-    //     }
-    // }
+    post {
+        success {
+            // Actions to take when the pipeline is successful.
+
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
+                    sh """
+                     aws sns publish --topic-arn arn:aws:sns:us-east-1:879092596042:new_topic --subject "pipeline success" --message "pipeline failed!" --region us-east-1
+                    """
+                }
+        }
+        failure {
+            // Actions to take when the pipeline fails.
+        }
+        always {
+            // Actions to take regardless of the pipeline result.
+        }
+    }
 }

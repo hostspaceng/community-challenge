@@ -16,7 +16,7 @@ pipeline{
                 dir('./frontend'){
                     script{
                         // Install dependencies
-                        sh 'npm install'
+                        sh 'npm install --legacy-peer-deps'
 
                         // Run Vue.js tests
                         sh 'npm run test:unit'

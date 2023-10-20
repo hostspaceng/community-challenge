@@ -66,7 +66,7 @@ pipeline {
 
             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
                     sh """
-                     aws sns publish --topic-arn arn:aws:sns:us-east-1:879092596042:new_topic --subject "pipeline success" --message "pipeline failed!" --region us-east-1
+                        echo "hello world!"
                     """
                 }
         }

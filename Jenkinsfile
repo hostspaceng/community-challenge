@@ -42,10 +42,10 @@ pipeline {
                             URL="http://localhost:5000"
 
                             # Send a GET request using curl and store the response in a variable
-                            RESPONSE=$(curl -s "${URL}")
+                            RESPONSE=$(curl -s $URL)
 
                             # Check if the response contains the word "failed"
-                            if echo "${RESPONSE}" | grep -q "failed"; then
+                            if echo $RESPONSE | grep -q "failed"; then
                             echo "Request failed: The response contains 'failed'."
                             exit 1
                             else
@@ -53,7 +53,6 @@ pipeline {
                             exit 0
                             fi
 
-                    """
                 }
             }
         }

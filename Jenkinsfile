@@ -8,7 +8,7 @@ pipeline {
                 // You can specify your VCS and credentials here.
                 script{
                     sh """
-                        echo "Checking out!"
+                        echo "Checking out!!"
                         
                     """
                 }

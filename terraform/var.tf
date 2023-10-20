@@ -1,5 +1,10 @@
+variable "project_name" {
+  type = string
+}
+
 variable "tags" {
-  type = map
+  type = object({
+  })
 }
 
 variable "launch-type" {
@@ -24,4 +29,12 @@ variable "proxy_port" {
 
 variable "cpu_architecture" {
   type = string
+}
+
+variable "total_cpu" {
+  type = number
+}
+
+variable "total_memory" {
+  type = number
 }

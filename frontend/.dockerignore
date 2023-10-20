@@ -1,0 +1,3 @@
+# exclude the node modules folder to ensure container is light weight
+
+/node_modules

@@ -4,16 +4,16 @@
 # ECR repository for VUE js frontend
 
 module "frontend-image" {
-    source = "./modules/ecr"
-    name = "${local.name}-frontend"
-    tags = var.tags
+  source = "./modules/ecr"
+  name   = "${local.name}-frontend"
+  tags   = var.tags
 }
 
 # ECR repository for Python flask proxy app
 
 module "backend-image" {
   source = "./modules/ecr"
-  name = "${local.name}"
-  tags = var.tags
+  name   = "${local.name}-backend"
+  tags   = var.tags
 }
 

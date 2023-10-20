@@ -3,11 +3,13 @@ variable "vpc_id" {
 }
 
 variable "cidr_block" {
-  type = map
+  type = string
 }
 
 variable "tags" {
-  type = object
+  type = object({
+    
+  })
 }
 
 variable "availability_zone" {

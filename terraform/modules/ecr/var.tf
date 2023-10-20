@@ -3,5 +3,7 @@ variable "name" {
 }
 
 variable "tags" {
-  type = map
+  type = object({
+    
+  })
 }

@@ -12,7 +12,7 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 # Copy the code to the container
-COPY . .
+COPY main.py .
 
 EXPOSE 5000
 

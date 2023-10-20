@@ -1,3 +1,7 @@
 /backend/community-challenge
 /frontend/node_modules
 set.txt
+/terraform/*.tfstate
+/terraform/*.hcl
+/terraform/*.backup
+/terraform/.terraform

@@ -49,7 +49,7 @@ pipeline {
                         # Make an HTTP request to the Vue application
 
                         # Check the HTTP response status code
-                        if [ $(curl -s -o /dev/null -w "%{http_code}" "\$vue_url") -ne "000" ]; then
+                        if [ \$(curl -s -o /dev/null -w "%{http_code}" "\$vue_url") -ne "000" ]; then
                             echo "Vue application server is up and running."
                             # Add your actions here
                         else

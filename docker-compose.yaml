@@ -13,10 +13,10 @@ services:
     image: vue-project #image from local file
     container_name: vue-project #running container name
     ports:
-      - "8080:8080" #ports to open for running containers
+      - "8080:4000" #ports to open for running containers
     volumes:
       - ./:/app
-      - /app/node_modules
+      - ./app/node_modules
     
 
   nginx-proxy:

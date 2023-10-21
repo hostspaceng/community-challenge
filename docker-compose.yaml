@@ -16,7 +16,6 @@ services:
       - "8080:4000" #ports to open for running containers
     volumes:
       - ./:/app
-      - ./app/node_modules
     
 
   nginx-proxy:

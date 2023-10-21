@@ -41,7 +41,7 @@ pipeline {
                             echo "Python application server is not responding or returned an error (HTTP \$response)."
                             # Add alternative actions or error handling here
 
-                            docker-compose -f python.yaml up
+                            docker compose -f python.yaml up
                         fi
 
                         vue_url="http://localhost:8080"  # Change the port to match your server

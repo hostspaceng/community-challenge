@@ -27,7 +27,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh"""
+                    sh """
                         python_url="http://localhost:5000"  # Change the port to match your server
 
                         # Make an HTTP request to the application

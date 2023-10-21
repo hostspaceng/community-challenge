@@ -27,7 +27,10 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    docker compose -f docker-compose.yaml up
+                    sh"""
+                        docker compose -f docker-compose.yaml up
+                    """
+                    
                 }
             }
         }

@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  nginx-proxy:
+    image: nginx-http-proxy #image from local file
+    network_mode: host
+    container_name: nginx-proxy #running container name
+    ports:
+      - "80:80" #ports to open for running containers

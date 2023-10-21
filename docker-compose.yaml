@@ -8,13 +8,16 @@ services:
       - "5000:5000" #ports to open for running containers
     volumes:
       - ./:/app
-      - /app/requirements.txt
 
   vue-app:
     image: vue-project #image from local file
     container_name: vue-project #running container name
     ports:
       - "8080:8080" #ports to open for running containers
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    
 
   nginx-proxy:
     image: nginx-http-proxy #image from local file

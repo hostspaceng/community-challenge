@@ -41,39 +41,37 @@ pipeline {
                             echo "Python application server is not responding or returned an error (HTTP \$response)."
                             # Add alternative actions or error handling here
 
-                            docker compose -f python.yaml up
+                            docker compose -f python.yaml up -d
                         fi
 
                         vue_url="http://localhost:8080"  # Change the port to match your server
 
                         # Make an HTTP request to the Vue application
-                        vue_response=\$(curl -s -o /dev/null -w "%{http_code}" "\$vue_url")
 
                         # Check the HTTP response status code
-                        if [ "\$vue_response" -ne "000" ]; then
+                        if [ $(curl -s -o /dev/null -w "%{http_code}" "\$vue_url") -ne "000" ]; then
                             echo "Vue application server is up and running."
                             # Add your actions here
                         else
                             echo "Vue application server is not responding or returned an error (HTTP \$vue_response)."
                             # Add alternative actions or error handling here
 
-                            docker-compose -f vue.yaml up
+                            docker-compose -f vue.yaml up -d
                         fi
 
                         nginx_url="http://localhost:80"  # Change the port to match your server
 
                         # Make an HTTP request to the Nginx application
-                        nginx_response=\$(curl -s -o /dev/null -w "%{http_code}" "\$nginx_url")
 
                         # Check the HTTP response status code
-                        if [ "\$nginx_response" -ne "000" ]; then
+                        if [ \$(curl -s -o /dev/null -w "%{http_code}" "\$nginx_url") -ne "000" ]; then
                             echo "Nginx application server is up and running."
                             # Add your actions here
                         else
                             echo "Nginx application server is not responding or returned an error (HTTP \$nginx_response)."
                             # Add alternative actions or error handling here
 
-                            docker-compose -f nginx.yaml up
+                            docker-compose -f nginx.yaml up -d
                         fi
                     """
 

@@ -8,7 +8,7 @@ services:
       - "5000:5000" #ports to open for running containers
     volumes:
       - ./:/app
-      - :/app/requirements.txt
+      - /app/requirements.txt
 
   vue-app:
     image: vue-project #image from local file

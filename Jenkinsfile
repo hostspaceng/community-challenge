@@ -27,7 +27,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    curl localhost:5000
+                    docker compose -f docker-compose.yaml up
                 }
             }
         }

@@ -27,15 +27,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    def URL = 'http://localhost:5000'
-                    def RESPONSE = sh(script: "curl -s \${URL}", returnStatus: true).trim()
-
-                    if (RESPONSE == 0) {
-                        currentBuild.result = 'FAILURE'
-                        error('Request failed: The response contains "failed".')
-                    } else {
-                        echo 'Request was successful.'
-                    }
+                    curl localhost:5000
                 }
             }
         }

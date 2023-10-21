@@ -56,7 +56,7 @@ pipeline {
                             echo "Vue application server is not responding or returned an error (HTTP \$vue_response)."
                             # Add alternative actions or error handling here
 
-                            docker-compose -f vue.yaml up -d
+                            docker compose -f vue.yaml up -d
                         fi
 
                         nginx_url="http://localhost:80"  # Change the port to match your server
@@ -71,7 +71,7 @@ pipeline {
                             echo "Nginx application server is not responding or returned an error (HTTP \$nginx_response)."
                             # Add alternative actions or error handling here
 
-                            docker-compose -f nginx.yaml up -d
+                            docker compose -f nginx.yaml up -d
                         fi
                     """
 

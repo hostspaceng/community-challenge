@@ -31,10 +31,10 @@ pipeline {
                         python_url="http://localhost:5000"  # Change the port to match your server
 
                         # Make an HTTP request to the Python application
-                        response=\$(curl -s -o /dev/null -w "%{http_code}" "\$python_url")
+                        
 
                         # Check the HTTP response status code
-                        if [ "\$response" -ne "000" ]; then
+                        if [ \$(curl -s -o /dev/null -w "%{http_code}" "\$python_url") -ne "000" ]; then
                             echo "Python application server is up and running."
                             # Add your actions here
                         else

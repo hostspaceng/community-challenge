@@ -105,21 +105,21 @@ pipeline {
         }
     }
 
-    post {
-        success {
+    // post {
+    //     success {
             
-                 sh "echo 'hello world'"
+    //              sh "echo 'hello world'"
                 
-            }
+    //         }
         
-        failure {
-            // Actions to take when the pipeline fails.
+    //     failure {
+    //         // Actions to take when the pipeline fails.
 
-            sh "echo 'hello world'"
-        }
-        always {
-            // Actions to take regardless of the pipeline result.
-            sh "echo 'hello world'"
-        }
-    }
+    //         sh "echo 'hello world'"
+    //     }
+    //     always {
+    //         // Actions to take regardless of the pipeline result.
+    //         sh "echo 'hello world'"
+    //     }
+    // }
 }

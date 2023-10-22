@@ -83,8 +83,22 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
                     sh """
-                        echo "hello world!"
+                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 206080409328.dkr.ecr.us-east-1.amazonaws.com
+                            docker tag nginx-http-proxy 206080409328.dkr.ecr.us-east-1.amazonaws.com/nginx-http-proxy:latest
+                            docker push 206080409328.dkr.ecr.us-east-1.amazonaws.com/nginx-http-proxy:latest
+
+
+                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 206080409328.dkr.ecr.us-east-1.amazonaws.com
+                            docker tag python-project 206080409328.dkr.ecr.us-east-1.amazonaws.com/python-project:latest
+                            docker push 206080409328.dkr.ecr.us-east-1.amazonaws.com/python-project:latest
+
+
+                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 206080409328.dkr.ecr.us-east-1.amazonaws.com
+                            docker tag vue-project 206080409328.dkr.ecr.us-east-1.amazonaws.com/vue-project:latest
+                            docker push 206080409328.dkr.ecr.us-east-1.amazonaws.com/vue-project:latest
+
                     """
                 }
             }
@@ -94,23 +108,7 @@ pipeline {
     post {
         success {
             script {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
-                    sh """
-                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 206080409328.dkr.ecr.us-east-1.amazonaws.com
-                            docker tag nginx-http-proxy:latest 206080409328.dkr.ecr.us-east-1.amazonaws.com/nginx-http-proxy:latest
-                            docker push 206080409328.dkr.ecr.us-east-1.amazonaws.com/nginx-http-proxy:latest
-
-
-                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 206080409328.dkr.ecr.us-east-1.amazonaws.com
-                            docker tag python-project:latest 206080409328.dkr.ecr.us-east-1.amazonaws.com/python-project:latest
-                            docker push 206080409328.dkr.ecr.us-east-1.amazonaws.com/python-project:latest
-
-
-                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 206080409328.dkr.ecr.us-east-1.amazonaws.com
-                            docker tag vue-project:latest 206080409328.dkr.ecr.us-east-1.amazonaws.com/vue-project:latest
-                            docker push 206080409328.dkr.ecr.us-east-1.amazonaws.com/vue-project:latest
-
-                    """
+                 sh "echo 'hello world'"
                 }
             }
         }

@@ -14,3 +14,8 @@ I Implemented caching best practice by having the processes which will not be ha
 After building the application a docker-compose.yaml configuration file was created to run our application. And for the nginx container to be able to listen send request to our pythin flask proxy application, i had to change the `network_mode: host` from default to host in the docker-compose.yaml used in running the application after build
 
 The vuejs application was configured to listen to the default port `8080`, the python application was configured to listen to the port `5000`, while the nginx server was also configured to listen to the default port `80`
+
+
+### 2. Implementing the CI/CD stage
+
+Here i made use of Jenkins and Amazon CodePipepline, with my jenkins file and integrating my jenkins to my repro using webhook to automate the oulling of updates i make to the reprository, i built multiple stages which comprises of, bulding the docker image, testing and running the image and deploying the image to amazon ECR. After that, amazon codePipeline is going to pull the image from amazon ECR and deploy it to a cloudFormation stck with will assist me in implement the next stage of this project.

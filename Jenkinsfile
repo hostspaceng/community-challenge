@@ -107,11 +107,11 @@ pipeline {
 
     post {
         success {
-            script {
+            
                  sh "echo 'hello world'"
-                }
+                
             }
-        }
+        
         failure {
             // Actions to take when the pipeline fails.
 

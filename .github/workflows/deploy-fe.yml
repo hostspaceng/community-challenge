@@ -41,6 +41,10 @@ jobs:
               with:
                 length: 6
             
+            - run: echo $SHA
+              env:
+                SHA: ${{ steps.short-sha.outputs.sha }}
+            
             - name: Login to ECR
               uses: aws-actions/amazon-ecr-login@v2
               id: login-ecr

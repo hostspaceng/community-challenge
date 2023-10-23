@@ -34,10 +34,12 @@ jobs:
                 aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                 aws-region: ${{ vars.AWS_REGION }}
-
-            - name: Set outputs
-              id: vars
-              run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+              
+            - name: Get Short Sha 
+              uses: benjlevesque/short-sha@v2.2
+              id: short-sha
+              with:
+                length: 6
             
             - name: Login to ECR
               uses: aws-actions/amazon-ecr-login@v2
@@ -48,7 +50,7 @@ jobs:
               env:
                 REGISTRY: ${{ steps.login-ecr.outputs.registry }}
                 REPOSITORY: ${{ vars.ECR_REPOSITORY_NAME }}
-                IMAGE_TAG: ${{ vars.outputs.sha_short }}
+                IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}
               run: |
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
                 docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
@@ -66,7 +68,7 @@ jobs:
               uses: ./.github/actions/ecs-deploy
               with:
                 app_repo_url: ${{ steps.build-image.outputs.GITHUB_OUTPUT }}
-                app_version: ${{ vars.outputs.sha_short }}
+                app_version: ${{ steps.short-sha.outputs.sha }}
                 ecs_cluster: ${{ env.ECS_CLUSTER }}
                 ecs_service: ${{ env.ECS_SERVICE }}
                 ecs_container_name: 'nginx-frontend'

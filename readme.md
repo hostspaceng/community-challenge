@@ -19,3 +19,8 @@ The vuejs application was configured to listen to the default port `8080`, the p
 ### 2. Implementing the CI/CD stage
 
 Here i made use of Jenkins and Amazon CodePipepline, with my jenkins file and integrating my jenkins to my repro using webhook to automate the oulling of updates i make to the reprository, i built multiple stages which comprises of, bulding the docker image, testing and running the image and deploying the image to amazon ECR. After that, amazon codePipeline is going to pull the image from amazon ECR and deploy it to a cloudFormation stck with will assist me in implement the next stage of this project.
+
+
+### IaC using AWS CloudFormation
+
+Upon deploying my images to a cloudformation stack which is having configuration to deploy an EKS CLuster, i then moved on to deploy my cloudformation stck which craetes an EKS cluster for me running my images inside of it.

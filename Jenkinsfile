@@ -59,7 +59,7 @@ pipeline {
                             docker compose -f vue.yaml up -d
                         fi
 
-                        nginx_url="http://localhost:80"  # Change the port to match your server
+                        nginx_url="http://localhost:80/proxy/"  # Change the port to match your server
 
                         # Make an HTTP request to the Nginx application
 

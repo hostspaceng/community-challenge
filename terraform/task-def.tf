@@ -2,7 +2,7 @@
 # Task Defination for the both containers
 
 resource "aws_ecs_task_definition" "service" {
-  family                   = "community-challenge-family"
+  family                   = "${var.project_name}-family"
   requires_compatibilities = [var.launch-type]
   network_mode             = "awsvpc"
   cpu                      = var.total_cpu

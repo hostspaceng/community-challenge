@@ -1,0 +1,73 @@
+name: 'CI pipeline for Frontend ECR image'
+
+on:
+    workflow_dispatch:
+    
+    push:
+        branches:
+            - main
+
+permissions:
+    contents: read
+
+env:
+    ECS_SERVICE: ${{ vars.PROJECT_NAME }}-service
+    ECS_CLUSTER: ${{ vars.PROJECT_NAME }}-cluster
+    ECS_TASK_DEFINITION: ${{ vars.PROJECT_NAME }}-family
+
+
+jobs:
+
+    deploy-ecr-images:
+        runs-on: ubuntu-latest
+
+        steps:
+
+            - name: Copy Repo Code
+              uses: actions/checkout@v4
+            
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ vars.AWS_REGION }}
+
+            - name: Set outputs
+              id: vars
+              run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+            
+            - name: Login to ECR
+              uses: aws-actions/amazon-ecr-login@v2
+              id: login-ecr
+            
+            - name: Build, tag, and push docker image to Amazon ECR
+              id: build-image
+              env:
+                REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+                REPOSITORY: ${{ vars.ECR_REPOSITORY_NAME }}
+                IMAGE_TAG: ${{ vars.outputs.sha_short }}
+              run: |
+                docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+                docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+                echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+
+            - name: Checkout AWS ECS Deploy GH Action
+              uses: actions/checkout@v2
+              with:
+                repository: robertomoutinho/gh-action-ecs-deploy
+                token: ${{ github.token }}
+                path: ./.github/actions/ecs-deploy
+            
+            - name: Deploy App to ECS Service
+              uses: ./.github/actions/ecs-deploy
+              with:
+                app_repo_url: ${{ steps.build-image.outputs.GITHUB_OUTPUT }}
+                app_version: ${{ vars.outputs.sha_short }}
+                ecs_cluster: ${{ env.ECS_CLUSTER }}
+                ecs_service: ${{ env.ECS_SERVICE }}
+                ecs_container_name: 'nginx-frontend'
+                aws_region: 'us-east-1'
+                aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

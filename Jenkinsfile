@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Define global environment variables
         ZONE_ID = credentials('ZONE_ID')
-        CF_API_KEY = credentials('mCF_API_KEY')
+        CF_API_KEY = credentials('CF_API_KEY')
         CF_API_EMAIL = credentials('CF_API_EMAIL')
         VUE_APP_PROXY_URL = credentials('VUE_APP_PROXY_URL')
     }

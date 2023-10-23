@@ -1,6 +1,14 @@
 pipeline {
     agent any
 
+    environment {
+        // Define global environment variables
+        ZONE_ID = credentials('ZONE_ID')
+        CF_API_KEY = credentials('mCF_API_KEY')
+        CF_API_EMAIL = credentials('CF_API_EMAIL')
+        VUE_APP_PROXY_URL = credentials('VUE_APP_PROXY_URL')
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -16,6 +24,13 @@ pipeline {
             steps {
                 script {
                     sh """
+
+                        export ZONE_ID=$ZONE_ID
+                        export CF_API_KEY=$CF_API_KEY
+                        export CF_API_EMAIL=$CF_API_EMAILVUE_APP_PROXY_URL 
+                        export VUE_APP_PROXY_URL=$VUE_APP_PROXY_URL
+
+
                         docker build -t python-project -f pyDockerfile .
                         docker build -t vue-project -f vueDockerfile .
                         docker build -t nginx-http-proxy -f nginxDockerfile .

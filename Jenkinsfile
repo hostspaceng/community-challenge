@@ -27,7 +27,7 @@ pipeline {
 
                         export ZONE_ID=$ZONE_ID
                         export CF_API_KEY=$CF_API_KEY
-                        export CF_API_EMAIL=$CF_API_EMAILVUE_APP_PROXY_URL 
+                        export CF_API_EMAIL=$CF_API_EMAIL
                         export VUE_APP_PROXY_URL=$VUE_APP_PROXY_URL
 
 

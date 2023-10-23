@@ -16,6 +16,7 @@ env:
     ECS_SERVICE: ${{ vars.PROJECT_NAME }}-service
     ECS_CLUSTER: ${{ vars.PROJECT_NAME }}-cluster
     ECS_TASK_DEFINITION: ${{ vars.PROJECT_NAME }}-family
+    ECR_REPOSITORY_NAME: challenge-app-frontend
 
 
 jobs:

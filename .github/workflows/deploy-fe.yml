@@ -54,7 +54,7 @@ jobs:
               env:
                 REGISTRY: ${{ steps.login-ecr.outputs.registry }}
                 REPOSITORY: ${{ vars.ECR_REPOSITORY_NAME }}
-                IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}
+                IMAGE_TAG: ${{ env.SHA }}
               run: |
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
                 docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG

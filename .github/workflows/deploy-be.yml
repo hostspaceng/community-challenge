@@ -1,4 +1,4 @@
-name: 'CI pipeline for Frontend ECR image'
+name: 'CI pipeline for Backend ECR image'
 
 on:
     workflow_dispatch:

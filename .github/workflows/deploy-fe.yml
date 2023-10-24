@@ -76,7 +76,7 @@ jobs:
             - name: Deploy App to ECS Service
               uses: ./.github/actions/ecs-deploy
               with:
-                app_repo_url: ${{ steps.build-image.outputs.GITHUB_OUTPUT }}
+                app_repo_url: ${{ steps.build-image.outputs.image }}
                 app_version: ${{ steps.short-sha.outputs.sha }}
                 ecs_cluster: ${{ env.ECS_CLUSTER }}
                 ecs_service: ${{ env.ECS_SERVICE }}

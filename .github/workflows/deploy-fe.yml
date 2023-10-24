@@ -17,6 +17,7 @@ env:
     ECS_CLUSTER: ${{ vars.PROJECT_NAME }}-cluster
     ECS_TASK_DEFINITION: ${{ vars.PROJECT_NAME }}-family
     ECR_REPOSITORY_NAME: challenge-app-frontend
+    AWS_REGION: us-west-2
 
 
 jobs:
@@ -80,6 +81,6 @@ jobs:
                 ecs_cluster: ${{ env.ECS_CLUSTER }}
                 ecs_service: ${{ env.ECS_SERVICE }}
                 ecs_container_name: 'nginx-frontend'
-                aws_region: 'us-east-1'
+                aws_region: ${{ env.AWS_REGION }}
                 aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

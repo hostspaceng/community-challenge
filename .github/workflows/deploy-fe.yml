@@ -63,7 +63,7 @@ jobs:
               run: |
                 docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./frontend
                 docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-                echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+                echo "image=$REGISTRY/$REPOSITORY" >> $GITHUB_OUTPUT
 
 
             - name: Checkout AWS ECS Deploy GH Action
@@ -84,4 +84,3 @@ jobs:
                 aws_region: ${{ env.AWS_REGION }}
                 aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                timeout: 300

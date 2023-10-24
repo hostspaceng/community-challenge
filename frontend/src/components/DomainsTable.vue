@@ -6,7 +6,7 @@
 
     <div>
       <download-csv class="btn btn-default" :data="formattedDomains" name="domains.csv">
-        <a href="#"> Export new Domains </a>
+        <a href="#"> Export Domains </a>
       </download-csv>
 
       <vue-good-table styleClass="vgt-table" :columns="columns" :rows="formattedDomains" :search-options="{

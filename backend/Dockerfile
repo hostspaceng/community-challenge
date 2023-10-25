@@ -19,8 +19,3 @@ ENV CF_API_EMAIL=safe@hostspaceng.com
 EXPOSE 5000
 #commands to pass
 CMD [ "flask", "run","--host","0.0.0.0","--port","5000"]
-
-
-
-
-q[A[A[A

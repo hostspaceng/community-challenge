@@ -1,4 +1,4 @@
-#this is a multistage build
+#this is a multistage build
 FROM node:lts-alpine as builder
 
 # make the 'app' folder the current working directory

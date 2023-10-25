@@ -1,4 +1,4 @@
-# bse operating system that is small enough
+#base operating system that is small enough
 FROM python:3.9-alpine
 #selects a working directory
 WORKDIR /app

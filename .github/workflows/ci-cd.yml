@@ -32,7 +32,7 @@ jobs:
     - name: Push Docker images to Docker Hub
       run: |
         echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-        docker-compose -f docker-compose.yml -f docker-compose.ci.yml push
+        docker-compose -f docker-compose.yml  push
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}

@@ -15,10 +15,14 @@ After building the application a docker-compose.yaml configuration file was crea
 
 The vuejs application was configured to listen to the default port `8080`, the python application was configured to listen to the port `5000`, while the nginx server was also configured to listen to the default port `80`
 
+For the security part, i implemented security best practice by making our environmental variables very well secured, using them as credentials on my jenkins environnment so be integrated inside my application when building my docker image on jenkins environment, and also using configMap while and encoding the variable values into base64, so that my EKS CLuster environment is going to see and make use of it and i can also update it anything locally.
+
 
 ### 2. Implementing the CI/CD stage
 
 Here i made use of Jenkins and Amazon CodePipepline, with my jenkins file and integrating my jenkins to my repro using webhook to automate the oulling of updates i make to the reprository, i built multiple stages which comprises of, bulding the docker image, testing and running the image and deploying the image to amazon ECR. After that, amazon codePipeline is going to pull the image from amazon ECR and deploy it to a cloudFormation stck with will assist me in implement the next stage of this project.
+
+here is a link to the screen recorded video on loon `https://www.loom.com/share/e0f90feac52144919fbb90de22ca40e4`
 
 
 ### IaC using AWS CloudFormation

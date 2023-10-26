@@ -6,14 +6,14 @@ on:
       - main
 
 jobs:
-  build_and_deploy:
+  build_and_deploy_to_docker:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Build and test backend
+    - name: Build backend
       run: |
         docker-compose -f docker-compose.yml build backend
        
@@ -21,7 +21,7 @@ jobs:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Build and test frontend
+    - name: Build frontend
       run: |
         docker-compose -f docker-compose.yml build frontend
         

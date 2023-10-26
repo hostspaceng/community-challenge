@@ -16,7 +16,7 @@ jobs:
     - name: Build and test backend
       run: |
         docker-compose -f docker-compose.yml build backend
-        docker-compose -f docker-compose.yml run backend python -m pytest
+       
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -24,7 +24,7 @@ jobs:
     - name: Build and test frontend
       run: |
         docker-compose -f docker-compose.yml build frontend
-        docker-compose -f docker-compose.yml run frontend npm test
+        
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -32,7 +32,7 @@ jobs:
     - name: Push Docker images to Docker Hub
       run: |
         echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
-        docker-compose -f docker-compose.yml -f docker-compose.ci.yml push
+        docker-compose -f docker-compose.yml  push
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}

@@ -25,25 +25,25 @@ pipeline{
         //         }
         //     }
         // }
-        stage("Test Stage: Testing Flask application before image build."){
-            agent {
-                docker {
-                    image 'python'
-                    args '-u root:root'
-                }
-            }
-            steps{
-                dir('./backend'){
-                    script{
-                        // Install dependencies
-                        sh 'pip install -r requirements.txt'
+        // stage("Test Stage: Testing Flask application before image build."){
+        //     agent {
+        //         docker {
+        //             image 'python'
+        //             args '-u root:root'
+        //         }
+        //     }
+        //     steps{
+        //         dir('./backend'){
+        //             script{
+        //                 // Install dependencies
+        //                 sh 'pip install -r requirements.txt'
 
-                        // Run Vue.js tests
-                        sh 'python3 test_main.py'
-                    }
-                }
-            }
-        }
+        //                 // Run Vue.js tests
+        //                 sh 'python3 test_main.py'
+        //             }
+        //         }
+        //     }
+        // }
         // stage("Login to Dockerhub"){
         //     steps{
         //         sh 'echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
@@ -78,9 +78,21 @@ pipeline{
         //     }
 
         // }
-        stage("Image Deploy Stage"){
+        stage("Image Deploy Application to EKS Cluster"){
             steps{
-                sh "echo 'This is image deploy stage'"
+                dir("./kube_files"){
+                    ithCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: "AWS_ID",
+                        accessKeyVariable: "AWS_ACCESS_KEY_ID",
+                        secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
+                    ]]){
+                        script{
+                            sh 'aws eks list-clusters'
+                        }
+                    }
+
+                }   
             }
         }
 

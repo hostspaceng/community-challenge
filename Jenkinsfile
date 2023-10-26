@@ -88,6 +88,7 @@ pipeline{
                         secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
                     ]]){
                         script{
+                            sh 'aws eks update-kubeconfig --name hostspace-cluster --region "us-east-1"'
                             sh 'aws eks list-clusters'
                         }
                     }

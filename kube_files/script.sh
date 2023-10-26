@@ -51,4 +51,4 @@ data:
 
 EOF
 
-echo ${backendServiceUrl}
+cat configmap.yaml

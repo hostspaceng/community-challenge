@@ -25,7 +25,6 @@ jobs:
     - name: Login to Docker Hub
       run: |
         echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
     - name: Build and push Docker image
       run: |
@@ -36,4 +35,4 @@ jobs:
       if: success()
       run: |
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
-        docker run -d --name myapp -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+        docker run -d --name myapp -p 8084:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest

@@ -100,7 +100,7 @@ pipeline{
                             sh 'kubectl create -f backend-service.yaml'
 
                             // // Running the custom script to pass the created backend-service url to the configmap file.
-                            sh "script.sh"
+                            sh 'script.sh'
 
                             // // Creating the configmap resource
                             sh 'kubectl create -f configmap.yaml'

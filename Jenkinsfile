@@ -13,9 +13,9 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    sh """
-                        echo "Checking out!!"
-                    """
+                    
+                        git branch: 'main', url: 'https://github.com/abdulfrfr/community-challenge.git'
+                    
                 }
             }
         }

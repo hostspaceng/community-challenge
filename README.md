@@ -101,5 +101,73 @@ aws_secret_access_key = YOUR ACCESS KEY ID
 region = YOUR REGION
 ```
 
+### Building EKS Cluster
+- Change into the my-k8s-cluster.
+
+    ```
+    cd my-k8s-cluster
+    ```
+- Edit the `Pulumi.dev.yaml` file to your cluster requirements and region you wish to deploy to.
+- Run the command below to start the cluster creation.
+    ```
+    pulumi up
+    ```
+
+### Configuring the Cluster
+The `kubectl` command requires `KUBECONFIG` pointing to the cluster's configuration for it to run without errors. To get the configuration of the created cluster run this command.
+```
+pulumi stack output kubeconfig > kubeconfig.json
+```
+In order to avoid preceding every `kubectl` command with `KUBECONFIG=./kubeconfig.json` before running, add the cluster configuration to the default kubernetes configuration file.
+```
+kubectl config view --minify --flatten --context=aws --kubeconfig=kubeconfig.json >> ~/.kube/config
+```
+The above command assumes `kubectl` is installed if not check out this [link](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) on how to go about it.
+
+To confirm if there are nodes in your cluster, run this command.
+```
+kubectl get nodes
+```
+## Application Deployment
+
+The following deployment files were created for the application to be deployed in the kubernetes cluster.
+
+- secrets.yaml file: This file conatins the value of the `CF_API_KEY` variable. The `CF_API_KEY` value is first encrypted before being added as data to the file. This command is used for the encryption.
+   ```
+   echo -n CF_API_KEY | base64 -w 0
+   ```
+   Run the `kubectl create -f secrets.yaml` command to create the secret resource.
+
+- configmap.yaml: This file is used to store the environment variables needed by the flask application. The variables are `CF_API_EMAIL`, `VUE_APP_PROXY_URL` and `ZONE_ID`
+
+   Run the `kubectl create -f configmap.yaml` command to create the configmap resource.
+
+- namespace.yaml: This file is used to create a different namespace from the default namespace. This is used for proper resource organization.
+
+   Run the `kubectl create -f namespace.yaml` command to create the namespace resource.
+- backend-service.yaml: This file is used to create the backend service used to reach the pods deployed to serve the flask app.
+
+   Run the `kubectl create -f backend-service.yaml` command to create the backend-service resource.
+
+- backend-deployment.yaml: This is the file responsible for creation of the flask app pods.
+
+   Run the `kubectl create -f backend-deployment.yaml` command to create the backend-deployment resource.
+
+- frontend-service.yaml: The service needed to reach the vue application and also expose to the internet is created using this file.
+
+   Run the `kubectl create -f frontend-service.yaml` command to create the frontend-service resource.
+
+- frontend-deployment.yaml: The vue application pods are created with this file.
+
+   Run the `kubectl create -f frontend-deployment.yaml` command to create the frontend-deployment resource.
+
+To see the created resources, run this command;
+
+```
+kubectl get all -n hostspace
+```
+
+The application can be reached with the url in the `EXTERNAL-IP ` of the services table. The frontend-service type is `LoadBalancer`, a load blancer resource will be created in AWS whenever the frontend-service is created in kubernetes.
+
 
 

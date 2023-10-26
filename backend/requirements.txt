@@ -2,4 +2,3 @@ Flask
 flask-cors
 requests
 load_dotenv
-unittest

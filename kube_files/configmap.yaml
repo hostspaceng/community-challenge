@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hostspace-configmap
+  namespace: hostspace
+data:
+  zone_id: 88212a53b6feba598b197f3508f35b52
+  cf_api_email: safe@hostspaceng.com
+  vue_app_proxy_url: http://a734e5e9fcc1d43c8b47ca1f471e5d30-1952764483.us-east-1.elb.amazonaws.com:5000/

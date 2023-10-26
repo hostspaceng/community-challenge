@@ -88,27 +88,28 @@ pipeline{
                         secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
                     ]]){
                         script{
+                            // Update kube-config file with the name of created cluster.
                             sh 'aws eks update-kubeconfig --name eks-cluster-eksCluster-b446572 --region "us-east-1"'
                             // Creating the namespace resource
                             sh 'kubectl create -f namespace.yaml'
 
                             // // Creating the secret resource
-                            // sh 'kubectl create -f secrets.yaml'
+                            sh 'kubectl create -f secrets.yaml'
 
                             // // Creating the backend-service resource
-                            // sh 'kubectl create -f backend-service.yaml'
+                            sh 'kubectl create -f backend-service.yaml'
 
                             // // Running the custom script to pass the created backend-service url to the configmap file.
-                            // sh script.sh
+                            sh script.sh
 
                             // // Creating the configmap resource
-                            // sh 'kubectl create -f configmap.yaml'
+                            sh 'kubectl create -f configmap.yaml'
 
                             // // Creating the backend-deployment resource
-                            // sh 'kubectl create -f backend-deployment.yaml'
+                            sh 'kubectl create -f backend-deployment.yaml'
 
                             // // Creating the frontend-deployment resource
-                            // sh 'kubectl create -f frontend-deployment.yaml'
+                            sh 'kubectl create -f frontend-deployment.yaml'
 
                             // Creating the frontend-service resource
                             sh 'kubectl create -f frontend-service.yaml'

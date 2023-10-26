@@ -81,7 +81,7 @@ pipeline{
         stage("Image Deploy Application to EKS Cluster"){
             steps{
                 dir("./kube_files"){
-                    ithCredentials([[
+                    withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: "AWS_ID",
                         accessKeyVariable: "AWS_ACCESS_KEY_ID",

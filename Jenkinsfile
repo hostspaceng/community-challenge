@@ -88,7 +88,7 @@ pipeline{
                         secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
                     ]]){
                         script{
-                            sh 'test.sh'
+                            sh 'sh test.sh'
                             // // Update kube-config file with the name of created cluster.
                             // sh 'aws eks update-kubeconfig --name eks-cluster-eksCluster-b446572 --region "us-east-1"'
                             // // Creating the namespace resource

@@ -4,16 +4,15 @@ Manage your Cloudflare domains with ease using the Cloudflare Domains Manager. T
 
 ![Screenshot](screenshot.png)
 
+## Setup & Installation(Local Machine)
 
-## Prerequisites
+### Prerequisites
 
 The applications are deployed using docker compose locally. Ensure the following prerequisite is installed on your local machine:
 
 ### Backend and Frontend
 - Docker
 - Docker Compose
-
-## Setup & Installation
 
 Follow these instructions to set up the development environment on your local machine.
 
@@ -71,4 +70,36 @@ Because the application is served using Nginx, the Flask API server will be runn
 In my case, the Flask API is running on [http://192.168.56.28/proxy/](http://192.168.56.28/proxy/). The Falsk application is also running on [http://192.168.56.28:5000](http://192.168.56.28:5000)
 
 The Vue application is runing on [http://IP](http://IP), In my case, the Flask API is running on [http://192.168.56.28](http://192.168.56.28) 
+
+## Setup & Installation(Deploying to the Cloud)
+### Prerequisites
+
+The applications deployment is down in the cloud. The following prerequisite are needed to completely deploy to the cloud.
+
+#### CICD Tool
+- Jenkins
+
+### IAC Tool
+- Pulumi
+
+#### Cloud Infrastructure
+- AWS Account
+
+## Infrastructure creation using Pulumi
+For this project, we employed Pulumi to build the infrastructure. Pulumi is an Infrastructure as Code (IaC) tool that empowers the utilization of widely-used programming languages to orchestrate cloud resources. In this project, I am utilizing Python as our programming language for resource provisioning. The specific resource I am creating is an Amazon Elastic Kubernetes Service (EKS) cluster.
+
+To get started with Pulumi, check out this [link](https://www.pulumi.com/docs/clouds/aws/get-started/).
+
+### Setting AWS Credentials
+Programmatic access is need by Pulumi to create resources in your cloud platform. This access is granted using Access keys. If you don't have one you can check out this [article](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user_manage_add-key.html) no how to create one.
+
+Pulumi checks the `.aws/credentials` file for the access key. This should be how your `.aws/credentials` look like.
+```
+[default]
+aws_access_key_id = YOUR ACCESS KEY ID
+aws_secret_access_key = YOUR ACCESS KEY ID
+region = YOUR REGION
+```
+
+
 

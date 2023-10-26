@@ -1,3 +1,4 @@
+// This pipeline uses share library to reduce the amount of repetitive codes.
 @Library('shared-library') _
 pipeline{
     agent any
@@ -5,21 +6,40 @@ pipeline{
         DOCKERHUB_CREDENTIAL = credentials("DOCKER_ID")
     }
     stages{
-        stage("Test Stage: Testing Vue Application"){
+        // stage("Test Stage: Testing Vue application before image build."){
+        //     agent {
+        //         docker {
+        //             image 'node:lts-alpine'
+        //             args '-u root:root'
+        //         }
+        //     }
+        //     steps{
+        //         dir('./frontend'){
+        //             script{
+        //                 // Install dependencies
+        //                 sh 'npm install --legacy-peer-deps'
+
+        //                 // Run Vue.js tests
+        //                 sh 'npm run test:unit'
+        //             }
+        //         }
+        //     }
+        // }
+        stage("Test Stage: Testing Flask application before image build."){
             agent {
                 docker {
-                    image 'node:lts-alpine'
+                    image 'python'
                     args '-u root:root'
                 }
             }
             steps{
-                dir('./frontend'){
+                dir('./backend'){
                     script{
                         // Install dependencies
-                        sh 'npm install --legacy-peer-deps'
+                        sh 'pip install -r requirements.txt'
 
                         // Run Vue.js tests
-                        sh 'npm run test:unit'
+                        sh 'python3 test_main.py'
                     }
                 }
             }
@@ -38,6 +58,7 @@ pipeline{
         //     }
         //     steps{
         //         dir('./frontend'){
+                      // The buildPushImage is defined in the shared-library folder. The argument it allows is a string that is appended to the tag of the image.
         //            buildPushImage("frontend")
         //         }
         //     }

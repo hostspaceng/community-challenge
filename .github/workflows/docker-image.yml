@@ -24,7 +24,7 @@ jobs:
 
     - name: Login to Docker Hub
       run: |
-        echo "$DOCKERHUB_PTA" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+        echo "$DOCKERHUB_PAT" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
     - name: Build and push Docker image
       run: |

@@ -10,7 +10,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /app
+          - path: /
             pathType: Exact
             backend:
               service:

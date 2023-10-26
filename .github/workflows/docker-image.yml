@@ -2,32 +2,39 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 permissions:
   contents: read
   pull-requests: write
-  
-jobs:
 
+jobs:
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-   # - name: Build the Docker image
-    #  run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-      
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Login to Docker Hub
       run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-      env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-    
+
+    - name: Build and tag Docker image
+      run: docker build -t myapp ./community-challenge/Dockerfile
+
+    - name: Tag the Docker image
+      run: docker tag myapp:latest ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+
+    - name: Push Docker image to Docker Hub
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+
     - name: Deploy with Docker
+      if: success()
       run: |
-        docker pull oluwasanmivic/myapp:latest
-        docker run -d --name myapp -p 80:80 oluwasanmivic/myapp:latest
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+        docker run -d --name myapp -p 80:80 o${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest

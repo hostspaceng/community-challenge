@@ -2,14 +2,16 @@ version: "3"
 services:
   backend:
     build:
-        context: . -f backendDockerfile
+        context: . 
+        dockerfile: backendDockerfile
     ports:
       - "5000:5000"
     networks:
       - my-app-network
   frontend:
     build:
-        context: . -f frontendDockerfile
+        context: . 
+        dockerfile: frontendDockerfile
     ports:
       - "8080:80"
     networks:

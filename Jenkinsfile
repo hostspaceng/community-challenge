@@ -114,7 +114,7 @@ pipeline{
 
                         //     // Creating the frontend-service resource
                         //     sh 'kubectl create -f frontend-service.yaml'
-                        // }
+                        }
                     }
 
                 }   

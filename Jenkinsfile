@@ -43,51 +43,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        python_url="http://localhost:5000"  # Change the port to match your server
-
-                        # Make an HTTP request to the Python application
-                        
-
-                        # Check the HTTP response status code
-                        if [ \$(curl -s -o /dev/null -w "%{http_code}" "\$python_url") -ne "000" ]; then
-                            echo "Python application server is up and running."
-                            # Add your actions here
-                        else
-                            echo "Python application server is not responding or returned an error (HTTP \$response)."
-                            # Add alternative actions or error handling here
-
-                            docker compose -f python.yaml up -d
-                        fi
-
-                        vue_url="http://localhost:8080"  # Change the port to match your server
-
-                        # Make an HTTP request to the Vue application
-
-                        # Check the HTTP response status code
-                        if [ \$(curl -s -o /dev/null -w "%{http_code}" "\$vue_url") -ne "000" ]; then
-                            echo "Vue application server is up and running."
-                            # Add your actions here
-                        else
-                            echo "Vue application server is not responding or returned an error (HTTP \$vue_response)."
-                            # Add alternative actions or error handling here
-
-                            docker compose -f vue.yaml up -d
-                        fi
-
-                        nginx_url="http://localhost:80/proxy/"  # Change the port to match your server
-
-                        # Make an HTTP request to the Nginx application
-
-                        # Check the HTTP response status code
-                        if [ \$(curl -s -o /dev/null -w "%{http_code}" "\$nginx_url") -ne "000" ]; then
-                            echo "Nginx application server is up and running."
-                            # Add your actions here
-                        else
-                            echo "Nginx application server is not responding or returned an error (HTTP \$nginx_response)."
-                            # Add alternative actions or error handling here
-
-                            docker compose -f nginx.yaml up -d
-                        fi
+                        docker compose -f docker-compose.yaml up -d
                     """
 
                     

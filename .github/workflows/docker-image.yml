@@ -35,4 +35,4 @@ jobs:
       if: success()
       run: |
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
-        docker run -d --name myapp -p 8084:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+        docker run -d --name myapp -p 8083:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest

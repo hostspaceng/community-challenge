@@ -30,7 +30,7 @@ jobs:
       run: |
         # Login to Docker Hub and push the Docker image
         docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-        docker push myapp:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}

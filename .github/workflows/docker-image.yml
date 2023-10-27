@@ -29,7 +29,8 @@ jobs:
     - name: Push Docker Image to Docker Hub
       run: |
         # Login to Docker Hub and push the Docker image
-        echo "$DOCKERHUB_PAT"| docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        # Set up Docker configuration to perform a non-interactive login
+        echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin}}
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}

@@ -52,8 +52,9 @@ jobs:
     - name: Deploy to EC2
       run: |
         # Copy the private key to the runner for SSH authentication
-        echo "$SSH_PRIVATE_KEY" > key.pem
-        chmod 400 key.pem
+        mkdir -p ~/.ssh/
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 400 ~/.ssh/id_rsa
 
         # Replace the EC2 instance IP address with your own
         EC2_INSTANCE_IP="54.221.97.206"

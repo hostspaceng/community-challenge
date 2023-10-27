@@ -12,6 +12,7 @@ spec:
       labels:
         app: python
     spec:
+      hostNetwork: true
       containers:
       - name: python-project
         image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/python-project:latest
@@ -38,6 +39,7 @@ spec:
               key: VUE_APP_PROXY_URL
         ports:
         - containerPort: 5000
+        hostPort: 5000
 
 ---
 
@@ -46,13 +48,14 @@ kind: Service
 metadata:
   name: python-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: python
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 5000
+      nodePort: 30001
 
 
 ---
@@ -71,11 +74,13 @@ spec:
       labels:
         app: nginx
     spec:
+      hostNetwork: true
       containers:
       - name: nginx-proxy
         image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/nginx-http-proxy:latest
         ports:
         - containerPort: 80
+        hostPort: 80
 
 ---
 
@@ -84,13 +89,14 @@ kind: Service
 metadata:
   name: nginx-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: nginx
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
+      nodePort: 30002
 
 
 
@@ -111,6 +117,7 @@ spec:
       labels:
         app: vue-app
     spec:
+      hostNetwork: true
       containers:
       - name: vue-project
         image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/vue-project:latest
@@ -122,6 +129,7 @@ spec:
               key: VUE_APP_PROXY_URL
         ports:
         - containerPort: 8080
+        hostPort: 8080
 
 ---
 
@@ -131,10 +139,11 @@ kind: Service
 metadata:
   name: vue-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: vue-app
   ports:
     - protocol: TCP
       port: 8080
       targetPort: 8080
+      nodePort: 30003

@@ -95,7 +95,7 @@ pipeline{
                             sh 'kubectl create -f namespace.yaml'
 
                             // Creating the secret resource
-                            // sh 'kubectl create -f secrets.yaml'
+                            sh 'kubectl create -f secrets.yaml'
 
                             // // Creating the backend-service resource
                             sh 'kubectl create -f backend-service.yaml'
@@ -105,17 +105,17 @@ pipeline{
 
                             sh 'cat configmap.yaml'
 
-                            // // // Creating the configmap resource
-                            // sh 'kubectl create -f configmap.yaml'
+                            // // Creating the configmap resource
+                            sh 'kubectl create -f configmap.yaml'
 
-                            // // // Creating the backend-deployment resource
-                            // sh 'kubectl create -f backend-deployment.yaml'
+                            // // Creating the backend-deployment resource
+                            sh 'kubectl create -f backend-deployment.yaml'
 
-                            // // // Creating the frontend-deployment resource
-                            // sh 'kubectl create -f frontend-deployment.yaml'
+                            // // Creating the frontend-deployment resource
+                            sh 'kubectl create -f frontend-deployment.yaml'
 
-                            // // Creating the frontend-service resource
-                            // sh 'kubectl create -f frontend-service.yaml'
+                            // Creating the frontend-service resource
+                            sh 'kubectl create -f frontend-service.yaml'
                             }
                             catch(error){
                                 sh 'kubectl apply -f namespace.yaml'

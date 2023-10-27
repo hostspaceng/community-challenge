@@ -15,7 +15,7 @@ spec:
       hostNetwork: true
       containers:
       - name: python-project
-        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/python-project:latest
+        image: public.ecr.aws/l1z2o5a3/python-project
         env:
         - name: ZONE_ID
           valueFrom:
@@ -39,7 +39,7 @@ spec:
               key: VUE_APP_PROXY_URL
         ports:
         - containerPort: 5000
-        hostPort: 5000
+
 
 ---
 
@@ -77,10 +77,10 @@ spec:
       hostNetwork: true
       containers:
       - name: nginx-proxy
-        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/nginx-http-proxy:latest
+        image: public.ecr.aws/l1z2o5a3/nginx-http-proxy
         ports:
         - containerPort: 80
-        hostPort: 80
+
 
 ---
 
@@ -120,7 +120,7 @@ spec:
       hostNetwork: true
       containers:
       - name: vue-project
-        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/vue-project:latest
+        image: public.ecr.aws/l1z2o5a3/vue-project
         env:
         - name: ZONE_ID
           valueFrom:
@@ -129,7 +129,7 @@ spec:
               key: VUE_APP_PROXY_URL
         ports:
         - containerPort: 8080
-        hostPort: 8080
+
 
 ---
 

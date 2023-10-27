@@ -44,7 +44,7 @@ jobs:
     - name: Set up private key
       run: |
         # Create a private key file and set appropriate permissions
-        echo "$SSH_PRIVATE_KEY" > key.pem
+        echo "$SSH_PRIVATE_KEY" > ./key.pem
         chmod 400 key.pem
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

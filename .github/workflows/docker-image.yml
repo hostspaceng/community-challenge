@@ -15,10 +15,11 @@ jobs:
 
     - name: Set up AWS CLI
       run: |
-        echo "[default]
-        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        region = ${{ secrets.AWS_REGION }}" > ~/.aws/credentials
+        # Create AWS credentials file
+        echo "[default]" > ~/.aws/credentials
+        echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+        echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+        echo "region = ${{ secrets.AWS_REGION }}" >> ~/.aws/credentials
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -26,21 +27,31 @@ jobs:
 
     - name: Build Docker Image
       run: |
+        # Build your Docker image (change the build command accordingly)
         docker build -t myapp:latest .
       working-directory: ./path/to/your/dockerfile/directory
 
     - name: Push Docker Image to Docker Hub
       run: |
+        # Login to Docker Hub and push the Docker image
         docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
         docker push myapp:latest
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+    - name: Set up private key
+      run: |
+        # Create a private key file and set appropriate permissions
+        echo "$SSH_PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
     - name: Deploy to EC2
       run: |
-        # SSH into your EC2 instance (example) and deploy the Docker container
-        ssh -i /path/to/your/private-key.pem ec2-user@your-ec2-instance-ip 'docker pull myapp:latest && docker run -d --name myapp -p 8080:80 myapp:latest'
+        # SSH into your EC2 instance and deploy the Docker container
+        ssh -i private_key.pem ec2-user@your-ec2-instance-ip 'docker pull myapp:latest && docker run -d --name myapp -p 8080:80 myapp:latest'
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -43,6 +43,7 @@ jobs:
 
     - name: Set up private key
       run: |
+        mkdir -p ~/.ssh/
         # Create a private key file and set appropriate permissions
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa

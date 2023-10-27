@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: my-config
 data:
-  ZONE_ID: ODgyMTJhNTNiNmZlYmE1OThiMTk3ZjM1MDhmMzViNTI=
-  CF_API_KEY: YWI1OTBkMWM1ZDMxMzk0MTZmZWYzZDE3M2FkNDI2N2E3NWE0MQ==
+  ZONE_ID: 88212a53b6feba598b197f3508f35b52
+  CF_API_KEY: ab590d1c5d3139416fef3d173ad4267a75a41
   CF_API_EMAIL: safe@hostspaceng.com
   VUE_APP_PROXY_URL: http://localhost:5000/

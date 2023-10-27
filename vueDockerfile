@@ -12,8 +12,6 @@ COPY package*.json ./
 # install project dependencies
 RUN npm install
 
-RUN npm install --save-dev jest @vue/test-utils
-
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
@@ -23,5 +21,5 @@ RUN npm run build
 
 EXPOSE 8080
 
-CMD [ "http-server", "dist" ]
+CMD ["http-server", "dist"]
 

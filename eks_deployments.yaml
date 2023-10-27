@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: python-project
-        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/python-project@sha256:f1b34de9044f10e1a15058dce3e1c11c908e69f43597de20ebc36be6cbe71905
+        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/python-project:latest
         env:
         - name: ZONE_ID
           valueFrom:
@@ -73,7 +73,7 @@ spec:
     spec:
       containers:
       - name: nginx-proxy
-        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/nginx-http-proxy@sha256:a828154c828723f729001da1834d0e106a9b2e467b75201df319edd2b624d562
+        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/nginx-http-proxy:latest
         ports:
         - containerPort: 80
 
@@ -113,7 +113,13 @@ spec:
     spec:
       containers:
       - name: vue-project
-        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/vue-project@sha256:39fc51cd8e1083f9fc08620852ad4f84fe8e9af52c5cef239848670b1c2ae1af
+        image: 206080409328.dkr.ecr.us-east-1.amazonaws.com/vue-project:latest
+        env:
+        - name: ZONE_ID
+          valueFrom:
+            configMapKeyRef:
+              name: my-config
+              key: VUE_APP_PROXY_URL
         ports:
         - containerPort: 8080
 

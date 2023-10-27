@@ -1,38 +1,47 @@
-name: Docker Image CI
+name: Deploy Docker Image to EC2
 
 on:
   push:
-    paths:
-      - ./**
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-
-permissions:
-  contents: read
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Login to Docker Hub
+    - name: Set up AWS CLI
       run: |
-        echo "$DOCKERHUB_PAT" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+        echo "[default]
+        aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region = ${{ secrets.AWS_REGION }}" > ~/.aws/credentials
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
 
-    - name: Build and push Docker image
+    - name: Build Docker Image
       run: |
-        docker build -t myapp ./Dockerfile
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+        docker build -t myapp:latest .
+      working-directory: ./path/to/your/dockerfile/directory
 
-    - name: Deploy with Docker
-      if: success()
+    - name: Push Docker Image to Docker Hub
       run: |
-        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
-        docker run -d --name myapp -p 9093:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        docker push myapp:latest
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Deploy to EC2
+      run: |
+        # SSH into your EC2 instance (example) and deploy the Docker container
+        ssh -i /path/to/your/private-key.pem ec2-user@your-ec2-instance-ip 'docker pull myapp:latest && docker run -d --name myapp -p 8080:80 myapp:latest'
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}

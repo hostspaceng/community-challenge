@@ -23,15 +23,20 @@ jobs:
     - name: Build Docker Image
       run: |
         # Build your Docker image (change the build command accordingly)
-        docker build -t myapp:latest .
-      working-directory: ./  # Remove "Dockerfile" as it's not a valid working-directory
+        docker build -t myapp1:latest .
+      working-directory: ./  
+
+    - name: Tag the Docker image
+      run: |
+          docker tag myapp1:latest ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+      working-directory: ./
 
     - name: Push Docker Image to Docker Hub
       run: |
         # Login to Docker Hub and push the Docker image
         # Set up Docker configuration to perform a non-interactive login
         echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -55,8 +60,8 @@ jobs:
 
         # SSH into your EC2 instance and deploy the Docker container
         ssh -i key.pem ubuntu@$EC2_INSTANCE_IP 
-        docker pull myapp:latest 
-        docker run -d --name myapp -p 8080:80 myapp:latest'
+        docker pull myapp1:latest 
+        docker run -d -p 8080:80 myapp1
         
       #env:
        # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

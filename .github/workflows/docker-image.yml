@@ -28,7 +28,7 @@ jobs:
 
     - name: Tag the Docker image
       run: |
-          docker tag myapp1:latest ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+        docker tag myapp1:latest ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
       working-directory: ./
 
     - name: Push Docker Image to Docker Hub
@@ -44,17 +44,9 @@ jobs:
     - name: Deploy to EC2
       run: |
         # Copy the private key to the runner for SSH authentication
-        echo ${{ secrets.SSH_PRIVATE_KEY }} > key.pem
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
         chmod 600 key.pem
 
         # SSH into your EC2 instance and deploy the Docker container
-        ssh -i key.pem -c 'docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest' ubuntu@${{ secrets.EC2_INSTANCE_IP }}
-        ssh -i key.pem -c 'docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"' ubuntu@${{ secrets.EC2_INSTANCE_IP }}
-    
-      env:
-      #  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
-
-
-
-
+        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
+        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"

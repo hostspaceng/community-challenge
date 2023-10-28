@@ -1,0 +1,40 @@
+steps:
+  # Build the challenge container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/challenge:$COMMIT_SHA'
+
+  # Push the challenge container image to GCR
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/challenge:$COMMIT_SHA'
+
+  # Deploy challenge container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'challenge'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/challenge:$COMMIT_SHA'
+      - '--region'
+      - 'europe-west1'
+
+  # Update traffic to the latest challenge container image
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'services'
+      - 'update-traffic'
+      - 'challenge'
+      - '--to-latest'
+      - '--region=europe-west1'
+      - '--quiet'
+
+images:
+  - 'gcr.io/$PROJECT_ID/challenge:$COMMIT_SHA'

@@ -43,10 +43,10 @@ jobs:
 
     - name: Set up private key
       run: |
-        mkdir -p ~/.ssh
+        #mkdir -p ~/.ssh
         # Create a private key file and set appropriate permissions
-        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
+        echo "$SSH_PRIVATE_KEY" > key.pem
+        chmod 600 key.pem
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -58,7 +58,7 @@ jobs:
         EC2_INSTANCE_IP="54.221.97.206"
 
         # SSH into your EC2 instance and deploy the Docker container
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$EC2_INSTANCE_IP <<EOF
+        ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@$EC2_INSTANCE_IP <<EOF
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest 
         docker run -d -p 8080:80 myapp1
         EOF

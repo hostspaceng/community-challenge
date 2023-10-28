@@ -41,19 +41,12 @@ jobs:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Set up private key
-      run: |
-        #mkdir -p ~/.ssh
-        # Create a private key file and set appropriate permissions
-        echo "$SSH_PRIVATE_KEY" > key.pem
-        chmod 600 key.pem
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
     - name: Deploy to EC2
       run: |
         # Copy the private key to the runner for SSH authentication
-    
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+        chmod 600 key.pem
+
         # Replace the EC2 instance IP address with your own
         EC2_INSTANCE_IP="54.221.97.206"
 

@@ -41,6 +41,11 @@ jobs:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+    - name: Copy SSH private key
+      run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+    - name: Set key file permissions
+      run: chmod 600 key.pem
+
     - name: Deploy to EC2
       run: |
         # Copy the private key to the runner for SSH authentication
@@ -48,5 +53,6 @@ jobs:
         chmod 600 key.pem
 
         # SSH into your EC2 instance and deploy the Docker container
-        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
-        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
+        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@3.91.84.79 "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
+        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@3.91.84.79 "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
+-i key.pem -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"

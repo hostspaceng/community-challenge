@@ -46,7 +46,7 @@ jobs:
         mkdir -p ~/.ssh
         # Create a private key file and set appropriate permissions
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-        chmod 400 ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 

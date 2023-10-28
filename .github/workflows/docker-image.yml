@@ -49,4 +49,4 @@ jobs:
         
         # SSH into your EC2 instance and deploy the Docker container
         ssh -i key.pem ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest && docker run -d -p 8080:80 myapp1:latest"
-        EOF
+        

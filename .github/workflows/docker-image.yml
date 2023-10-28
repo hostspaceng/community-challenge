@@ -25,7 +25,7 @@ jobs:
         # Build your Docker image (change the build command accordingly)
         docker build -t myapp1:latest .
       working-directory: ./  
-
+#
     - name: Tag the Docker image
       run: |
         docker tag myapp1:latest ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest

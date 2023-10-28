@@ -5,7 +5,7 @@ on:
     branches:
       - main
 
-#jobs:
+jobs:
   deploy:
     runs-on: ubuntu-latest
 
@@ -46,12 +46,9 @@ on:
         # Copy the private key to the runner for SSH authentication
         echo ${{ secrets.SSH_PRIVATE_KEY }} > key.pem
         chmod 600 key.pem
-
-        # Replace the EC2 instance IP address with your own
-        EC2_INSTANCE_IP="54.221.97.206"
-
+        
         # SSH into your EC2 instance and deploy the Docker container
-        ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@$EC2_INSTANCE_IP <<EOF
+        ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@${{ secrets.EC2_INSTANCE_IP }} <<EOF
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest 
         docker run -d -p 8080:80 myapp1
         EOF

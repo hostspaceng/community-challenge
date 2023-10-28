@@ -44,7 +44,7 @@ jobs:
     - name: Deploy to EC2
       run: |
         # Copy the private key to the runner for SSH authentication
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+        echo ${{ secrets.SSH_PRIVATE_KEY }} > key.pem
         chmod 600 key.pem
 
         # SSH into your EC2 instance and deploy the Docker container

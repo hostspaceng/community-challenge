@@ -169,5 +169,78 @@ kubectl get all -n hostspace
 
 The application can be reached with the url in the `EXTERNAL-IP ` of the services table. The frontend-service type is `LoadBalancer`, a load blancer resource will be created in AWS whenever the frontend-service is created in kubernetes.
 
+Once deployed to get the URL of the applications run this command `kubectl get svc -n hostspace`, you should get something similar to this;
 
+![alt text](images/image1.png)
+
+In  my case, URL of the frontend application  is `a818da7ebc4064b97a29cbe381a516e5-1283014073.us-east-1.elb.amazonaws.com`
+and to get the API of the flask application, just append `/proxy` to the above URL.
+
+Remember this URL will definitely be different from what you will get, also it might not be available again in the future because I will eventually destroy the created resources.
+
+This is a screenshot of my applications working with the above URL.
+
+![alt text](images/image2.png)
+
+![alt text](images/image3.png)
+
+## Application and Cluster Monitoring
+The EKS Cluster and applications deployed to the clusters are monitored using prometheus and grafana. Both prometheus and grafana have good documentations to integrate into the kubernetes cluster.
+
+### Prometheus Deployment
+To integrate prometheus in your EKS cluster, checkout this well detailed [article](https://docs.aws.amazon.com/eks/latest/userguide/prometheus.html). With this article, when you run the `kubectl get all -n prometheus`, you will notice the `prometheus-server` deployment is stuck at `pending`, the reason is because a `persistent volume` has not be created which is needed by the `prometheus-server` deployment. To create the `persistent volume`, you have to configure the `aws-ebs-csi-driver
+` for that. Checkout this [link](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on how to go about it.
+
+The default prometheus service has a type `ClusterIP`, to make it accessible to the public, this service type has to change be changed to a `LoadBalancer` or `NodePort`.
+
+First delete the created prometheus service.
+
+```
+kubectl delete svc prometheus-server -n prometheus 
+```
+
+Then run this command to create a new prometheus service
+
+```
+kubectl create -f prometheus-service.yaml
+```
+Remember, for this command to work, you must be in the `/kube_files` folder. The new prometheus service creates a new AWS loadbalancer whose URL is used to access the promethues server.
+
+```
+kubectl get svc -n promethues
+```
+The above commands returns the prometheus URL of the prometheus service.
+
+![alt text](images/image4.png)
+![alt text](images/image5.png)
+
+### Grafana Deployment
+Grafana is the visualization tool used to visualize metrics gotten by prometheus. The deployment file for grafana is located in the `/kube_files` folder.
+
+To deploy grafana run `kubectl create -f grafana.yaml`.
+
+The deployed resources can be found using the `kubectl get all -n grafana` command. The grafana service created has a `LoadBalancer` type, so an AWS loadbalancer is created whose URL is used to access the grafana service.
+
+![alt text](images/image6.png)
+
+![alt text](images/image7.png)
+
+To build dashboards to visualize various metrics, prometheus has to be added as a data source. The `prometheus-server` URL is used as the data source. Put URL in `Prometheus server URL *` of grafana.
+
+![alt text](images/image8.png)
+
+![alt text](images/image9.png)
+
+The following dashboards where created for the kubernetes cluster and application monitoring.
+
+- Node Exporter: This dashboard gets the CPU, Memory, Network Traffic, Storage Disk Usage of each node in the cluster.
+
+  ![alt text](images/image10.png)
+
+- Monitor Pod CPU and Memory usage: This dashboard is used to monitor the CPU and Memory usage of the applications in the pods in the kubernetes cluster. Select the pod in the pod menu and it displays information graphs on it.
+
+  ![alt text](images/image11.png)
+- Kubernetes Deployment metrics: This dashboard returns the number of deployments, the deployments available, each memory and CPU usage of each deployments.
+
+   ![alt text](images/image11.png)
 

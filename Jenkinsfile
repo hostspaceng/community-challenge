@@ -58,7 +58,8 @@ pipeline{
         //     }
         //     steps{
         //         dir('./frontend'){
-                      // The buildPushImage is defined in the shared-library folder. The argument it allows is a string that is appended to the tag of the image.
+                      // The buildPushImage is defined in the shared-library folder. 
+                      // The argument it allows is a string that is appended to the tag of the image.
         //            buildPushImage("frontend")
         //         }
         //     }
@@ -89,6 +90,9 @@ pipeline{
                     ]]){
                         script{
                             try{
+                                // This function has been defined in the shared-library/var folder.
+                                // The function takes in either the 'create' or 'apply' kubernetes command
+                                // to append to the command for creating resources. 
                                 deployApplication("create")
                             }
                             catch(error){

@@ -33,11 +33,7 @@ while true; do
   sleep 5
 done
 
-
-
-# backendServiceUrl="http://$(kubectl get svc backend-service -n hostspace -o json \
-# | jq ".status.loadBalancer.ingress[0].hostname" | sed 's/"//g'):5000/"
-
+# Passing the backendServiceUrl into the configmap file.
 cat <<EOF > configmap.yaml
 apiVersion: v1
 kind: ConfigMap

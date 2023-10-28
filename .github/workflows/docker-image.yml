@@ -1,1 +1,69 @@
+name: Deploy Docker Image to EC2
 
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Build Docker Image
+      run: |
+        # Build your Docker image (change the build command accordingly)
+        docker build -t myapp1:latest .
+      working-directory: ./  
+
+    - name: Tag the Docker image
+      run: |
+          docker tag myapp1:latest ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+      working-directory: ./
+
+    - name: Push Docker Image to Docker Hub
+      run: |
+        # Login to Docker Hub and push the Docker image
+        # Set up Docker configuration to perform a non-interactive login
+        echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Set up private key
+      run: |
+        mkdir -p ~/.ssh
+        # Create a private key file and set appropriate permissions
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to EC2
+      run: |
+        # Copy the private key to the runner for SSH authentication
+    
+        # Replace the EC2 instance IP address with your own
+        EC2_INSTANCE_IP="54.221.97.206"
+
+        # SSH into your EC2 instance and deploy the Docker container
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$EC2_INSTANCE_IP <<EOF
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest 
+        docker run -d -p 8080:80 myapp1
+        EOF
+        
+      #env:
+       # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        #AWS_REGION: ${{ secrets.AWS_REGION }}

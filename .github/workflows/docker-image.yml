@@ -45,7 +45,7 @@ jobs:
       run: |
         # Copy the private key to the runner for SSH authentication
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
-        chmod 600 key.pem
+        chmod 400 key.pem
 
         # Replace the EC2 instance IP address with your own
         EC2_INSTANCE_IP="54.221.97.206"

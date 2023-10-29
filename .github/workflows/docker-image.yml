@@ -59,13 +59,14 @@ jobs:
       run: |
          Copy the private key to the runner for SSH authentication
          echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
-        chmod 600 key.pem
+         chmod 600 key.pem
 
     - name: Pull Docker image on EC2
-      run: ssh -i key.pem -o StrictHostKeyChecking=no -c aes128-ctr ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
-           docker run myapp1
+      run:  |
+            ssh -i key.pem -o StrictHostKeyChecking=no -c aes128-ctr ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+            docker run myapp1
              #docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
-           exit'
+            exit'
 
     #- name: Run Docker container on EC2
      # run: ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@3.91.84.79 "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"eyChecking=no ubuntu@3.91.84.79 "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"

@@ -23,7 +23,7 @@ jobs:
     - name: Build and Push Docker Image
       run: |
            gcloud auth configure-docker us-east1-docker.pkg.dev
-           docker-compose -f action.yml build  .
+           docker-compose -f action.yml build .
            docker tag project_service:latest us-east1-docker.pkg.dev/$GOOGLE_PROJECT/hostspace:latest
            docker-compose -f action.yml push us-east1-docker.pkg.dev/$GOOGLE_PROJECT/hostspace:latest
 

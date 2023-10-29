@@ -15,7 +15,7 @@ jobs:
 
     - name: Build backend
       run: |
-        docker-compose -f docker-compose.yml build backend
+        docker-compose -f action.yml build backend
        
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -23,7 +23,7 @@ jobs:
 
     - name: Build frontend
       run: |
-        docker-compose -f docker-compose.yml build frontend
+        docker-compose -f action.yml build frontend
         
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}

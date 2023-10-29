@@ -19,6 +19,13 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
+    
+    - name: Install Docker
+      run: |
+       # Install Docker on the runner
+       sudo apt-get update -y
+       sudo apt-get install -y docker.io
+      if: runner.os == 'Linux'
 
     - name: Build Docker Image
       run: |
@@ -50,15 +57,17 @@ jobs:
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
         chmod 600 key.pem
-        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'sudo apt-get update -y'
-        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'sudo apt-get install -y docker.io'
-        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'sudo systemctl start docker'
-        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'sudo systemctl enable docker'
+        ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+          # Install Docker on the EC2 instance
+          sudo apt-get update -y
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
       env:
        # SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        SSH_USER: ${{ secrets.SSH_USER }}
-        EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
+         AWS_REGION: ${{ secrets.AWS_REGION }}
+         SSH_USER: ${{ secrets.SSH_USER }}
+         EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
 
 
     - name: Deploy Apps

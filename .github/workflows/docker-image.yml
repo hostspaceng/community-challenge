@@ -41,10 +41,10 @@ jobs:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Copy SSH private key
-      run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
-    - name: Set key file permissions
-      run: chmod 600 key.pem
+    #- name: Copy SSH private key
+     # run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+    #- name: Set key file permissions
+     # run: chmod 600 key.pem
 
     - name: Deploy Apps
       run: |

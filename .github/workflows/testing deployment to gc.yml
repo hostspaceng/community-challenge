@@ -24,8 +24,8 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        docker-compose -f docker-compose.yml -t gcr.io/your-project-id/your-image-name:$GITHUB_SHA .
-        docker push gcr.io/your-project-id/your-image-name:$GITHUB_SHA
+        docker compose up -t gcr.io/your-project-id/hostspace_build:$GITHUB_SHA .
+        docker push gcr.io/your-project-id/hostspace_build:$GITHUB_SHA
 
        
    

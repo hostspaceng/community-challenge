@@ -1,3 +1,4 @@
+# Cluster resource configuration
 config:
   aws:profile: default
   aws:region: us-east-1

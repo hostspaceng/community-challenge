@@ -4,6 +4,10 @@ Manage your Cloudflare domains with ease using the Cloudflare Domains Manager. T
 
 ![Screenshot](screenshot.png)
 
+This Readme file provides instructions for deploying the application, both locally and in a production environment. Local deployment is achieved using Docker Compose, which offers a straightforward setup for integrating both the frontend and backend applications, along with configuring the necessary environment variables to run the applications seamlessly.
+
+For the production environment, I have chosen EKS (Elastic Kubernetes Service) because it is a managed service provided by AWS for Kubernetes orchestration. The deployment instructions for EKS can also be adapted for local setups such as Minikube.
+
 ## Setup & Installation(Local Machine)
 
 ### Prerequisites
@@ -45,14 +49,14 @@ CF_API_EMAIL=your_CF_API_EMAIL_here
 VUE_APP_PROXY_URL=IP_ADDRESS_OF_MACHINE
 ```
 
-For my test environment, the IP of the Linux machine is 192.168.56.28
+For my test environment, the IP of the Linux machine is `192.168.56.28`
 
 #### Start the Application
 
 ```bash
 docker compose -f dockercompose.yaml up
 ```
-The command builds the docker images specified in the dockercompose.yaml file and the starts up the application.
+The command builds the docker images specified in the dockercompose.yaml file and then starts up the application.
 
 If you want to only build the application images only with out starting the applications, run this command.
 
@@ -65,11 +69,11 @@ The above command creates two images; the Vue application and Flask application.
 ```bash
 docker images
 ```
-Because the application is served using Nginx, the Flask API server will be running on [http://IP/proxy/](http://IP/proxy/).
+Because the application is served using Nginx, the Flask API server will be running on `http://Local-machine-IP/proxy/`.
 
-In my case, the Flask API is running on [http://192.168.56.28/proxy/](http://192.168.56.28/proxy/). The Falsk application is also running on [http://192.168.56.28:5000](http://192.168.56.28:5000)
+In my case, the Flask API is running on `http://192.168.56.28/proxy/`. The Falsk application is also running on `http://192.168.56.28:5000`
 
-The Vue application is runing on [http://IP](http://IP), In my case, the Flask API is running on [http://192.168.56.28](http://192.168.56.28) 
+The Vue application deployed with nginx runs with port 80, therefore doesn't need any port appended to it is runing on `http://Local-machine-IP`, In my case, the Vue application is running on `http://192.168.56.28`
 
 ## Setup & Installation(Deploying to the Cloud)
 ### Prerequisites
@@ -86,12 +90,12 @@ The applications deployment is down in the cloud. The following prerequisite are
 - AWS Account
 
 ## Infrastructure creation using Pulumi
-For this project, we employed Pulumi to build the infrastructure. Pulumi is an Infrastructure as Code (IaC) tool that empowers the utilization of widely-used programming languages to orchestrate cloud resources. In this project, I am utilizing Python as our programming language for resource provisioning. The specific resource I am creating is an Amazon Elastic Kubernetes Service (EKS) cluster.
+For this project, we employed Pulumi to build the infrastructure. Pulumi is an Infrastructure as Code (IaC) tool that empowers the utilization of widely-used programming languages to orchestrate cloud resources. In this project, I am utilizing Python as the programming language for resource provisioning. The specific resource I am creating is an Amazon Elastic Kubernetes Service (EKS) cluster.
 
 To get started with Pulumi, check out this [link](https://www.pulumi.com/docs/clouds/aws/get-started/).
 
 ### Setting AWS Credentials
-Programmatic access is need by Pulumi to create resources in your cloud platform. This access is granted using Access keys. If you don't have one you can check out this [article](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user_manage_add-key.html) no how to create one.
+Programmatic access is needed by Pulumi to create resources in your cloud platform. This access is granted using Access keys. If you don't have one you can check out this [article](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user_manage_add-key.html) no how to create one.
 
 Pulumi checks the `.aws/credentials` file for the access key. This should be how your `.aws/credentials` look like.
 ```
@@ -138,9 +142,11 @@ The following deployment files were created for the application to be deployed i
    ```
    Run the `kubectl create -f secrets.yaml` command to create the secret resource.
 
-- configmap.yaml: This file is used to store the environment variables needed by the flask application. The variables are `CF_API_EMAIL`, `VUE_APP_PROXY_URL` and `ZONE_ID`
+- configmap.yaml: This file is used to store the environment variables needed by the flask and vue applications. The variables are `CF_API_EMAIL`, `VUE_APP_PROXY_URL` and `ZONE_ID`
 
    Run the `kubectl create -f configmap.yaml` command to create the configmap resource.
+
+   Before the configmap is created, the flask application service is first deployed in the pipeline, the `script.sh` file in the `kube_files` folder is executed to get the service URL and pass to the `vue_app_proxy_url` as it's value.
 
 - namespace.yaml: This file is used to create a different namespace from the default namespace. This is used for proper resource organization.
 
@@ -153,7 +159,7 @@ The following deployment files were created for the application to be deployed i
 
    Run the `kubectl create -f backend-deployment.yaml` command to create the backend-deployment resource.
 
-- frontend-service.yaml: The service needed to reach the vue application and also expose to the internet is created using this file.
+- frontend-service.yaml: The service needed to reach the vue application and also expose it to the internet is created using this file.
 
    Run the `kubectl create -f frontend-service.yaml` command to create the frontend-service resource.
 
@@ -167,7 +173,7 @@ To see the created resources, run this command;
 kubectl get all -n hostspace
 ```
 
-The application can be reached with the url in the `EXTERNAL-IP ` of the services table. The frontend-service type is `LoadBalancer`, a load blancer resource will be created in AWS whenever the frontend-service is created in kubernetes.
+The applications can be reached with the URLs in the `EXTERNAL-IP ` of the services table. The frontend-service type is `LoadBalancer`, a load blancer resource will be created in AWS whenever the frontend-service is created in kubernetes.
 
 Once deployed to get the URL of the applications run this command `kubectl get svc -n hostspace`, you should get something similar to this;
 
@@ -184,6 +190,15 @@ This is a screenshot of my applications working with the above URL.
 
 ![alt text](images/image3.png)
 
+The application deployment is done using Jenkins. The approach used in the Jenkins pipeline is a `Declarative` Approach where shared libraries are used for the deployment. This approach was chosen to avoid repetition of codes in the Jenkins pipeline. The `Jenkinsfile` present in the `root` folder is well commented to describe the processes to be executed.
+
+To execute the `Jenkinsfile`, you must have Jenkins installed and configured in the local machine. Also the following variable have to be set in Jenkins credentials
+
+- DOCKERHUB_CREDENTIAL: This stores the Dockerhub user and token of the repository where the created images are to be stored. This is if you are using Docker Hub as your public image repository.
+- AWS_ID: With the use of Jenkins `AmazonWebServicesCredentialsBinding` plugin, you create this variable which holds your AWS Access key ID and Access key secret.
+
+If you are new to Jenkins library, you can check out this [article](https://phoenixnap.com/kb/jenkins-shared-library) on how to get started with shared libraries.
+
 ## Application and Cluster Monitoring
 The EKS Cluster and applications deployed to the clusters are monitored using prometheus and grafana. Both prometheus and grafana have good documentations to integrate into the kubernetes cluster.
 
@@ -191,7 +206,7 @@ The EKS Cluster and applications deployed to the clusters are monitored using pr
 To integrate prometheus in your EKS cluster, checkout this well detailed [article](https://docs.aws.amazon.com/eks/latest/userguide/prometheus.html). With this article, when you run the `kubectl get all -n prometheus`, you will notice the `prometheus-server` deployment is stuck at `pending`, the reason is because a `persistent volume` has not be created which is needed by the `prometheus-server` deployment. To create the `persistent volume`, you have to configure the `aws-ebs-csi-driver
 ` for that. Checkout this [link](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html) on how to go about it.
 
-The default prometheus service has a type `ClusterIP`, to make it accessible to the public, this service type has to change be changed to a `LoadBalancer` or `NodePort`.
+The default prometheus service has a type `ClusterIP`, to make it accessible to the public, this service type has to be changed to a `LoadBalancer` or `NodePort`. In my case, I am using a `LoadBalancer` type.
 
 First delete the created prometheus service.
 
@@ -242,5 +257,7 @@ The following dashboards where created for the kubernetes cluster and applicatio
   ![alt text](images/image11.png)
 - Kubernetes Deployment metrics: This dashboard returns the number of deployments, the deployments available, each memory and CPU usage of each deployments.
 
-   ![alt text](images/image11.png)
+   ![alt text](images/image12.png)
+
+With the following steps, you will be able to deploy the Vue application which communicates with the Flask API to generate Cloudflare Domains. 
 

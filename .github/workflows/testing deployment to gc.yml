@@ -24,7 +24,7 @@ jobs:
       env: ${{ secrets.GOOGLE_PROJECT }}
       run: |
            gcloud auth configure-docker
-           docker-compose build -t us-east1-docker.pkg.dev/reliable-proton-403504/hostspace/challenge:latest .
+           docker-compose -f docker-compose.yml build -t us-east1-docker.pkg.dev/reliable-proton-403504/hostspace/challenge:latest .
            docker push us-east1-docker.pkg.dev/reliable-proton-403504/hostspace/challenge:latest
 
     

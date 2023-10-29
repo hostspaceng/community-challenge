@@ -22,7 +22,8 @@ jobs:
 
     - name: Build and Push Docker Image
       env: ${{ secrets.GOOGLE_PROJECT }}
-      run: gcloud auth configure-docker
+      run: |
+           gcloud auth configure-docker
            docker compose build -t us-east1-docker.pkg.dev/reliable-proton-403504/hostspace/challenge:latest .
            docker push us-east1-docker.pkg.dev/reliable-proton-403504/hostspace/challenge:latest
 

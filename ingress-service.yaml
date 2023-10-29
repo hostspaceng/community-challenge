@@ -16,7 +16,7 @@ spec:
               service:
                 name: vue-service
                 port:
-                  number: 8080
+                  number: 80
           - path: /proxy
             pathType: Exact
             backend:
@@ -24,10 +24,3 @@ spec:
                 name: python-service
                 port:
                   number: 5000
-          - path: /nginx
-            pathType: Exact
-            backend:
-              service:
-                name: nginx-service
-                port:
-                  number: 80

@@ -50,7 +50,7 @@ jobs:
       run: |
            echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
            chmod 600 key.pem
-           ssh -i key.pem -o StrictHostKeyChecking=no -c aes128-ctr ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+           ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
            docker run myapp1
            exit'
 

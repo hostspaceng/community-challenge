@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy dependencies
 COPY requirements.txt ./
 
+# Install curl for health check 
+RUN apt-get update && apt-get install -y curl
+
 # Install application requirements
 RUN pip3 install -r requirements.txt
 
@@ -24,3 +27,7 @@ CMD ["python3", "-m" , "flask", "run", "--host=0.0.0.0" ]
 
 # Expose application port
 EXPOSE 5000
+
+# Define a healthcheck
+HEALTHCHECK --interval=30s --timeout=5s \
+  CMD curl -I http://localhost:5000 || exit 1

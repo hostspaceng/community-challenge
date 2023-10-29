@@ -6,5 +6,5 @@ metadata:
 data:
   zone_id: 88212a53b6feba598b197f3508f35b52
   cf_api_email: safe@hostspaceng.com
-  vue_app_proxy_url: http://a228057d15d674826bae5f26c75c86df-1498088649.us-east-1.elb.amazonaws.com:5000/
+  vue_app_proxy_url: ''
 

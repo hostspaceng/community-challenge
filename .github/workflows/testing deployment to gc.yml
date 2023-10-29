@@ -21,7 +21,6 @@ jobs:
         export_default_credentials: true
 
     - name: Build and Push Docker Image
-      env: ${{ secrets.GOOGLE_PROJECT }}
       run: |
            gcloud auth configure-docker us-east1-docker.pkg.dev
            docker-compose -f action.yml build -t us-east1-docker.pkg.dev/$GOOGLE_PROJECT/challenge:latest .

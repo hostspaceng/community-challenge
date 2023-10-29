@@ -73,7 +73,9 @@ jobs:
          EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
 
     - name: Add user to Docker group
-      run: sudo usermod -aG docker ${{ secrets.DOCKER_USER }}
+      run: |
+          sudo adduser ${{ secrets.DOCKER_USER }}
+          sudo usermod -aG docker ${{ secrets.DOCKER_USER }}
       if: runner.os == 'Linux'
       
     - name: Deploy Apps

@@ -50,9 +50,10 @@ jobs:
       run: |
            echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
            sudo chmod 600 id_rsa
-           ssh -i id_rsa -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -c '
+           ssh -i id_rsa -o StrictHostKeyChecking=no -c aes256-cbc ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
            docker run myapp1
            exit'
+
 
    # - name: Deploy to EC2
     #  run: |

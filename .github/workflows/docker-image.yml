@@ -24,6 +24,7 @@ jobs:
       run: |
        # Install Docker on the runner
        sudo apt-get update -y
+       sudo apt-get remove containerd.io
        sudo apt-get install -y docker.io
       if: runner.os == 'Linux'
 

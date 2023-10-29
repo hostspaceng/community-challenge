@@ -74,16 +74,20 @@ jobs:
 
     - name: Add user to Docker group on EC2
       run: |
-          ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo usermod -aG docker ${{ secrets.DOCKER_USER }}"
+          ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+          sudo adduser ${{ secrets.DOCKER_USER }}
+          sudo usermod -aG docker ${{ secrets.DOCKER_USER }}
+          '
+          
       env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
 
 
-    - name: Add user to Docker group
-      run: |
-          sudo adduser ${{ secrets.DOCKER_USER }}
-          sudo usermod -aG docker ${{ secrets.DOCKER_USER }}
-      if: runner.os == 'Linux'
+ #   - name: Add user to Docker group
+  #    run: |
+   #       sudo adduser ${{ secrets.DOCKER_USER }}
+    #      sudo usermod -aG docker ${{ secrets.DOCKER_USER }}
+     # if: runner.os == 'Linux'
       
     - name: Deploy Apps
       run: |

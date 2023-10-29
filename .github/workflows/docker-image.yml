@@ -48,9 +48,9 @@ jobs:
 
     - name: Deploy Apps
       run: |
-           echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
-           sudo chmod 600 id_rsa
-           ssh -i id_rsa -o StrictHostKeyChecking=no -c aes128-ctr ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+           echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+           sudo chmod 600 key.pem
+           ssh -i key.pem -o StrictHostKeyChecking=no -c aes128-ctr ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
            docker run myapp1
            exit'
 

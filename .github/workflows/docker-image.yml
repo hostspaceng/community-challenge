@@ -46,6 +46,21 @@ jobs:
     - name: Set key file permissions
       run: chmod 600 key.pem
 
+    - name: Install Docker on EC2
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+        chmod 600 key.pem
+        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'sudo apt-get update -y'
+        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'sudo apt-get install -y docker.io'
+        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'sudo systemctl start docker'
+        ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@your-ec2-instance-ip 'sudo systemctl enable docker'
+      env:
+       # SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+        EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
+
+
     - name: Deploy Apps
       run: |
            echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem

@@ -59,7 +59,7 @@ jobs:
  #     run: |
   #       Copy the private key to the runner for SSH authentication
    #      echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
-    #     chmod 600 key.pem
+    # #    chmod 600 key.pem
 
     #- name: Pull Docker image on EC2
  #     run:  |

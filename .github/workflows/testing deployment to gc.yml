@@ -1,0 +1,31 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+        
+    - name: Set up Google Cloud SDK
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0
+      with:
+        service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
+        project_id: host_space_challenge
+
+    - name: Configure Docker
+      run: gcloud auth configure-docker
+
+    - name: Build and Push Docker Image
+      run: |
+        docker-compose -f docker-compose.yml -t gcr.io/your-project-id/your-image-name:$GITHUB_SHA .
+        docker push gcr.io/your-project-id/your-image-name:$GITHUB_SHA
+
+       
+   

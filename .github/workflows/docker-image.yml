@@ -51,7 +51,7 @@ jobs:
            echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
            chmod 600 key.pem
            ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
-           docker run myapp1
+           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
            exit'
 
 

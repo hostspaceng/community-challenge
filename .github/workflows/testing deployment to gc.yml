@@ -1,4 +1,4 @@
-name: deploy gc
+name: build and deploy to gc
 
 on:
   push:
@@ -17,15 +17,16 @@ jobs:
       uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0
       with:
         service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
-        project_id: host_space_challenge
-
-    - name: Configure Docker
-      run: gcloud auth configure-docker
+        project_id:  ${{ secrets.GOOGLE_PROJECT }}
+        export_default_credentials: true
 
     - name: Build and Push Docker Image
-      run: |
-        docker compose -f docker-compose.yml build -t gcr.io/your-project-id/hostspace_build:$GITHUB_SHA .
-        docker push gcr.io/your-project-id/hostspace_build:$GITHUB_SHA
+      env: ${{ secrets.GOOGLE_PROJECT }}
+      run: gcloud auth configure-docker
+           docker compose build -t us-east1-docker.pkg.dev/reliable-proton-403504/hostspace/challenge:latest .
+           docker push us-east1-docker.pkg.dev/reliable-proton-403504/hostspace/challenge:latest
+
+    
 
        
    

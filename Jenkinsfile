@@ -29,6 +29,7 @@ pipeline{
             steps{
                 dir('./backend'){
                     script{
+                        env.ZONE_ID = '88212a53b6feba598b197f3508f35b52'
                         // Install dependencies
                         sh 'pip install -r requirements.txt'
 

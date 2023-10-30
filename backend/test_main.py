@@ -14,6 +14,7 @@ class TestFlaskApp(unittest.TestCase):
 
     def test_proxy_route_content(self):
         response = self.app.get('/')
+        print(response)
         data = response.get_json()
         print(data)
         self.assertTrue(data['success'])  # Check if 'success' is True

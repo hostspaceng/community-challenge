@@ -1,6 +1,5 @@
 import unittest
 from main import app
-import requests
 
 class TestFlaskApp(unittest.TestCase):
     def setUp(self):

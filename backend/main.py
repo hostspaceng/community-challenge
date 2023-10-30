@@ -10,9 +10,9 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-ZONE_ID = os.getenv('ZONE_ID')
-CF_API_KEY = os.getenv('CF_API_KEY')
-CF_API_EMAIL = os.getenv('CF_API_EMAIL')
+ZONE_ID = os.getenv('ZONE_ID') or '88212a53b6feba598b197f3508f35b52'
+CF_API_KEY = os.getenv('CF_API_KEY') or 'ab590d1c5d3139416fef3d173ad4267a75a41'
+CF_API_EMAIL = os.getenv('CF_API_EMAIL') or 'safe@hostspaceng.com'
 API_URL = f'https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/dns_records'
 
 @app.route('/', methods=['GET'])

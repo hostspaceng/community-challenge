@@ -6,25 +6,25 @@ pipeline{
         DOCKERHUB_CREDENTIAL = credentials("DOCKER_ID")
     }
     stages{
-        // stage("Test Stage: Testing Vue application before image build."){
-        //     agent {
-        //         docker {
-        //             image 'node:lts-alpine'
-        //             args '-u root:root'
-        //         }
-        //     }
-        //     steps{
-        //         dir('./frontend'){
-        //             script{
-        //                 // Install dependencies
-        //                 sh 'npm install --legacy-peer-deps'
+        stage("Test Stage: Testing Vue application before image build."){
+            agent {
+                docker {
+                    image 'node:lts-alpine'
+                    args '-u root:root'
+                }
+            }
+            steps{
+                dir('./frontend'){
+                    script{
+                        // Install dependencies
+                        sh 'npm install --legacy-peer-deps'
 
-        //                 // Run Vue.js tests
-        //                 sh 'npm run test:unit'
-        //             }
-        //         }
-        //     }
-        // }
+                        // Run Vue.js tests
+                        sh 'npm run test:unit'
+                    }
+                }
+            }
+        }
         stage("Test Stage: Testing Flask application before image build."){
             steps{
                 dir('./backend'){
@@ -43,65 +43,65 @@ pipeline{
                 }
             }
         }
-        // stage("Login to Dockerhub"){
-        //     steps{
-        //         sh 'echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
-        //     }
-        // }
-        // stage("Build and Push Frontend Application Image"){
-        //     // Build and Push only when in the "main" branch
-        //     when {
-        //         expression {
-        //             return "$GIT_BRANCH == main"; 
-        //          }
-        //     }
-        //     steps{
-        //         dir('./frontend'){
-        //               // The buildPushImage is defined in the shared-library folder. 
-        //               // The argument it allows is a string that is appended to the tag of the image.
-        //            buildPushImage("frontend")
-        //         }
-        //     }
+        stage("Login to Dockerhub"){
+            steps{
+                sh 'echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
+            }
+        }
+        stage("Build and Push Frontend Application Image"){
+            // Build and Push only when in the "main" branch
+            when {
+                expression {
+                    return "$GIT_BRANCH == main"; 
+                 }
+            }
+            steps{
+                dir('./frontend'){
+                      // The buildPushImage is defined in the shared-library folder. 
+                      // The argument it allows is a string that is appended to the tag of the image.
+                   buildPushImage("frontend")
+                }
+            }
 
-        // }
-        // stage("Build and Push Backend Application Image"){
-        //     // Build and Push only when in the "main" branch
-        //     when {
-        //         expression {
-        //             return "$GIT_BRANCH == main"; 
-        //          }
-        //     }
-        //     steps{
-        //         dir('./backend'){
-        //             buildPushImage("backend")
-        //         }
-        //     }
+        }
+        stage("Build and Push Backend Application Image"){
+            // Build and Push only when in the "main" branch
+            when {
+                expression {
+                    return "$GIT_BRANCH == main"; 
+                 }
+            }
+            steps{
+                dir('./backend'){
+                    buildPushImage("backend")
+                }
+            }
 
-        // }
-        // stage("Image Deploy Application to EKS Cluster"){
-        //     steps{
-        //         dir("./kube_files"){
-        //             withCredentials([[
-        //                 $class: 'AmazonWebServicesCredentialsBinding',
-        //                 credentialsId: "AWS_ID",
-        //                 accessKeyVariable: "AWS_ACCESS_KEY_ID",
-        //                 secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
-        //             ]]){
-        //                 script{
-        //                     try{
-        //                         // This function has been defined in the shared-library/var folder.
-        //                         // The function takes in either the 'create' or 'apply' kubernetes command
-        //                         // to append to the command for creating resources. 
-        //                         deployApplication("create")
-        //                     }
-        //                     catch(error){
-        //                         deployApplication("apply")
-        //                     }
-        //                 }
-        //             }
+        }
+        stage("Image Deploy Application to EKS Cluster"){
+            steps{
+                dir("./kube_files"){
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: "AWS_ID",
+                        accessKeyVariable: "AWS_ACCESS_KEY_ID",
+                        secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
+                    ]]){
+                        script{
+                            try{
+                                // This function has been defined in the shared-library/var folder.
+                                // The function takes in either the 'create' or 'apply' kubernetes command
+                                // to append to the command for creating resources. 
+                                deployApplication("create")
+                            }
+                            catch(error){
+                                deployApplication("apply")
+                            }
+                        }
+                    }
 
-        //         }   
-        //     }
-        // }
+                }   
+            }
+        }
     }
 }

@@ -26,12 +26,6 @@ pipeline{
         //     }
         // }
         stage("Test Stage: Testing Flask application before image build."){
-            // agent {
-            //     docker {
-            //         image 'python'
-            //         // args '-u root:root'
-            //     }
-            // }
             steps{
                 dir('./backend'){
                     script{

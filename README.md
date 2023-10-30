@@ -265,5 +265,10 @@ The following dashboards where created for the kubernetes cluster and applicatio
 
    ![alt text](images/image12.png)
 
+### Resources running on the K8s Cluster
+The successful operation of the application was made possible by configuring the secrets, configmap, deployments, and services within Kubernetes (K8s). A screenshot depicting the running services, which are essential for both the application itself and its monitoring services, is provided below.
+
+![alt text](images/image14.png)
+
 With the following steps, you will be able to deploy the Vue application which communicates with the Flask API to generate Cloudflare Domains. 
 

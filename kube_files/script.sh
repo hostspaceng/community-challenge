@@ -6,7 +6,7 @@
 namespace="hostspace"
 service_name="backend-service"
 
-# Set a timeout for waiting (e.g., 5 minutes)
+# Set a timeout for waiting
 timeout=300
 start_time=$(date +%s)
 

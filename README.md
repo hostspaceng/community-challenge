@@ -155,6 +155,8 @@ The following deployment files were created for the application to be deployed i
 
    Run the `kubectl create -f backend-service.yaml` command to create the backend-service resource.
 
+- script.sh: This script is used to get the `backend-service` URL and parse to the `vue_app_proxy_url` variable in the configmap needed by the Vue application.
+
 - backend-deployment.yaml: This is the file responsible for creation of the flask app pods.
 
    Run the `kubectl create -f backend-deployment.yaml` command to create the backend-deployment resource.
@@ -198,6 +200,10 @@ To execute the `Jenkinsfile`, you must have Jenkins installed and configured in 
 - AWS_ID: With the use of Jenkins `AmazonWebServicesCredentialsBinding` plugin, you create this variable which holds your AWS Access key ID and Access key secret.
 
 If you are new to Jenkins library, you can check out this [article](https://phoenixnap.com/kb/jenkins-shared-library) on how to get started with shared libraries.
+
+The Jenkinsfile in the root folder when run will test application codes, build docker images for the applications, push these images to docker hub and finally deploy to EKS.
+
+![alt text](images/image13.png)
 
 ## Application and Cluster Monitoring
 The EKS Cluster and applications deployed to the clusters are monitored using prometheus and grafana. Both prometheus and grafana have good documentations to integrate into the kubernetes cluster.

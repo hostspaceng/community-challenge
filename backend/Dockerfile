@@ -19,9 +19,6 @@ COPY . /app/
 # Setting flask startup file
 ENV FLASK_APP=main.py
 
-# Setting the flask debug variable
-ENV FLASK_DEBUG=1
-
 # Executable Command
 CMD ["python3", "-m" , "flask", "run", "--host=0.0.0.0" ]
 

@@ -40,7 +40,7 @@ docker compose version
 
 #### Set Environment Variables
 
-Replace the placeholders in the `.env` sample file with your actual Cloudflare credentials and configurations or copy from  `.env.sample`. To use the environment file during the deployment with docker, rememeber to rename to `.env`.
+Replace the placeholders in the `.env` sample file with your actual Cloudflare credentials and configurations or copy from  `.env.sample`. To use the environment file during the deployment with docker, remember to rename to `.env`.
 
 ```plaintext
 ZONE_ID=your_zone_id_here
@@ -58,7 +58,7 @@ docker compose -f dockercompose.yaml up
 ```
 The command builds the docker images specified in the dockercompose.yaml file and then starts up the application.
 
-If you want to only build the application images only with out starting the applications, run this command.
+If you want to only build the application images only without starting the applications, run this command.
 
 ```bash
 docker compose -f dockercompose.yaml build
@@ -71,14 +71,14 @@ docker images
 ```
 Because the application is served using Nginx, the Flask API server will be running on `http://Local-machine-IP/proxy/`.
 
-In my case, the Flask API is running on `http://192.168.56.28/proxy/`. The Falsk application is also running on `http://192.168.56.28:5000`
+In my case, the Flask API is running on `http://192.168.56.28/proxy/`. The Flask application is also running on `http://192.168.56.28:5000`
 
-The Vue application deployed with nginx runs with port 80, therefore doesn't need any port appended to it is runing on `http://Local-machine-IP`, In my case, the Vue application is running on `http://192.168.56.28`
+The Vue application deployed with nginx runs with port 80, therefore doesn't need any port appended to it is running on `http://Local-machine-IP`, In my case, the Vue application is running on `http://192.168.56.28`
 
 ## Setup & Installation(Deploying to the Cloud)
 ### Prerequisites
 
-The applications deployment is down in the cloud. The following prerequisite are needed to completely deploy to the cloud.
+The applications deployment is down in the cloud. The following prerequisites are needed to completely deploy to the cloud.
 
 #### CICD Tool
 - Jenkins
@@ -95,7 +95,7 @@ For this project, we employed Pulumi to build the infrastructure. Pulumi is an I
 To get started with Pulumi, check out this [link](https://www.pulumi.com/docs/clouds/aws/get-started/).
 
 ### Setting AWS Credentials
-Programmatic access is needed by Pulumi to create resources in your cloud platform. This access is granted using Access keys. If you don't have one you can check out this [article](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user_manage_add-key.html) no how to create one.
+Programmatic access is needed by Pulumi to create resources in your cloud platform. This access is granted using Access keys. If you don't have one you can check out this [article](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user_manage_add-key.html) on how to create one.
 
 Pulumi checks the `.aws/credentials` file for the access key. This should be how your `.aws/credentials` look like.
 ```
@@ -111,7 +111,7 @@ region = YOUR REGION
     ```
     cd my-k8s-cluster
     ```
-- Edit the `Pulumi.dev.yaml` file to your cluster requirements and region you wish to deploy to.
+- Edit the `Pulumi.dev.yaml` file to your cluster requirements and the region you wish to deploy to.
 - Run the command below to start the cluster creation.
     ```
     pulumi up
@@ -136,7 +136,7 @@ kubectl get nodes
 
 The following deployment files were created for the application to be deployed in the kubernetes cluster.
 
-- secrets.yaml file: This file conatins the value of the `CF_API_KEY` variable. The `CF_API_KEY` value is first encrypted before being added as data to the file. This command is used for the encryption.
+- secrets.yaml file: This file contains the value of the `CF_API_KEY` variable. The `CF_API_KEY` value is first encrypted before being added as data to the file. This command is used for the encryption.
    ```
    echo -n CF_API_KEY | base64 -w 0
    ```
@@ -175,7 +175,7 @@ To see the created resources, run this command;
 kubectl get all -n hostspace
 ```
 
-The applications can be reached with the URLs in the `EXTERNAL-IP ` of the services table. The frontend-service type is `LoadBalancer`, a load blancer resource will be created in AWS whenever the frontend-service is created in kubernetes.
+The applications can be reached with the URLs in the `EXTERNAL-IP ` of the services table. The frontend-service type is `LoadBalancer`, a load balancer resource will be created in AWS whenever the frontend-service is created in kubernetes.
 
 Once deployed to get the URL of the applications run this command `kubectl get svc -n hostspace`, you should get something similar to this;
 
@@ -196,7 +196,7 @@ The application deployment is done using Jenkins. The approach used in the Jenki
 
 To execute the `Jenkinsfile`, you must have Jenkins installed and configured in the local machine. Also the following variable have to be set in Jenkins credentials
 
-- DOCKERHUB_CREDENTIAL: This stores the Dockerhub user and token of the repository where the created images are to be stored. This is if you are using Docker Hub as your public image repository.
+- DOCKERHUB_CREDENTIAL: This stores the Docker Hub user and token of the repository where the created images are to be stored. This is if you are using Docker Hub as your public image repository.
 - AWS_ID: With the use of Jenkins `AmazonWebServicesCredentialsBinding` plugin, you create this variable which holds your AWS Access key ID and Access key secret.
 
 If you are new to Jenkins library, you can check out this [article](https://phoenixnap.com/kb/jenkins-shared-library) on how to get started with shared libraries.
@@ -206,7 +206,7 @@ The Jenkinsfile in the root folder when run will test application codes, build d
 ![alt text](images/image13.png)
 
 ## Application and Cluster Monitoring
-The EKS Cluster and applications deployed to the clusters are monitored using prometheus and grafana. Both prometheus and grafana have good documentations to integrate into the kubernetes cluster.
+The EKS Cluster and applications deployed to the clusters are monitored using prometheus and grafana. Both prometheus and grafana have good documentation to integrate into the kubernetes cluster.
 
 ### Prometheus Deployment
 To integrate prometheus in your EKS cluster, checkout this well detailed [article](https://docs.aws.amazon.com/eks/latest/userguide/prometheus.html). With this article, when you run the `kubectl get all -n prometheus`, you will notice the `prometheus-server` deployment is stuck at `pending`, the reason is because a `persistent volume` has not be created which is needed by the `prometheus-server` deployment. To create the `persistent volume`, you have to configure the `aws-ebs-csi-driver
@@ -225,22 +225,22 @@ Then run this command to create a new prometheus service
 ```
 kubectl create -f prometheus-service.yaml
 ```
-Remember, for this command to work, you must be in the `/kube_files` folder. The new prometheus service creates a new AWS loadbalancer whose URL is used to access the promethues server.
+Remember, for this command to work, you must be in the `/kube_files` folder. The new prometheus service creates a new AWS load balancer whose URL is used to access the prometheus server.
 
 ```
-kubectl get svc -n promethues
+kubectl get svc -n prometheus
 ```
-The above commands returns the prometheus URL of the prometheus service.
+The above command returns the prometheus URL of the prometheus service.
 
 ![alt text](images/image4.png)
 ![alt text](images/image5.png)
 
 ### Grafana Deployment
-Grafana is the visualization tool used to visualize metrics gotten by prometheus. The deployment file for grafana is located in the `/kube_files` folder.
+Grafana is the visualization tool used to visualize metrics obtained by prometheus. The deployment file for grafana is located in the `/kube_files` folder.
 
 To deploy grafana run `kubectl create -f grafana.yaml`.
 
-The deployed resources can be found using the `kubectl get all -n grafana` command. The grafana service created has a `LoadBalancer` type, so an AWS loadbalancer is created whose URL is used to access the grafana service.
+The deployed resources can be found using the `kubectl get all -n grafana` command. The grafana service created has a `LoadBalancer` type, so an AWS load balancer is created whose URL is used to access the grafana service.
 
 ![alt text](images/image6.png)
 
@@ -252,7 +252,7 @@ To build dashboards to visualize various metrics, prometheus has to be added as 
 
 ![alt text](images/image9.png)
 
-The following dashboards where created for the kubernetes cluster and application monitoring.
+The following dashboards were created for the kubernetes cluster and application monitoring.
 
 - Node Exporter: This dashboard gets the CPU, Memory, Network Traffic, Storage Disk Usage of each node in the cluster.
 
@@ -261,7 +261,7 @@ The following dashboards where created for the kubernetes cluster and applicatio
 - Monitor Pod CPU and Memory usage: This dashboard is used to monitor the CPU and Memory usage of the applications in the pods in the kubernetes cluster. Select the pod in the pod menu and it displays information graphs on it.
 
   ![alt text](images/image11.png)
-- Kubernetes Deployment metrics: This dashboard returns the number of deployments, the deployments available, each memory and CPU usage of each deployments.
+- Kubernetes Deployment metrics: This dashboard returns the number of deployments, the deployments available, each memory and CPU usage of each deployment.
 
    ![alt text](images/image12.png)
 
@@ -271,4 +271,5 @@ The successful operation of the application was made possible by configuring the
 ![alt text](images/image14.png)
 
 With the following steps, you will be able to deploy the Vue application which communicates with the Flask API to generate Cloudflare Domains. 
+
 

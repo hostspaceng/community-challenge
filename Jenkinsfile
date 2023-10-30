@@ -29,8 +29,11 @@ pipeline{
             steps{
                 dir('./backend'){
                     script{
-                        // setting 
+                        // setting test values for environment variables needed by the flask app
                         env.ZONE_ID = '88212a53b6feba598b197f3508f35b52'
+                        env.CF_API_KEY = 'ab590d1c5d3139416fef3d173ad4267a75a41'
+                        env.CF_API_EMAIL= 'safe@hostspaceng.com'
+
                         // Install dependencies
                         sh 'pip install -r requirements.txt'
 

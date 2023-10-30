@@ -58,8 +58,8 @@ pipeline{
             }
             steps{
                 dir('./frontend'){
-                      The buildPushImage is defined in the shared-library folder. 
-                      The argument it allows is a string that is appended to the tag of the image.
+                      // The buildPushImage is defined in the shared-library folder. 
+                      // The argument it allows is a string that is appended to the tag of the image.
                    buildPushImage("frontend")
                 }
             }

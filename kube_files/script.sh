@@ -46,3 +46,5 @@ data:
   vue_app_proxy_url: ${backendServiceUrl}
 
 EOF
+
+cat configmap.yaml

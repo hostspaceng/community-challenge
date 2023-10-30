@@ -14,15 +14,15 @@ def call(String command){
     // // Running the custom script to pass the created backend-service url to the configmap file.
     sh 'sh script.sh'
 
-    // // Creating the configmap resource
-    sh "kubectl ${command} -f configmap.yaml"
+    // // // Creating the configmap resource
+    // sh "kubectl ${command} -f configmap.yaml"
 
-    // // Creating the backend-deployment resource
-    sh "kubectl ${command} -f backend-deployment.yaml"
+    // // // Creating the backend-deployment resource
+    // sh "kubectl ${command} -f backend-deployment.yaml"
 
-    // // Creating the frontend-deployment resource
-    sh "kubectl ${command} -f frontend-deployment.yaml"
+    // // // Creating the frontend-deployment resource
+    // sh "kubectl ${command} -f frontend-deployment.yaml"
 
-    // Creating the frontend-service resource
-    sh "kubectl ${command} -f frontend-service.yaml"
+    // // Creating the frontend-service resource
+    // sh "kubectl ${command} -f frontend-service.yaml"
 }

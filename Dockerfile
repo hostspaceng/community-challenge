@@ -11,7 +11,7 @@ RUN npm run build
 FROM nginx as nginx-stage
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=vue-stage /app/dist /usr/share/nginx/html
-ENV VUE_APP_PROXY_URL=http://localhost:5000/
+ENV VUE_APP_PROXY_URL=http://localhost:80/proxy/
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 

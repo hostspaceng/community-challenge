@@ -31,9 +31,9 @@ pipeline {
                         export VUE_APP_PROXY_URL=$VUE_APP_PROXY_URL
 
 
-                        docker build --target nginx-stage -t nginx-http-proxy .
-                        docker build --target python-stage -t python-project .
-                        docker build --target vue-stage -t vue-project  .
+                        docker build -t vue-app .
+                        docker build -t python-proxy -f pythonDockerfile .
+
                     """
                 }
             }

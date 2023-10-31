@@ -15,28 +15,7 @@ spec:
       hostNetwork: true
       containers:
       - name: python-project
-        image: public.ecr.aws/l1z2o5a3/python-project:latest
-        env:
-        - name: ZONE_ID
-          valueFrom:
-            configMapKeyRef:
-              name: my-config
-              key: ZONE_ID
-        - name: CF_API_KEY
-          valueFrom:
-            configMapKeyRef:
-              name: my-config
-              key: CF_API_KEY
-        - name: CF_API_EMAIL
-          valueFrom:
-            configMapKeyRef:
-              name: my-config
-              key: CF_API_EMAIL
-        - name: VUE_APP_PROXY_URL
-          valueFrom:
-            configMapKeyRef:
-              name: my-config
-              key: VUE_APP_PROXY_URL
+        image: public.ecr.aws/l1z2o5a3/python-proxy
         ports:
         - containerPort: 5000
 
@@ -78,13 +57,7 @@ spec:
       hostNetwork: true
       containers:
       - name: vue-project
-        image: public.ecr.aws/l1z2o5a3/vue-project:v4
-        env:
-        - name: ZONE_ID
-          valueFrom:
-            configMapKeyRef:
-              name: my-config
-              key: VUE_APP_PROXY_URL
+        image: public.ecr.aws/l1z2o5a3/vue-app
         ports:
         - containerPort: 80
 

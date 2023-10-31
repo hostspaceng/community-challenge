@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   nginx-proxy:
     image: nginx-http-proxy #image from local file

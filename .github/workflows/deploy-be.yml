@@ -2,7 +2,7 @@ name: 'CI pipeline for Backend ECR image'
 
 on:
     workflow_dispatch:
-    
+# The pipeline should be triggered only when there's a change change on the main branch only on backend folder 
     push:
         branches:
             - main
@@ -12,6 +12,7 @@ on:
 permissions:
     contents: read
 
+# Environment variables for the pipeline
 env:
     ECS_SERVICE: ${{ vars.PROJECT_NAME }}-service
     ECS_CLUSTER: ${{ vars.PROJECT_NAME }}-cluster
@@ -21,6 +22,24 @@ env:
 
 
 jobs:
+
+    test-backend:
+      runs-on: ubuntu-latest
+
+      steps:
+        
+          - uses: actions/checkout@v4
+          - name: Set up Python
+            # This is the version of the action for setting up Python, not the Python version.
+            uses: actions/setup-python@v4
+            with:
+              # Semantic version range syntax or exact version of a Python version
+              python-version: '3.x'
+              # Optional - x64 or x86 architecture, defaults to x64
+              architecture: 'x64'
+          # You can test your matrix by printing the current Python version
+          - name: Display Python version
+            run: python -c "import sys; print(sys.version)"
 
     deploy-ecr-images:
         runs-on: ubuntu-latest

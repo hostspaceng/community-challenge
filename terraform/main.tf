@@ -5,13 +5,6 @@ terraform {
     }
   }
 
-  #     backend "s3" {
-  #     bucket = "kanban-app-state-files"
-  #     key = "state/terraform.tfstate"
-  #     region = "us-west-2"
-  #     encrypt = true
-  # }
-
 }
 
 provider "aws" {

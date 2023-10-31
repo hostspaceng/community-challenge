@@ -5,7 +5,7 @@
 
 module "frontend-image" {
   source = "./modules/ecr"
-  name   = "${local.name}-frontend"
+  name   = "${var.project_name}-frontend"
   tags   = var.tags
 }
 
@@ -13,7 +13,7 @@ module "frontend-image" {
 
 module "backend-image" {
   source = "./modules/ecr"
-  name   = "${local.name}-backend"
+  name   = "${var.project_name}-backend"
   tags   = var.tags
 }
 

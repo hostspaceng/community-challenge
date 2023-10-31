@@ -1,4 +1,4 @@
-# Variable for the project name
+# Variable for the project name for tags
 tags = {
   Project = "community-challenge"
 }
@@ -7,14 +7,19 @@ tags = {
 
 launch-type = "FARGATE"
 
+# CPU for the whole task definition
+
 total_cpu    = 512
+
+# Total memory of the whole task definition
+
 total_memory = 1024
 
 
-# variable for the container memory
+# variable for specific container memory
 memory = 512
 
-# variable for the container cpu 
+# variable for specific container cpu 
 cpu = 256
 
 # variable for the web server conatiner port
@@ -26,3 +31,5 @@ proxy_port = 5000
 cpu_architecture = "X86_64"
 
 project_name = "community-challenge"
+
+region = "us-west-2"

@@ -1,7 +1,3 @@
-locals {
-  name = "challenge-app"
-  az   = "us-west-2"
-}
 
 # Overall VPC
 resource "aws_vpc" "main" {
@@ -24,7 +20,7 @@ module "Public_Subnet_A" {
   source            = "./modules/Subnets"
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.0.0/24"
-  availability_zone = "${local.az}a"
+  availability_zone = "${var.region}a"
 
   tags = var.tags
 }
@@ -33,7 +29,7 @@ module "Public_Subnet_B" {
   source            = "./modules/Subnets"
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = "${local.az}b"
+  availability_zone = "${var.region}b"
 
   tags = var.tags
 }
@@ -44,7 +40,7 @@ module "Private_Subnet_A" {
   source            = "./modules/Subnets"
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.2.0/24"
-  availability_zone = "${local.az}a"
+  availability_zone = "${var.region}a"
 
   tags = var.tags
 }
@@ -53,7 +49,7 @@ module "Private_Subnet_B" {
   source            = "./modules/Subnets"
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.3.0/24"
-  availability_zone = "${local.az}b"
+  availability_zone = "${var.region}b"
 
   tags = var.tags
 }

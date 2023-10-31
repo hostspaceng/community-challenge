@@ -2,7 +2,7 @@ name: 'CI pipeline for Frontend ECR image'
 
 on:
     workflow_dispatch:
-    
+# The pipeline should be triggered only when there's a change change on the main branch only on frontend folder    
     push:
         branches:
             - main

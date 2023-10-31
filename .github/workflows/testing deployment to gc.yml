@@ -28,7 +28,7 @@ jobs:
     - name: Build and Push Docker Image
       run: |
            gcloud auth configure-docker us-east1-docker.pkg.dev
-           docker-compose -f action.yml build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}" .
+           docker-compose -f action.yml up -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}" .
            docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}":latest
 
 

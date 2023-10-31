@@ -38,3 +38,10 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:1.1
+      -
+        name: run the docker image
+        run: docker run -d -p 5000:5000 ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:1.0
+
+      -
+        name: run docker image
+        run: docker run -d -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:1.1

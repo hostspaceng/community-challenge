@@ -15,6 +15,7 @@ resource "aws_lb" "ecs-lb" {
   }
 }
 
+# IP target group to assign tasks private IP address
 resource "aws_lb_target_group" "test" {
   name            = "${var.project_name}-tg"
   port            = 80
@@ -28,6 +29,8 @@ resource "aws_lb_target_group" "test" {
     Project     = var.project_name
   }
 }
+
+# Loca balancer listener port 80 for the frontend
 
 resource "aws_lb_listener" "ec-lb-listener" {
   load_balancer_arn = aws_lb.ecs-lb.arn

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: vue-application
-        image: achebeh/community-challenge-frontend:v3
+        image: achebeh/community-challenge-frontend
         ports:
         - containerPort: 80
         env:

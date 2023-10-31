@@ -192,7 +192,9 @@ This is a screenshot of my applications working with the above URL.
 
 ![alt text](images/image3.png)
 
-The application deployment is done using Jenkins. The approach used in the Jenkins pipeline is a `Declarative` Approach where shared libraries are used for the deployment. This approach was chosen to avoid repetition of codes in the Jenkins pipeline. The `Jenkinsfile` present in the `root` folder is well commented to describe the processes to be executed.
+The application deployment is done using Jenkins. The approach used in the Jenkins pipeline is a `Declarative` Approach where shared libraries are used for the deployment. This approach was chosen to avoid repetition of codes in the Jenkins pipeline. The `Jenkinsfile` present in the `root` folder is well commented to describe the processes to be executed. 
+
+In the `sh 'aws eks update-kubeconfig --name eks-cluster-eksCluster-7c22835 --region "us-east-1"'` line in the `deployApplication` function, remember to change the name and region of your cluster to reflect its current name and region respectively.
 
 To execute the `Jenkinsfile`, you must have Jenkins installed and configured in the local machine. Also the following variable have to be set in Jenkins credentials
 

@@ -15,6 +15,7 @@ on:
 
 permissions:
     contents: read
+    pull-requests: write
 
 
 jobs:
@@ -22,13 +23,15 @@ jobs:
     deploy-terraform:
         runs-on: ubuntu-latest
 
+        defaults:
+          run:
+            shell: bash
+            working-directory: ./terraform
+
         steps:
 
             - name: Copy Repo Code
               uses: actions/checkout@v4
-              with: 
-                sparse-checkout: |
-                    terraform
 
             - name: Install Terraform
               uses: hashicorp/setup-terraform@v2

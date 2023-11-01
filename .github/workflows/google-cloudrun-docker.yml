@@ -54,7 +54,7 @@ on:
 
 env:
   PROJECT_ID: reliable-proton-403504
-  GAR_LOCATION: us-east1-docker.pkg.dev/reliable-proton-403504
+  GAR_LOCATION: us-east1
   REPOSITORY: hostspace
   SERVICE: community-challenge
   REGION: us-central1

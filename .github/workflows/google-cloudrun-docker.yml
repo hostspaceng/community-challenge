@@ -102,7 +102,8 @@ jobs:
          password: ${{ secrets.GCP_CREDENTIALS }}
 
       - name: Build and Push image
-        run: |-
+        run: | 
+          gcloud auth configure-docker \us-east1-docker.pkg.dev
           docker build -f frontend.txt -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}" ./
           docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
           docker build -f backend.txt -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}" ./

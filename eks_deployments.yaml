@@ -57,7 +57,7 @@ spec:
       hostNetwork: true
       containers:
       - name: vue-project
-        image: public.ecr.aws/l1z2o5a3/vue-app
+        image: public.ecr.aws/l1z2o5a3/vue-app:v1
         ports:
         - containerPort: 80
 

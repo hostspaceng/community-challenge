@@ -20,6 +20,14 @@ resource "aws_security_group" "alb_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "Python Flask API access"
+    from_port   = 5000
+    to_port     = 5000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -29,65 +37,6 @@ resource "aws_security_group" "alb_security_group" {
 
   tags = {
     Name = "${var.project_name}-${var.environment}-alb-sg"
-  }
-}
-
-# create security group for the self-hosted ec2 github runner
-resource "aws_security_group" "runner_security_group" {
-  name        = "${var.project_name}-${var.environment}-runner-sg"
-  description = "enable only outbound https access on port 443"
-  vpc_id      = aws_vpc.vpc.id
-
-  # allow inbound traffic from the same security group on port 3306
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    self = true
-  }
-
-  # allow inbound traffic from the private subnet on port 3306
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = [
-      var.private_data_subnet_az1_cidr,
-      var.private_data_subnet_az2_cidr
-    ]
-  }
-
-  # allow outbound traffic to the private subnet on all ports
-  egress {
-    from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
-    cidr_blocks = [
-      var.private_data_subnet_az1_cidr,
-      var.private_data_subnet_az2_cidr
-    ]
-  }
-
-  # allow outbound https traffic to any destination ip to access external resources
-  egress {
-    description = "https access"
-    from_port = 443
-    to_port   = 443
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # allow outbound http traffic to any destination ip to access external resources
-  egress {
-    description = "http access"
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.project_name}-${var.environment}-runner-sg"
   }
 }
 
@@ -109,6 +58,14 @@ resource "aws_security_group" "app_server_security_group" {
     description     = "https access"
     from_port       = 443
     to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_security_group.id]
+  }
+
+  ingress {
+    description     = "API access"
+    from_port       = 5000
+    to_port         = 5000
     protocol        = "tcp"
     security_groups = [aws_security_group.alb_security_group.id]
   }

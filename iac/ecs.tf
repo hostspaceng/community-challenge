@@ -42,6 +42,11 @@ resource "aws_ecs_task_definition" "ecs_task_definition" {
         {
           containerPort = 80
           hostPort      = 80
+        },
+
+        {
+          containerPort = 5000
+          hostPort      = 5000
         }
       ]
 

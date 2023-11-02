@@ -54,3 +54,28 @@ variable "total_memory" {
 variable "region" {
   type = string
 }
+
+# Desired number of tasks 
+variable "desired_count" {
+  type = number
+}
+
+# cidr block for the overall vpc
+variable "vpc_cidr" {
+  type = string
+}
+
+# availablilty zones for the subnets
+variable "azs" {
+  type = list(string)
+}
+
+# cidr block for the public subnets
+variable "public_subnet_cidr" {
+  type = list(string)
+}
+
+# cidr block for the private subnets
+variable "private_subnet_cidr" {
+  type = list(string)
+}

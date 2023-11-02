@@ -7,7 +7,7 @@ resource "aws_lb" "ecs-lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb-sg.id]
-  subnets            = [module.Public_Subnet_A.id, module.Public_Subnet_B.id]
+  subnets            = module.vpc.public_subnets
 
   tags = {
     Environment = "production",
@@ -20,7 +20,7 @@ resource "aws_lb_target_group" "test" {
   name            = "${var.project_name}-tg"
   port            = 80
   protocol        = "HTTP"
-  vpc_id          = aws_vpc.main.id
+  vpc_id          = module.vpc.vpc_id
   target_type     = "ip"
   ip_address_type = "ipv4"
 

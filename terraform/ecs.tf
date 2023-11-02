@@ -4,13 +4,13 @@ resource "aws_ecs_service" "cc-service" {
   name            = "${var.project_name}-service"
   cluster         = aws_ecs_cluster.cc-cluster.id
   task_definition = aws_ecs_task_definition.service.arn
-  desired_count   = 2
+  desired_count   = var.desired_count
   launch_type     = var.launch-type
 
 
   # Privte subnet configuration with the ECCS service
   network_configuration {
-    subnets          = [module.Private_Subnet_A.id, module.Private_Subnet_B.id]
+    subnets          = module.vpc.private_subnets
     security_groups  = [aws_security_group.ecs-sg.id]
   }
 

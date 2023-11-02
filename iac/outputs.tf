@@ -10,11 +10,6 @@ output "domain_name" {
   value = join("", [var.record_name, ".", var.domain_name])
 }
 
-# rds endpoint
-output "rds_endpoint" {
-  value = aws_db_instance.database_instance.endpoint
-}
-
 # export the image tag
 output "image_tag" {
   value = var.image_tag

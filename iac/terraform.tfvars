@@ -1,6 +1,6 @@
 # environment variables
 region       = "us-east-1"
-project_name = "rentzone"
+project_name = "hostspace-challenge"
 environment  = "dev"
 
 # vpc variables
@@ -13,13 +13,7 @@ private_data_subnet_az1_cidr = "10.0.4.0/24"
 private_data_subnet_az2_cidr = "10.0.5.0/24"
 
 # secrets manager variables
-secrets_manager_secret_name = "rentzone-app-dev-secrete"
-
-# rds variables
-multi_az_deployment          = false
-database_instance_identifier = "app-db"
-database_instance_class      = "db.t2.micro"
-publicly_accessible          = false
+secrets_manager_secret_name = "hostspace-secret"
 
 # acm variables
 domain_name       = "fajmayor.com.ng"

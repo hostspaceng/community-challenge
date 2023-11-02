@@ -125,28 +125,3 @@ resource "aws_security_group" "app_server_security_group" {
   }
 }
 
-# create security group for the database
-resource "aws_security_group" "database_security_group" {
-  name        = "${var.project_name}-${var.environment}-database-sg"
-  description = "enable mysql/aurora access on port 3306"
-  vpc_id      = aws_vpc.vpc.id
-
-  ingress {
-    description     = "mysql/aurora access"
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [aws_security_group.app_server_security_group.id]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.project_name}-${var.environment}-database-sg"
-  }
-}

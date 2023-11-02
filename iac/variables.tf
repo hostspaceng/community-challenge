@@ -56,27 +56,6 @@ variable "secrets_manager_secret_name" {
   type        = string
 }
 
-# rds variables
-variable "multi_az_deployment" {
-  description = "create a standby db instance"
-  type        = bool
-}
-
-variable "database_instance_identifier" {
-  description = "database instance identifier"
-  type        = string
-}
-
-variable "database_instance_class" {
-  description = "database instance type"
-  type        = string
-}
-
-variable "publicly_accessible" {
-  description = "controls if instance is publicly accessible"
-  type        = bool
-}
-
 # acm variables
 variable "domain_name" {
   description = "domain name"

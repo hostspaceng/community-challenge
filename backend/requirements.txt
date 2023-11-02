@@ -2,4 +2,4 @@ Flask
 flask-cors
 requests
 load_dotenv
-unittest
+mock==5.1.0

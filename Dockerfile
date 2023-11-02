@@ -22,7 +22,8 @@ COPY --from=build-vue /app/dist ./dist
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY .env .
+COPY .env.sample .
+RUN mv .env.sample .env
 COPY main.py .
 
 EXPOSE 80

@@ -7,7 +7,7 @@ resource "aws_lb" "ecs-lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb-sg.id]
-  subnets            = [module.Public_Subnet_A.id, module.Public_Subnet_B.id]
+  subnets            = module.vpc.public_subnets
 
   tags = {
     Environment = "production",

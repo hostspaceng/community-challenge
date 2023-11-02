@@ -17,4 +17,4 @@ COPY main.py .
 EXPOSE 5000
 
 # Start python application
-CMD ["python", "main.py"]
+CMD ["python", "main.py"] 

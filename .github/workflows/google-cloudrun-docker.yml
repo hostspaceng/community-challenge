@@ -53,10 +53,10 @@ on:
       - main
 
 env:
-  PROJECT_ID: reliable-proton-403504
-  GAR_LOCATION: us-east1
-  REPOSITORY: hostspace
-  SERVICE: community-challenge
+  PROJECT_ID: hostspace-challenge
+  GAR_LOCATION: us-central1
+  REPOSITORY: repo1
+  SERVICE: test
   REGION: us-central1
 
 jobs:

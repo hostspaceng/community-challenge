@@ -22,6 +22,30 @@ env:
 
 jobs:
 
+    test-frontend-code:
+      runs-on: ubuntu-latest
+
+      defaults:
+        run:
+          shell: bash
+          working-directory: ./frontend
+
+      steps:
+
+        - name: Copy Repo Code
+          uses: actions/checkout@v4
+
+        - name: Install Node Js
+          uses: actions/setup-node@v3
+          with:
+            node-version: 'latest'
+
+        - name: Install code dependencies 
+          run: npm install
+        
+        - name: Test the frontend Code
+          run: npm run lint
+
     deploy-ecr-images:
         runs-on: ubuntu-latest
 

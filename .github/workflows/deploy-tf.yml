@@ -20,6 +20,7 @@ permissions:
 
 jobs:
 
+    # Job that deploys terraform code to AWS
     deploy-terraform:
         runs-on: ubuntu-latest
 

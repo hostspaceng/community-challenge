@@ -1,0 +1,56 @@
+# This pipeline can only be triggered manually in the github console. it removes all resources that is created
+
+name: 'Destroy Terraform infrasctructure'
+
+on:
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+jobs:
+    destroy-terraform:
+        runs-on: ubuntu-latest
+
+        defaults:
+            run:
+              shell: bash
+              working-directory: ./terraform
+            
+        steps:
+
+            - name: Copy Repo Code
+              uses: actions/checkout@v4
+
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v2
+              with:
+                terraform_version: 1.6.2
+            
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: ${{ vars.AWS_REGION }}
+            
+            - name: Clean Terraform Code
+              id: fmt
+              run: terraform fmt -check
+              continue-on-error: true
+  
+            - name: Initialize Terraform
+              id: init
+              env:
+                AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+                AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+              run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}"
+            
+            - name: Validate Terraform Code
+              id: validate
+              run: terraform validate -no-color
+
+            - name: Delete/Destroy all terraform Reources
+              id: destroy
+              run: terraform destroy --auto-approve
+      

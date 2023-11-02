@@ -1,4 +1,5 @@
 /backend/community-challenge
+backend/__pycache__
 /frontend/node_modules
 set.txt
 /terraform/*.tfstate

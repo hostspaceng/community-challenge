@@ -20,12 +20,12 @@ domain_name       = "fajmayor.com.ng"
 alternative_names = "*.fajmayor.com.ng"
 
 # s3 variables
-env_file_bucket_name = "fajmayor-rentzone-app-env-file-bucket"
+env_file_bucket_name = "fajmayor-hostspace-app-env-file-bucket"
 env_file_name        = "env-variables-file.env"
 
 # ecs variables
 architecture = "X86_64"
-image_name   = "rentzone-app"
+image_name   = "hostspace-app"
 image_tag    = "latest"
 
 # route-53 variables

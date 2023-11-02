@@ -32,4 +32,4 @@ COPY --from=builder /app/dist .
 EXPOSE 80
 
 # Start nginx
-CMD ["nginx", "-g", "daemon off;"] 
+CMD ["nginx", "-g", "daemon off;"]

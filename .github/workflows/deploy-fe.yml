@@ -16,95 +16,95 @@ env:
     ECS_SERVICE: ${{ vars.PROJECT_NAME }}-service
     ECS_CLUSTER: ${{ vars.PROJECT_NAME }}-cluster
     ECS_TASK_DEFINITION: ${{ vars.PROJECT_NAME }}-family
-    ECR_REPOSITORY_NAME: challenge-app-frontend
+    ECR_REPOSITORY_NAME: community-challenge-frontend
     AWS_REGION: us-west-2
 
 
 jobs:
 
-    test-frontend-code:
-      runs-on: ubuntu-latest
+  test-frontend-code:
+    runs-on: ubuntu-latest
 
-      defaults:
-        run:
-          shell: bash
-          working-directory: ./frontend
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./frontend
 
-      steps:
+    steps:
+
+      - name: Copy Repo Code
+        uses: actions/checkout@v4
+
+      - name: Install Node Js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'latest'
+
+      - name: Install code dependencies 
+        run: npm install
+      
+      - name: Test the frontend Code
+        run: npm run lint
+
+  deploy-ecr-images:
+    runs-on: ubuntu-latest
+
+    steps:
 
         - name: Copy Repo Code
           uses: actions/checkout@v4
-
-        - name: Install Node Js
-          uses: actions/setup-node@v3
-          with:
-            node-version: 'latest'
-
-        - name: Install code dependencies 
-          run: npm install
+          with: 
+            sparse-checkout: |
+              frontend
         
-        - name: Test the frontend Code
-          run: npm run lint
-
-    deploy-ecr-images:
-        runs-on: ubuntu-latest
-
-        steps:
-
-            - name: Copy Repo Code
-              uses: actions/checkout@v4
-              with: 
-                sparse-checkout: |
-                  frontend
-            
-            - name: Configure AWS credentials
-              uses: aws-actions/configure-aws-credentials@v4
-              with:
-                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                aws-region: ${{ vars.AWS_REGION }}
-              
-            - name: Get Short Sha 
-              uses: benjlevesque/short-sha@v2.2
-              id: short-sha
-              with:
-                length: 6
-            
-            - run: echo $SHA
-              env:
-                SHA: ${{ steps.short-sha.outputs.sha }}
-            
-            - name: Login to ECR
-              uses: aws-actions/amazon-ecr-login@v2
-              id: login-ecr
-            
-            - name: Build, tag, and push docker image to Amazon ECR
-              id: build-image
-              env:
-                REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-                REPOSITORY: ${{ env.ECR_REPOSITORY_NAME }}
-                IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}
-              run: |
-                docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./frontend
-                docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-                echo "image=$REGISTRY/$REPOSITORY" >> $GITHUB_OUTPUT
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
+          
+        - name: Get Short Sha 
+          uses: benjlevesque/short-sha@v2.2
+          id: short-sha
+          with:
+            length: 6
+        
+        - run: echo $SHA
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
+        
+        - name: Login to ECR
+          uses: aws-actions/amazon-ecr-login@v2
+          id: login-ecr
+        
+        - name: Build, tag, and push docker image to Amazon ECR
+          id: build-image
+          env:
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            REPOSITORY: ${{ env.ECR_REPOSITORY_NAME }}
+            IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}
+          run: |
+            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./frontend
+            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            echo "image=$REGISTRY/$REPOSITORY" >> $GITHUB_OUTPUT
 
 
-            - name: Checkout AWS ECS Deploy GH Action
-              uses: actions/checkout@v2
-              with:
-                repository: robertomoutinho/gh-action-ecs-deploy
-                token: ${{ github.token }}
-                path: ./.github/actions/ecs-deploy
-            
-            - name: Deploy App to ECS Service
-              uses: ./.github/actions/ecs-deploy
-              with:
-                app_repo_url: ${{ steps.build-image.outputs.image }}
-                app_version: ${{ steps.short-sha.outputs.sha }}
-                ecs_cluster: ${{ env.ECS_CLUSTER }}
-                ecs_service: ${{ env.ECS_SERVICE }}
-                ecs_container_name: 'nginx-frontend'
-                aws_region: ${{ env.AWS_REGION }}
-                aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        - name: Checkout AWS ECS Deploy GH Action
+          uses: actions/checkout@v2
+          with:
+            repository: robertomoutinho/gh-action-ecs-deploy
+            token: ${{ github.token }}
+            path: ./.github/actions/ecs-deploy
+        
+        - name: Deploy App to ECS Service
+          uses: ./.github/actions/ecs-deploy
+          with:
+            app_repo_url: ${{ steps.build-image.outputs.image }}
+            app_version: ${{ steps.short-sha.outputs.sha }}
+            ecs_cluster: ${{ env.ECS_CLUSTER }}
+            ecs_service: ${{ env.ECS_SERVICE }}
+            ecs_container_name: 'nginx-frontend'
+            aws_region: ${{ env.AWS_REGION }}
+            aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

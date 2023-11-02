@@ -17,7 +17,7 @@ env:
     ECS_SERVICE: ${{ vars.PROJECT_NAME }}-service
     ECS_CLUSTER: ${{ vars.PROJECT_NAME }}-cluster
     ECS_TASK_DEFINITION: ${{ vars.PROJECT_NAME }}-family
-    ECR_REPOSITORY_NAME: challenge-app-backend
+    ECR_REPOSITORY_NAME: community-challenge-backend
     AWS_REGION: us-west-2
 
 

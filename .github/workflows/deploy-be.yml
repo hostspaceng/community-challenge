@@ -23,98 +23,101 @@ env:
 
 jobs:
 
-    test-backend:
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          shell: bash
-          working-directory: ./backend
+  test-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./backend
 
-      steps:
+    steps:
 
-          - name: Copy Repo Code
-            uses: actions/checkout@v4
-            with: 
-              sparse-checkout: |
-                backend
-        
-          - uses: actions/checkout@v4
-          - name: Set up Python
-            # This is the version of the action for setting up Python, not the Python version.
-            uses: actions/setup-python@v4
-            with:
-              # Semantic version range syntax or exact version of a Python version
-              python-version: '3.9'
-              # Optional - x64 or x86 architecture, defaults to x64
-              architecture: 'x64'
-          # You can test your matrix by printing the current Python version
-          - name: Display Python version
-            run: python -c "import sys; print(sys.version)"
+        - name: Copy Repo Code
+          uses: actions/checkout@v4
+          with: 
+            sparse-checkout: |
+              backend
+      
+        - uses: actions/checkout@v4
+        - name: Set up Python
+          # This is the version of the action for setting up Python, not the Python version.
+          uses: actions/setup-python@v4
+          with:
+            # Semantic version range syntax or exact version of a Python version
+            python-version: '3.9'
+            # Optional - x64 or x86 architecture, defaults to x64
+            architecture: 'x64'
+        # You can test your matrix by printing the current Python version
+        - name: Display Python version
+          run: python -c "import sys; print(sys.version)"
 
-          - name: Test the Python code
-            run: python -m unittest test_proxy.py
+        - name: Install dependencies
+          run: pip install -r requirements.txt
+
+        - name: Test the Python code
+          run: python -m unittest test_proxy.py
 
           
 
-    deploy-ecr-images:
-        runs-on: ubuntu-latest
+  deploy-ecr-images:
+    runs-on: ubuntu-latest
 
-        steps:
+    steps:
 
-            - name: Copy Repo Code
-              uses: actions/checkout@v4
-              with: 
-                sparse-checkout: |
-                  backend
-            
-            - name: Configure AWS credentials
-              uses: aws-actions/configure-aws-credentials@v4
-              with:
-                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                aws-region: ${{ vars.AWS_REGION }}
-              
-            - name: Get Short Sha 
-              uses: benjlevesque/short-sha@v2.2
-              id: short-sha
-              with:
-                length: 6
-            
-            - run: echo $SHA
-              env:
-                SHA: ${{ steps.short-sha.outputs.sha }}
-            
-            - name: Login to ECR
-              uses: aws-actions/amazon-ecr-login@v2
-              id: login-ecr
-            
-            - name: Build, tag, and push docker image to Amazon ECR
-              id: build-image
-              env:
-                REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-                REPOSITORY: ${{ env.ECR_REPOSITORY_NAME }}
-                IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}
-              run: |
-                docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./backend
-                docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-                echo "image=$REGISTRY/$REPOSITORY" >> $GITHUB_OUTPUT
+        - name: Copy Repo Code
+          uses: actions/checkout@v4
+          with: 
+            sparse-checkout: |
+              backend
+        
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: ${{ vars.AWS_REGION }}
+          
+        - name: Get Short Sha 
+          uses: benjlevesque/short-sha@v2.2
+          id: short-sha
+          with:
+            length: 6
+        
+        - run: echo $SHA
+          env:
+            SHA: ${{ steps.short-sha.outputs.sha }}
+        
+        - name: Login to ECR
+          uses: aws-actions/amazon-ecr-login@v2
+          id: login-ecr
+        
+        - name: Build, tag, and push docker image to Amazon ECR
+          id: build-image
+          env:
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            REPOSITORY: ${{ env.ECR_REPOSITORY_NAME }}
+            IMAGE_TAG: ${{ steps.short-sha.outputs.sha }}
+          run: |
+            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./backend
+            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            echo "image=$REGISTRY/$REPOSITORY" >> $GITHUB_OUTPUT
 
 
-            - name: Checkout AWS ECS Deploy GH Action
-              uses: actions/checkout@v2
-              with:
-                repository: robertomoutinho/gh-action-ecs-deploy
-                token: ${{ github.token }}
-                path: ./.github/actions/ecs-deploy
-            
-            - name: Deploy App to ECS Service
-              uses: ./.github/actions/ecs-deploy
-              with:
-                app_repo_url: ${{ steps.build-image.outputs.image }}
-                app_version: ${{ steps.short-sha.outputs.sha }}
-                ecs_cluster: ${{ env.ECS_CLUSTER }}
-                ecs_service: ${{ env.ECS_SERVICE }}
-                ecs_container_name: 'proxy-backend'
-                aws_region: ${{ env.AWS_REGION }}
-                aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        - name: Checkout AWS ECS Deploy GH Action
+          uses: actions/checkout@v2
+          with:
+            repository: robertomoutinho/gh-action-ecs-deploy
+            token: ${{ github.token }}
+            path: ./.github/actions/ecs-deploy
+        
+        - name: Deploy App to ECS Service
+          uses: ./.github/actions/ecs-deploy
+          with:
+            app_repo_url: ${{ steps.build-image.outputs.image }}
+            app_version: ${{ steps.short-sha.outputs.sha }}
+            ecs_cluster: ${{ env.ECS_CLUSTER }}
+            ecs_service: ${{ env.ECS_SERVICE }}
+            ecs_container_name: 'proxy-backend'
+            aws_region: ${{ env.AWS_REGION }}
+            aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

@@ -4,7 +4,7 @@
 resource "aws_security_group" "lb-sg" {
   name        = "load-balancer-sg"
   description = "Allow http traffic from public"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     description      = "Allow public access"
@@ -30,7 +30,7 @@ resource "aws_security_group" "lb-sg" {
 resource "aws_security_group" "ecs-sg" {
   name        = "frontend-container"
   description = "Allow http traffic from load balancer"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress {
     description      = "Allow public access"

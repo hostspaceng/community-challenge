@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: python-flask-app-deployment
-        image: franklyn27181/cloudflare:1.0
+        image: franklyn27181/cloudflare:2.0
         ports:
         - containerPort: 5000
         env:

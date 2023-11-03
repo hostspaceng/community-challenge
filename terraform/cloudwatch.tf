@@ -7,7 +7,7 @@ module "log_group-fe" {
   version = "~> 3.0"
 
   name              = "${var.project_name}/frontend-task/log"
-  retention_in_days = 7
+  retention_in_days = 1
 }
 
 # log group for the backend tasks
@@ -17,5 +17,5 @@ module "log_group-be" {
   version = "~> 3.0"
 
   name              = "${var.project_name}/backend-task/log"
-  retention_in_days = 7
+  retention_in_days = 1
 }

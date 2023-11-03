@@ -30,7 +30,6 @@ resource "aws_ecs_task_definition" "service" {
           awslogs-group = "${module.log_group-fe.cloudwatch_log_group_name}"
           awslogs-region = var.region
           awslogs-stream-prefix = "frontend-task"
-          awslogs-create-group = "true"
         }
       }
       portMappings = [
@@ -74,7 +73,6 @@ resource "aws_ecs_task_definition" "service" {
           awslogs-group = "${module.log_group-be.cloudwatch_log_group_name}"
           awslogs-region = var.region
           awslogs-stream-prefix = "backend-task"
-          awslogs-create-group = "true"
         }
       }
       tags = var.tags

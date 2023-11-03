@@ -8,6 +8,8 @@ This Readme file provides instructions for deploying the application, both local
 
 For the production environment, I have chosen EKS (Elastic Kubernetes Service) because it is a managed service provided by AWS for Kubernetes orchestration. The deployment instructions for EKS can also be adapted for local setups such as Minikube.
 
+A video showing the application being deployed and monitored using this [link](https://www.loom.com/share/bd718053291e42bb9ca85521f4a62a60?sid=df4a375c-acd9-4b80-9eaa-711099dcb89d)
+
 ## Setup & Installation(Local Machine)
 
 ### Prerequisites
@@ -273,5 +275,7 @@ The successful operation of the application was made possible by configuring the
 ![alt text](images/image14.png)
 
 With the following steps, you will be able to deploy the Vue application which communicates with the Flask API to generate Cloudflare Domains. 
+
+
 
 

@@ -53,6 +53,7 @@ resource "aws_iam_role_policy" "task_policy" {
   })
 }
 
+
 ####################################
 # Role for the ECS Service         #
 ####################################

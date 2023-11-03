@@ -9,9 +9,6 @@ RUN npm run build
 
 # production
 FROM nginx:stable-alpine as production
-RUN docker login -u evh40836 https://evh40836.live.dynatrace.com
-COPY --from=https://evh40836.live.dynatrace.com/linux/oneagent-codemodules-musl:nginx / /
-ENV LD_PRELOAD /opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
 WORKDIR /app
 RUN apk update && apk add --no-cache python3 && \
     python3 -m ensurepip && \

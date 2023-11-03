@@ -9,7 +9,7 @@ COPY package*.json ./
 
 # install project dependencies
 RUN npm install
-ENV VUE_APP_PROXY_URL=https://test-n7qpfqbf6q-uc.a.run.app
+ENV VUE_APP_PROXY_URL=https://tback-n7qpfqbf6q-uc.a.run.app
 # copy project files and folders to the current working directory 
 COPY . /app/
 # builds app for production

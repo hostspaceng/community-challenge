@@ -34,16 +34,71 @@ pipeline {
                         docker build -t vue-app .
                         docker build -t python-proxy -f pythonDockerfile .
 
+
+                        docker compose -f docker-compose.yaml up -d
+
+
                     """
                 }
             }
         }
 
-        stage('Test') {
+        stage('Testing frontend application') {
             steps {
                 script {
                     sh """
-                        docker compose -f docker-compose.yaml up -d
+
+                        # Make API requests using cURL
+                        curl -X GET http://localhost:8080/
+
+
+                        # Check the HTTP status code (response code)
+                        if [ $? -eq 0 ]; then
+                            # If the exit status is 0, the cURL request was successful, and the HTTP status code is accessible in the response headers.
+                            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/")
+
+                            if [ "$HTTP_STATUS" -eq 200 ]; then
+                                echo "HTTP Status Code: $HTTP_STATUS (OK)"
+                            else
+                                echo "HTTP Status Code: $HTTP_STATUS (Not OK)"
+                                exit 1
+                            fi
+                        else
+                            echo "HTTP Request Failed"
+                            exit 1
+                        fi
+
+                    """
+
+                    
+                }
+            }
+        }
+        stage('Testing python-proxy application') {
+            steps {
+                script {
+                    sh """
+
+                        # Make API requests using cURL
+                        curl -X GET http://localhost:5000/
+
+
+                        # Check the HTTP status code (response code)
+                        if [ $? -eq 0 ]; then
+                            # If the exit status is 0, the cURL request was successful, and the HTTP status code is accessible in the response headers.
+                            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:5000/")
+
+                            if [ "$HTTP_STATUS" -eq 200 ]; then
+                                echo "HTTP Status Code: $HTTP_STATUS (OK)"
+                            else
+                                echo "HTTP Status Code: $HTTP_STATUS (Not OK)"
+                                exit 1
+                            fi
+                        else
+                            echo "HTTP Request Failed"
+                            exit 1
+                        fi
+
                     """
 
                     
@@ -84,18 +139,19 @@ pipeline {
         success {
             script {
                 sh """
-                    echo 'hello world'
+                    echo 'Pipeline Cmpleted'
                 """
             }
         }
         failure {
             // Actions to take when the pipeline fails.
 
-            sh "echo 'hello world'"
+            sh "echo 'Pipeline Failed"
         }
         always {
             // Actions to take regardless of the pipeline result.
-            sh "echo 'hello world'"
+            def buildNumber = env.BUILD_NUMBER.toInteger()
+            echo "This is pipeline run number: ${buildNumber}"
         }
     }
 }

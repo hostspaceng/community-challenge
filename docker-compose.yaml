@@ -1,19 +1,16 @@
 version: '3'
 services:
-  nginx-proxy:
-    image: nginx-http-proxy #image from local file
-    network_mode: host
+
+  vue-app:
+    image: vue-app:v1 #image from local file
     ports:
-      - "80:80" #ports to open for running containers
-  python-app:
-    image: python-project #image from local file
-    ports:
-      - "5000:5000" #ports to open for running containers
+      - "8080:80" #ports to open for running containers
     volumes:
       - ./:/app
-  vue-app:
-    image: vue-project #image from local file
+
+  python-app:
+    image: python-proxy #image from local file
     ports:
-      - "8080:4000" #ports to open for running containers
+      - "5000:5000" #ports to open for running containers
     volumes:
       - ./:/app

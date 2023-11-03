@@ -1,0 +1,17 @@
+services:
+  flask-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - 5000:5000
+  vue-app:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+    - 80:80

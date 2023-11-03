@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: hostspace
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: flask-application
+        image: achebeh/community-challenge-backend
+        ports:
+        - containerPort: 5000
+        env:
+          - name: CF_API_EMAIL
+            valueFrom:
+              configMapKeyRef:
+                name: hostspace-configmap
+                key: cf_api_email
+          - name: ZONE_ID
+            valueFrom:
+              configMapKeyRef:
+                name: hostspace-configmap
+                key: zone_id
+          - name: CF_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: hostspace-secret
+                key: cf_api_key

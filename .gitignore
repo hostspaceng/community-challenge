@@ -1,0 +1,5 @@
+.env
+node_modules/
+__pycache__/
+my-k8s-cluster/kubeconfig.json
+my-k8s-cluster/venv

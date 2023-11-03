@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: hostspace
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: vue-application
+        image: achebeh/community-challenge-frontend
+        ports:
+        - containerPort: 80
+        env:
+        - name: VUE_APP_PROXY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: hostspace-configmap
+              key: vue_app_proxy_url

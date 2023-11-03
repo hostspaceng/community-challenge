@@ -2,7 +2,7 @@
 # Security group for loadbalancer
 
 resource "aws_security_group" "lb-sg" {
-  name        = "${var.project_name}-load-balancer-sg"
+  name        = "load-balancer-sg"
   description = "Allow http traffic from public"
   vpc_id      = module.vpc.vpc_id
 
@@ -28,7 +28,7 @@ resource "aws_security_group" "lb-sg" {
 # Security group for ECS service
 
 resource "aws_security_group" "ecs-sg" {
-  name        = "${var.project_name}-task-sg"
+  name        = "frontend-container"
   description = "Allow http traffic from load balancer"
   vpc_id      = module.vpc.vpc_id
 

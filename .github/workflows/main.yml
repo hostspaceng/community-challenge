@@ -28,7 +28,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:1.0
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:2.0
           target: api
       -
         name: Build and push docker image for the frontend
@@ -37,4 +37,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:1.1
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:2.1

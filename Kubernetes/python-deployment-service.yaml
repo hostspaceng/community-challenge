@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-flask-backend
+  labels:
+    app: python-flask-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: python-flask-backend
+  template:
+    metadata:
+      labels:
+        app: python-flask-backend
+    spec:
+      containers:
+      - name: python-flask-app-deployment
+        image: franklyn27181/cloudflare:1.0
+        ports:
+        - containerPort: 5000
+        env:
+        - name: ZONE_ID
+          valueFrom:
+            configMapKeyRef:
+              name: application-configmap
+              key: zone_id
+        - name: CF_API_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              name: application-configmap
+              key: cf_api_email
+        - name: CF_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: application-secret
+              key: cf_api_key
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-flask-backend-service
+spec:
+  selector:
+    app: python-flask-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer

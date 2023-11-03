@@ -56,7 +56,7 @@ env:
   PROJECT_ID: hostspace-challenge
   GAR_LOCATION: us-central1
   REPOSITORY: repo1
-  SERVICE: test
+  SERVICE: tback
   SERVICE2: test2
   REGION: us-central1
 

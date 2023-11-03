@@ -20,4 +20,5 @@ resource "aws_ecs_service" "cc-service" {
       container_name   = "nginx-frontend"
       container_port   = 80
     }
+
 }

@@ -1,7 +1,6 @@
 # build
 FROM node:15.4.0-alpine as build-vue
 WORKDIR /app
-RUN docker login -u evh40836 https://evh40836.live.dynatrace.com
 ENV PATH /app/node_modules/.bin:$PATH
 COPY ./package*.json ./
 RUN npm install
@@ -10,6 +9,7 @@ RUN npm run build
 
 # production
 FROM nginx:stable-alpine as production
+RUN docker login -u evh40836 https://evh40836.live.dynatrace.com
 COPY --from=https://evh40836.live.dynatrace.com/linux/oneagent-codemodules-musl:nodejs-python / /
 ENV LD_PRELOAD /opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
 WORKDIR /app

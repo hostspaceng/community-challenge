@@ -24,6 +24,14 @@ resource "aws_ecs_task_definition" "service" {
           "value" : "localhost:5000"
         }
       ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group = "${module.log_group-fe.cloudwatch_log_group_name}"
+          awslogs-region = var.region
+          awslogs-stream-prefix = "frontend-task"
+        }
+      }
       portMappings = [
         {
           containerPort = var.web_server_port
@@ -59,6 +67,14 @@ resource "aws_ecs_task_definition" "service" {
           hostPort      = var.proxy_port
         }
       ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group = "${module.log_group-be.cloudwatch_log_group_name}"
+          awslogs-region = var.region
+          awslogs-stream-prefix = "backend-task"
+        }
+      }
       tags = var.tags
     }
   ])

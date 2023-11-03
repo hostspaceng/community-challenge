@@ -43,7 +43,8 @@ resource "aws_iam_role_policy" "task_policy" {
           "ecr:BatchGetImage",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
-          "secretsmanager:GetSecretValue"
+          "secretsmanager:GetSecretValue",
+          "logs:CreateLogGroup"
         ]
         Effect   = "Allow"
         Resource = "*"

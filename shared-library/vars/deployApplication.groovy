@@ -1,6 +1,6 @@
 def call(String command){
     // Update kube-config file with the name of created cluster.
-    sh 'aws eks update-kubeconfig --name eks-cluster-eksCluster-7c22835 --region "us-east-1"'
+    sh 'aws eks update-kubeconfig --name eks-cluster-eksCluster-7248989 --region "us-east-1"'
 
     // Creating the namespace resource
     sh "kubectl ${command} -f namespace.yaml"

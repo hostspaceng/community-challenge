@@ -4,7 +4,6 @@ metadata:
   annotations:
     meta.helm.sh/release-name: prometheus
     meta.helm.sh/release-namespace: prometheus
-  creationTimestamp: "2023-10-27T01:26:46Z"
   labels:
     app.kubernetes.io/component: server
     app.kubernetes.io/instance: prometheus

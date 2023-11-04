@@ -23,11 +23,11 @@ module "vpc" {
 
 # VPC endpoint for cloudwatch logs
 
-resource "aws_vpc_endpoint" "logs" {
-  vpc_id       = module.vpc.vpc_id
-  service_name = "com.amazonaws.${var.region}.logs"
-  private_dns_enabled = true
-  security_group_ids = [ aws_security_group.ecs-sg.id ]
-  subnet_ids = module.vpc.private_subnets
-  vpc_endpoint_type = "Interface"
-}
+# resource "aws_vpc_endpoint" "logs" {
+#   vpc_id       = module.vpc.vpc_id
+#   service_name = "com.amazonaws.${var.region}.logs"
+#   private_dns_enabled = true
+#   security_group_ids = [ aws_security_group.ecs-sg.id ]
+#   subnet_ids = module.vpc.private_subnets
+#   vpc_endpoint_type = "Interface"
+# }

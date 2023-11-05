@@ -74,7 +74,22 @@ resource "aws_ecs_task_definition" "service" {
         }
       }
       tags = var.tags
+    },
+
+  # X-Ray Deamon for container logs to effiently get into cloudwatch
+    {
+      name = "xray-daemon"
+      image = "amazon/aws-xray-daemon"
+      portMappings = [
+        {
+          hostPort = 0
+          containerPort = 2000
+          protocol = "udp"
+        }
+      ]
+
     }
+
   ])
 
 }

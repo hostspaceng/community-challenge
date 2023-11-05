@@ -14,8 +14,6 @@ resource "aws_ecs_task_definition" "service" {
     {
       name             = "nginx-frontend"
       image            = module.frontend-image.repository_url
-      cpu              = var.cpu
-      memory           = var.memory
       cpu_architecture = var.cpu_architecture
       essential        = true
       environment = [
@@ -47,9 +45,7 @@ resource "aws_ecs_task_definition" "service" {
     {
       name             = "proxy-backend"
       image            = module.backend-image.repository_url
-      cpu              = var.cpu
       cpu_architecture = var.cpu_architecture
-      memory           = var.memory
       essential        = true
       secrets = [
         {

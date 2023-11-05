@@ -15,13 +15,6 @@ total_cpu    = 512
 
 total_memory = 1024
 
-
-# variable for specific container memory
-memory = 512
-
-# variable for specific container cpu 
-cpu = 256
-
 # variable for the web server conatiner port
 web_server_port = 80
 

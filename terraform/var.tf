@@ -79,3 +79,8 @@ variable "public_subnet_cidr" {
 variable "private_subnet_cidr" {
   type = list(string)
 }
+
+# name of user group for grafana to associate with 
+variable "user_group_name" {
+  type = string
+}

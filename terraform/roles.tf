@@ -120,7 +120,7 @@ resource "aws_iam_role" "grafana-ec2-role" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "ecs-policy-att" {
+resource "aws_iam_role_policy_attachment" "ec2-policy-att" {
   role       = aws_iam_role.grafana-ec2-role.name
   policy_arn = aws_iam_policy.grafana-policy.arn
 }

@@ -35,13 +35,6 @@ module "managed_grafana" {
     }
   }
 
-  # Role associations
-  role_associations = {
-    "ADMIN" = {
-      "group_ids" = ["1111111111-abcdefgh-1234-5678-abcd-999999999999"]
-    }
-  }
-
   tags = {
     Terraform   = "true"
     Environment = "dev"

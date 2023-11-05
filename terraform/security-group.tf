@@ -120,3 +120,4 @@ resource "aws_security_group" "grafana-machine" {
 
   tags = var.tags
 }
+

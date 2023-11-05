@@ -82,7 +82,7 @@ resource "aws_ecs_task_definition" "service" {
       image = "amazon/aws-xray-daemon"
       portMappings = [
         {
-          hostPort = 0
+          hostPort = 2000
           containerPort = 2000
           protocol = "udp"
         }

@@ -20,6 +20,20 @@
                 "ec2:DescribeRegions"
             ],
             "Resource": "*"
-        }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "xray:BatchGetTraces",
+              "xray:GetTraceSummaries",
+              "xray:GetTraceGraph",
+              "xray:GetGroups",
+              "xray:GetTimeSeriesServiceStatistics",
+              "xray:GetInsightSummaries",
+              "xray:GetInsight",
+              "ec2:DescribeRegions"
+            ],
+            "Resource": "*"
+          }
     ]
  }

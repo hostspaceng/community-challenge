@@ -9,7 +9,7 @@ module "managed_grafana" {
 
   # Workspace
   name                      = "${var.project_name}-managed-grafana"
-  description               = "AWS Managed Grafana service for community challlenge monitoring"
+  description               = "AWS Managed Grafana service for community challlenge monitoring cloudwatch"
   account_access_type       = "CURRENT_ACCOUNT"
   authentication_providers  = ["AWS_SSO"]
   permission_type           = "SERVICE_MANAGED"

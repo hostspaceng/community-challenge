@@ -15,16 +15,6 @@ variable "launch-type" {
   type = string
 }
 
-# Memory allocation for the tasks
-variable "memory" {
-  type = number
-}
-
-# cpu allocation for the tasks
-variable "cpu" {
-  type = number
-}
-
 # Port for the VUE js frontend task
 variable "web_server_port" {
   type = number

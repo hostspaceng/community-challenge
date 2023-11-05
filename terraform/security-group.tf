@@ -88,7 +88,7 @@ resource "aws_security_group" "task-endpoint" {
 
 # Add security group for grafana instanace
 
-resource "aws_security_group" "task-endpoint" {
+resource "aws_security_group" "grafana-machine" {
   name        = "${var.project_name}-grafana-sg"
   description = "Allow http traffic from tasks"
   vpc_id      = module.vpc.vpc_id

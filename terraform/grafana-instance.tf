@@ -12,7 +12,7 @@ module "ec2_instance" {
   instance_type          = "t2.micro"
   key_name               = var.key_pair_name
   monitoring             = true
-  vpc_security_group_ids = [ aws_security_group.grafana_machine.id ]
+  vpc_security_group_ids = [ aws_security_group.grafana-machine.id ]
   subnet_id              = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   

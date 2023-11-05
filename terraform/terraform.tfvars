@@ -52,6 +52,6 @@ private_subnet_cidr = [ "10.0.2.0/24", "10.0.3.0/24" ]
 # availablilty zones for the subnets
 azs = [ "us-west-2a", "us-west-2b" ]
 
-# name of user group for grafana to associate with
+# name of key pair for grafana ec2 instance
 
-user_group_name = "Admin"
+key_pair_name = "us-west-2-key"

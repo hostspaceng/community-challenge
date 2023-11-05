@@ -85,3 +85,38 @@ resource "aws_security_group" "task-endpoint" {
 
   tags = var.tags
 }
+
+# Add security group for grafana instanace
+
+resource "aws_security_group" "task-endpoint" {
+  name        = "${var.project_name}-grafana-sg"
+  description = "Allow http traffic from tasks"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    description      = "Allow traffic from frontend task"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+
+  ingress {
+      description      = "Allow traffic from backend task"
+      from_port        = 3000
+      to_port          = 3000
+      protocol         = "tcp"
+      cidr_blocks = [ "0.0.0.0/0" ]
+    }
+
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  tags = var.tags
+}

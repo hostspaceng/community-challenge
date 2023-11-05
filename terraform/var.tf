@@ -80,7 +80,8 @@ variable "private_subnet_cidr" {
   type = list(string)
 }
 
-# name of user group for grafana to associate with 
-variable "user_group_name" {
+# name of key pair for grafana EC2 instance
+
+variable "key_pair_name" {
   type = string
 }

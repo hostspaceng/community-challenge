@@ -15,10 +15,6 @@ module "managed_grafana" {
   permission_type           = "SERVICE_MANAGED"
   data_sources              = ["CLOUDWATCH"]
   notification_destinations = ["SNS"]
-  vpc_configuration = {
-    subnet_ids = module.vpc.private_subnets
-
-  }
 
   # Workspace API keys
   workspace_api_keys = {

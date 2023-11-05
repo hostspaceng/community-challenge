@@ -59,7 +59,7 @@ resource "aws_iam_role_policy" "task_policy" {
 ####################################
 
 resource "aws_iam_policy" "ecs-policy" {
-  policy = file("./ecs-policy.json")
+  policy = file("./policies/ecs-policy.json")
 }
 
 data "aws_iam_policy_document" "ecs-assume-role-role" {
@@ -90,6 +90,37 @@ resource "aws_iam_role_policy_attachment" "ecs-policy-att" {
 }
 
 
+###############################################
+# Role for Grafana EC2 instance to clould watch #
+###############################################
 
+resource "aws_iam_policy" "grafana-policy" {
+  policy = file("./policies/grafana-policy.json")
+}
 
+data "aws_iam_policy_document" "ecs-assume-role-role-ec2" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    sid     = ""
 
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+
+}
+
+resource "aws_iam_role" "grafana-ec2-role" {
+  name               = "${var.project_name}-ec2-grafana-role"
+  assume_role_policy = data.aws_iam_policy_document.ecs-assume-role-role-ec2.json
+
+  tags = {
+    project = var.project_name
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ecs-policy-att" {
+  role       = aws_iam_role.grafana-ec2-role.name
+  policy_arn = aws_iam_policy.grafana-policy.arn
+}

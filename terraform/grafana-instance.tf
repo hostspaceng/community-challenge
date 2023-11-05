@@ -15,22 +15,19 @@ module "ec2_instance" {
   vpc_security_group_ids = [ aws_security_group.grafana-machine.id ]
   subnet_id              = module.vpc.public_subnets[0]
   associate_public_ip_address = true
+  iam_instance_profile = aws_iam_instance_profile.test_profile.name
   
   ami = "ami-00448a337adc93c05"
-  user_data = <<EOF
-  #!/bin/bash
-  sudo apt-get install -y apt-transport-https software-properties-common wget -y
-  sudo mkdir -p /etc/apt/keyrings/
-  wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null -y
-  echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
-  echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com beta main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
-  sudo apt-get update -y
-  sudo apt-get install grafana -y
-  sudo apt-get install grafana-enterprise -y
-  EOF
 
   tags = {
     Terraform   = "true"
     Environment = "dev"
   }
+}
+
+# Instance profile for the grafana machine to have access to cloudwatch
+
+resource "aws_iam_instance_profile" "test_profile" {
+  name = "grafana-cloudwatch"
+  role = aws_iam_role.grafana-ec2-role.name
 }

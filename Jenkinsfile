@@ -15,6 +15,11 @@ pipeline {
         CF_API_KEY = credentials('CF_API_KEY')
         CF_API_EMAIL = credentials('CF_API_EMAIL')
         VUE_APP_PROXY_URL = credentials('VUE_APP_PROXY_URL')
+
+        //DEfine this environmental variable to verison to my application's docker image
+        def buildNumber = env.BUILD_NUMBER.toInteger()
+        def version = "1.0.${buildNumber}"
+        echo "Setting application version to: ${version}"
     }
 
     stages {
@@ -28,11 +33,13 @@ pipeline {
             }
         }
 
-        stage('Build and run Docker Images') {
+        stage('Build and run Docker Images locally') {
             steps {
                 script {
-
+                // here i will build my docker images and run them locally for testing...
                 sh """
+
+                        export backend_endpoint=http://localhost:5000
 
                         docker build -t vue-app .
 
@@ -41,32 +48,7 @@ pipeline {
 
                         cd ..
 
-                        docker compose -f docker-dompose.yaml up 
-
-                    """
-                }
-            }
-        }
-
-        stage('Deploy to Amazon ECR...') {
-            steps {
-                script {
-
-
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS']]) {
-                    sh """
-                            aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/l1z2o5a3
-                    """
-                }
-
-                    sh """
-
-                            docker tag python-proxy public.ecr.aws/l1z2o5a3/python-proxy:$version
-                            docker push public.ecr.aws/l1z2o5a3/python-proxy:latest:$version
-
-
-                            docker tag python-proxy public.ecr.aws/l1z2o5a3/python-proxy:$version
-                            docker push public.ecr.aws/l1z2o5a3/vue-app:latest:$version
+                        docker compose -f docker-compose.yaml up 
 
                     """
                 }
@@ -76,6 +58,9 @@ pipeline {
         stage('Testing frontend application locally') {
             steps {
                 script {
+
+                    //here i will test and send requests to my running fontend docker container of my 
+                    //applciation to test if they are configured properly and if they are up and running
                     sh """
 
                         # Make API requests using cURL
@@ -109,6 +94,9 @@ pipeline {
         stage('Testing python-proxy application locally') {
             steps {
                 script {
+
+                    //here i will test and send requests to my running backend docker container of my 
+                    //applciation to test if they are configured properly and if they are up and running
                     sh """
 
                         # Make API requests using cURL
@@ -139,13 +127,61 @@ pipeline {
         }
     }
 
-    
 
-        
+        stage('Build Docker Images for deployment') {
+            steps {
+                script {
+                // here i will build my docker images and run them locally for testing...
+                sh """
+
+                        export backend_endpoint=http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/proxy/
+
+                        docker build -t vue-app:$version .
+
+                        cd backend
+                        docker build -t python:$version .
+
+                        cd ..
+
+                    """
+                }
+            }
+        }
+
+        stage('Deploy to Amazon ECR...') {
+            steps {
+                script {
+
+                    //after building my docker images, i will then tag and push them to my Amazon ECR repro
+
+
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS']]) {
+                    sh """
+                            aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/l1z2o5a3
+                    """
+                }
+
+                    sh """
+
+                            docker tag python:$version public.ecr.aws/l1z2o5a3/python-proxy:$version
+                            docker push public.ecr.aws/l1z2o5a3/python-proxy:$version
+
+
+                            docker tag vue-app:$version public.ecr.aws/l1z2o5a3/vue-app:$version
+                            docker push public.ecr.aws/l1z2o5a3/vue-app:$version
+
+                    """
+                }
+            }
+        }
+
 
     post {
         success {
             script {
+
+                //if this piplein is a success i want to then deploy my docker images to my Amazon EKS cluster which i have already
+                //configured and running...
 
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS']]) {
                     sh """

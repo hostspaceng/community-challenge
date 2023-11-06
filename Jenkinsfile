@@ -2,21 +2,12 @@ pipeline {
     agent any
 
     environment {
-        def buildNumber = env.BUILD_NUMBER.toInteger()
-        def version = "1.0.${buildNumber}"
-        echo "Setting application version to: ${version}"
-        // Set the version as an environment variable for your application
-        env.APP_VERSION = version
-    }
-
-    environment {
         // Define global environment variables
         ZONE_ID = credentials('ZONE_ID')
         CF_API_KEY = credentials('CF_API_KEY')
         CF_API_EMAIL = credentials('CF_API_EMAIL')
-        VUE_APP_PROXY_URL = credentials('VUE_APP_PROXY_URL')
 
-        //DEfine this environmental variable to verison to my application's docker image
+        //Define this environmental variable to verison to my application's docker image
         def buildNumber = env.BUILD_NUMBER.toInteger()
         def version = "1.0.${buildNumber}"
         echo "Setting application version to: ${version}"
@@ -153,6 +144,7 @@ pipeline {
                 script {
 
                     //after building my docker images, i will then tag and push them to my Amazon ECR repro
+                    //with the help of my aws credententials
 
 
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS']]) {
@@ -180,8 +172,12 @@ pipeline {
         success {
             script {
 
-                //if this piplein is a success i want to then deploy my docker images to my Amazon EKS cluster which i have already
-                //configured and running...
+                //using my aws credentials...
+                //if this stage is a success i want to then deploy my docker images passing my version variable into
+                //my k8s deployment configuration .yaml file and applying these configuration files to my Amazon EKS cluster which i have already
+                //to deploy my application
+                //configured and running..., also installing nginx-ingress controller to my eks cluster
+                //and also send request to the ingress contoler's load balancers endpoint
 
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_ACCESS']]) {
                     sh """

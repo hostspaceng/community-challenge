@@ -52,10 +52,13 @@
 
 ![Grafana](<Screenshot from 2023-11-06 22-09-53.png>)
 
+[Link to video for the compulsory part of the challenge](https://www.loom.com/share/9b62235061bf4f75950af2ea6ec5f439?sid=2e41f249-cb75-473e-a38d-baf6b5feb432)
 
-`https://www.loom.com/share/9b62235061bf4f75950af2ea6ec5f439?sid=2e41f249-cb75-473e-a38d-baf6b5feb432`
 
-`https://www.loom.com/share/32f7a886ddc940a9ba13e0bb8a481275?sid=671120ac-c4a2-4471-b206-e49b41f60437`
+[Link to video for the bonus part of the challenge](https://www.loom.com/share/32f7a886ddc940a9ba13e0bb8a481275?sid=671120ac-c4a2-4471-b206-e49b41f60437)
+
+
+
 
 
 ---

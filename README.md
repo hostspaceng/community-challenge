@@ -20,7 +20,7 @@ This project deploys the community challenge on AWS, using Elastic Container Ser
 
 
 
-![architeture](./img/download.jpeg)
+![architeture](./img/download.png)
 
 
 ## Prerequisites

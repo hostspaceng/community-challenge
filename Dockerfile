@@ -1,4 +1,4 @@
-# build
+# Front-end build
 FROM node:15.4.0-alpine as build-vue
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
@@ -7,7 +7,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# production
+# Leveraging Front-end and the API on nginx server for production
 FROM nginx:stable-alpine as production
 WORKDIR /app
 RUN apk update && apk add --no-cache python3 && \
@@ -28,6 +28,6 @@ COPY main.py .
 
 EXPOSE 80
 EXPOSE 5000
-# Set environment variables for the Flask app
+
 CMD nginx -g 'daemon off;' & python main.py
 

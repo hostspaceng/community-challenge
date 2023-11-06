@@ -41,9 +41,7 @@ pipeline {
 
                         cd ..
 
-                        docker run -d -p 8080:80 --name vue-app vue-app
-
-                        docker run -d -p 5000:5000 --name python-proxy
+                        docker compose -f docker-dompose.yaml up 
 
                     """
                 }

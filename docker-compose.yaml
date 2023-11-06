@@ -2,14 +2,14 @@ version: '3'
 services:
 
   vue-app:
-    image: vue-app:v1 #image from local file
+    image: vue-app #image from local file
     ports:
       - "8080:80" #ports to open for running containers
     volumes:
       - ./:/app
 
   python-app:
-    image: python-proxy #image from local file
+    image: python #image from local file
     ports:
       - "5000:5000" #ports to open for running containers
     volumes:

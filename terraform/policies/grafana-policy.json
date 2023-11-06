@@ -34,6 +34,13 @@
               "ec2:DescribeRegions"
             ],
             "Resource": "*"
-          }
+        },
+        {
+            "Effect":"Allow",
+            "Action":[
+                "logs:*"
+            ],
+            "Resource":"*"
+        }
     ]
  }

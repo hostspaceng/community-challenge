@@ -31,7 +31,7 @@ Head over to your AWS account and create an s3 Bucket. This bucket name is what 
 ### Environment Variables
 
 | Environment Variable | Example |
-| --- | | --- |
+| --- | --- |
 | AWS_REGION | us-west-2 |
 | PROJECT_NAME | community-challenge |
 
@@ -40,7 +40,7 @@ Ensure that the project_name you specify in the environemnt variable is the same
 ### Actions Secrets
 
 | Secret_Name | Example |
-| --- | | --- |
+| --- | --- |
 | AWS_ACCESS_KEY_ID | AKIAIOSFODNN7EXAMPLE  |
 | AWS_SECRET_ACCESS_KEY | wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY  |
 | AWS_BUCKET_NAME | community-challenge-state-bucket-00995544 |

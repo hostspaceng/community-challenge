@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 ZONE_ID = os.getenv('ZONE_ID')
 CF_API_KEY = os.getenv('CF_API_KEY')

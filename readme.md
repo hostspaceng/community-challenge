@@ -1,3 +1,6 @@
+### LINKS FOR THE RECORDED VIDEOS WILL BE SEEN AT THE END OF THIS DOCUMENTATION
+
+
 ### Dockerfiles
 
 `/Dockerfile` for the vuejs front-end application

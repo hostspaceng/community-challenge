@@ -25,7 +25,7 @@ This project deploys the community challenge on AWS, using Elastic Container Ser
 
 ## Prerequisites
 
-Ensure that you have the below listed in the table below in the github actions secrets/environment variables. Consider an exmaple of it in the example section. Ensure you have an AWS Account.
+Ensure that you have the below listed in the github actions secrets/environment variables. Consider an exmaple of it in the example section. Ensure you have an AWS Account.
 Head over to your AWS account and create an s3 Bucket. This bucket name is what is going to be passed in the secrets. The bucket will be used to store terraform state files. 
 
 ### Environment Variables

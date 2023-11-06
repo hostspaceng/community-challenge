@@ -64,7 +64,7 @@ If the above generates a successful plan, them merge the pull request to the mai
 
 ### 2. Set Secrets
 
-If the apply pipeline is successful, head over to your management console. You should find 3 secrets there. Go into the secrets and set the value of each of them. Check in the `/backend` directory, you'll find a file `.env.local` copy only the values of each of them and paste them into the specified secrets.
+If the apply pipeline is successful, head over to your management console. You should find 3 secrets there. Go into the secrets and set the value of each of them. Check in the `/backend` directory, you'll find a file `.env.local` copy only the values of each of them and paste them into the specified secrets. Paste them as plain texts
 
 ### 3. Application Setup
 

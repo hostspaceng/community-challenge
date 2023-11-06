@@ -76,6 +76,12 @@ Push the changes. It will trigger two pipelines that will deploy the app in the 
 
 If the pipelines run successfully, head over to your management console, check load balancers, you'll find a loadbalancer named `community-challenge-lb` copy the DNS name and access the application from the load balancer.
 
+### 5 Grafana
+
+An instance is created with the key pair you specified in step 1. Head over to the console and connect to the machine. Read [this](https://medium.com/all-things-devops/how-to-install-grafana-on-aws-ec2-cefc01d5ff08) article to install grafana on the machine. 
+
+Select Cloudwatch as the data source and test the connections, it should work without access keys.
+
 ## Images
 
 ECS Cluster

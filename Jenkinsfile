@@ -194,7 +194,7 @@ pipeline {
 
                             kubectl apply -f /k8s/eks_deployments.yaml
 
-                            kubectl apply -f ingress-service.yaml
+                            kubectl apply -f /k8s/ingress-service.yaml
 
                     """
 

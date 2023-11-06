@@ -4,18 +4,18 @@ This project deploys the community challenge on AWS, using Elastic Container Ser
 
 | Name | Shortcode |
 | --- | --- | 
-| VPC | `:heavy_check_mark:` |
-| 2 private Subnets | `:heavy_check_mark:`|
-| 2 Public Subnets  | `:heavy_check_mark:`|
-| Internet Gateway  | `:heavy_check_mark:`|
-| NAT Gateway       | `:heavy_check_mark:`|
-| ECS Service       | `:heavy_check_mark:`|
-| ECS Cluster       | `:heavy_check_mark:`|
-| Task Definition   | `:heavy_check_mark:`|
-| Load Balancer     | `:heavy_check_mark:`|
-| IAM Roles         | `:heavy_check_mark:`|
-| ECR               | `:heavy_check_mark:`|
-| EC2 (Grafana)     | `:heavy_check_mark:`|
+| VPC | :heavy_check_mark: |
+| 2 private Subnets | :heavy_check_mark:|
+| 2 Public Subnets  | :heavy_check_mark:|
+| Internet Gateway  | :heavy_check_mark:|
+| NAT Gateway       | :heavy_check_mark:|
+| ECS Service       | :heavy_check_mark:|
+| ECS Cluster       | :heavy_check_mark:|
+| Task Definition   | :heavy_check_mark:|
+| Load Balancer     | :heavy_check_mark:|
+| IAM Roles         | :heavy_check_mark:|
+| ECR               | :heavy_check_mark:|
+| EC2 (Grafana)     | :heavy_check_mark:|
 | Cloud watch log group | `:heavy_check_mark:`|
 
 

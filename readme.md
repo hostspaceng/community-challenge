@@ -1,7 +1,7 @@
 ### Dockerfiles
 
-`Dockerfile` for the vuejs front-end application
-`PythonDockerfile` for the vuejs application
+`/Dockerfile` for the vuejs front-end application
+`/backend/Dockerfile` for the vuejs application
 
 ### 1. Dockerizing all Application and setting Nginx Configuration
 
@@ -16,9 +16,9 @@ For the security part, i implemented security best practice by making our enviro
 
 ### 2. Implementing the CI/CD stage
 
-Here i made use of Jenkins, with my jenkins file and integrating my jenkins to my repro using webhook to automate the pulling of updates i make to the reprository, i built multiple stages which comprises of, bulding the docker image, testing and running the image and deploying the image to amazon ECR.
+Here i made use of Jenkins, with my jenkins file and integrating my jenkins to my repro using webhook to automate the pulling of updates i make to the reprository, i built multiple stages which comprises of, bulding the docker image, testing and running the image and deploying the image to amazon ECR, and also deployng my image to my eks cluster using the kubernetes configuration file that's located inside the `/k8s` directory if the piple is a success.
 
 
 ### IaC using AWS CloudFormation
 
-Upon deploying my images to my ECR repros, i then moved on to deploy my cloudformation stack `hostober_challenge_cloudformation.yaml` which creates an EKS cluster and all networking configuration under the VPC automatically. I made configuration files for my EKS deployment and also for nginx ingress crontroler whih help me create an Elastic Load Balancer to help route traffic to my application and deployed my application to my EKS cluster.
+Upon deploying my images to my ECR repros, i then moved on to deploy my cloudformation stack `hostober_challenge_cloudformation.yaml` and `vpc_stack.yaml` which creates an EKS cluster and all networking configuration under the VPC automatically. I made configuration files for my EKS deployment and also for nginx ingress crontroler whih help me create an Elastic Load Balancer to help route traffic to my application and deployed my application to my EKS cluster.

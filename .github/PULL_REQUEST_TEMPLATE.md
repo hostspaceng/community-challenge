@@ -6,7 +6,7 @@
 
 Provide a detailed summary of the changes included in this submission. Explain the problem you aimed to solve, the solutions you implemented, and the results achieved. Include any challenges faced and how they were overcome.
 
-![Architecture](../img/download.jpeg)
+![Architecture](../img/download.png)
 
 The above diagram is the cloud architecture that was choosen to deploy the software provided. The application is a frontend UI and a proxy backend, the deployment is aimed to be on a containerized environment putting otgether DevOps practices, and these DevOps practices/culture of deploying this application is done on the cloud, Specifically AWS as the choosen Cloud provider.
 

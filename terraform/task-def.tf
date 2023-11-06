@@ -90,7 +90,7 @@ resource "aws_ecs_task_definition" "service" {
          logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group = "${module.log-group-xray.cloudwatch_log_group_name}"
+          awslogs-group = "${module.log_group-xray.cloudwatch_log_group_name}"
           awslogs-region = var.region
           awslogs-create-group = "true"
           awslogs-stream-prefix = "backend-task"

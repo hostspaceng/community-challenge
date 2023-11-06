@@ -1,109 +1,38 @@
-# Cloudflare Domains Manager
-
-Manage your Cloudflare domains with ease using the Cloudflare Domains Manager. This responsive and efficient application is built with a Vue.js frontend and a Python Flask backend.
-
-![Screenshot](screenshot.png)
+# LINKS FOR THE RECORDED VIDEOS WILL BE SEEN AT THE END OF THIS DOCUMENTATION
 
 
-## Prerequisites
+### Dockerfiles
 
-Ensure the following prerequisites are installed on your machine:
+`/Dockerfile` for the vuejs front-end application
+`/backend/Dockerfile` for the vuejs application
 
-### Backend
+### 1. Dockerizing all Application and setting Nginx Configuration
 
-- Python 3.9+
-- Flask
+Using Multi-staging, i made a Dockerfile to build my vuejs application having Nginx serve as a reverse proxy server for my vuejs application, and i also created a seperate docker image using another Dockerfile for my python proxy application.
 
-### Frontend
+I Implemented caching best practice by having the processes which will not be having frequent changing like copying the `package*.json` file and installing the dependencies be at the top of the Dockerfile so that my updates during building the docker image would be faster because docker would cache those stages without changes for me, and the copying of other application files is below becuase of the updates taking place in the application configuration files. And i also implement a volume for updates on my image using the `docker-compose.yaml` file, for local development and testing, which i know isn't necessary but i was just flexing my abilities...
 
-- Node.js 14+
-- npm or yarn
 
-## Setup & Installation
+For the security part, i implemented security best practice by making our environmental variables very well secured, using them as credentials on my jenkins environnment to be integrated inside my application when building my docker image on jenkins environment, and also added them to the `ENV` command in the Dockerfile so that these environmental variables are going to be within the application and would not be accessed externally. And also to access aws CLI i integrated my AWS access keys as credentials to be able to use aws CLI commands.
 
-Follow these instructions to set up the development environment on your local machine.
 
-### 1. Clone the Repository
+### 2. Implementing the CI/CD stage
 
-Clone the repository from [https://github.com/hostspaceng/community-challenge](https://github.com/hostspaceng/community-challenge).
+Here i made use of Jenkins, with my jenkins file and integrating my jenkins to my repro using the github webhook to automate the pulling of updates i make to the reprository, i built multiple stages which comprises of, bulding the docker image, testing and running the image and deploying the image to amazon ECR, and also deployng my image to my eks cluster using the kubernetes configuration file that's located inside the `/k8s` directory if the piple is a success.
 
-```bash
-git clone https://github.com/hostspaceng/communuty-challenge.git
-cd community-challenge
-```
 
-### 2. Backend Setup
+### IaC using AWS CloudFormation
 
-Navigate to the backend directory, install the required packages, and start the Flask development server.
+Upon deploying my images to my ECR repros, i then moved on to deploy my cloudformation stack `hostober_challenge_cloudformation.yaml` and `vpc_stack.yaml` which creates an EKS cluster and all networking configuration under the VPC automatically. I made configuration files for my EKS deployment and also for nginx ingress crontroler whih help me create an Elastic Load Balancer to help route traffic to my application and deployed my application to my EKS cluster.
 
-#### Install Dependencies
 
-```bash
-python3 -m pip install -r requirements.txt
-```
 
-#### Set Environment Variables
+### VIDEO LINK FOR MAIN CHALLENGE
+`https://www.loom.com/share/9b62235061bf4f75950af2ea6ec5f439?sid=2e41f249-cb75-473e-a38d-baf6b5feb432`
 
-Replace the placeholders in the `.env` sample file with your actual Cloudflare credentials and configurations or copy from  `.env.sample`
 
-```plaintext
-ZONE_ID=your_zone_id_here
-CF_API_KEY=your_CF_API_KEY_here
-CF_API_EMAIL=your_CF_API_EMAIL_here
-```
+### Monitoring Implementation
 
-#### Start the Development Server
+I have implemented my monitoring using Premetheus and Grafana, configured together to bring metrics from the pods running on my EKS cluster... below is a link to the recorded video showing the monitoring i implemented...
 
-```bash
-export FLASK_APP=main.py
-export FLASK_ENV=development
-flask run
-```
-
-The Flask API server will be running on [http://localhost:5000](http://localhost:5000).
-
-### 3. Frontend Setup
-
-Navigate to the frontend directory, install the required packages, and start the development server.
-
-#### Install Dependencies
-
-```bash
-npm install
-```
-
-Or if you're using Yarn:
-
-```bash
-yarn install
-```
-
-#### Set Environment Variables
-
-Ensure that your `.env` file is populated with the necessary environment variables for development.
-
-```plaintext
-VUE_APP_PROXY_URL=http://localhost:5000/
-```
-
-#### Start the Development Server
-
-```bash
-npm run serve
-```
-
-Or for Yarn users:
-
-```bash
-yarn serve
-```
-
-Access the application on [http://localhost:8080](http://localhost:8080).
-
-## Participation in the Challenge
-
-For details on participating in the challenge, including writing a Dockerfile, setting up a CI/CD pipeline, and implementing Infrastructure as Code (IaC), please refer to the detailed challenge instructions provided.
-
-Make sure to use the provided pull request template when submitting your solutions to facilitate a uniform and organized evaluation process.
-
-For any questions or clarifications, reach out on the dedicated Slack channel. Happy coding!
+`https://www.loom.com/share/32f7a886ddc940a9ba13e0bb8a481275?sid=671120ac-c4a2-4471-b206-e49b41f60437`

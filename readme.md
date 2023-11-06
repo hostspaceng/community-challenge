@@ -1,4 +1,4 @@
-### LINKS FOR THE RECORDED VIDEOS WILL BE SEEN AT THE END OF THIS DOCUMENTATION
+# LINKS FOR THE RECORDED VIDEOS WILL BE SEEN AT THE END OF THIS DOCUMENTATION
 
 
 ### Dockerfiles
@@ -25,3 +25,8 @@ Here i made use of Jenkins, with my jenkins file and integrating my jenkins to m
 ### IaC using AWS CloudFormation
 
 Upon deploying my images to my ECR repros, i then moved on to deploy my cloudformation stack `hostober_challenge_cloudformation.yaml` and `vpc_stack.yaml` which creates an EKS cluster and all networking configuration under the VPC automatically. I made configuration files for my EKS deployment and also for nginx ingress crontroler whih help me create an Elastic Load Balancer to help route traffic to my application and deployed my application to my EKS cluster.
+
+
+
+### VIDEO LINK FOR MAIN CHALLENGE
+`https://www.loom.com/share/9b62235061bf4f75950af2ea6ec5f439?sid=2e41f249-cb75-473e-a38d-baf6b5feb432`

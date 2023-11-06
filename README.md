@@ -1,104 +1,97 @@
-# Cloudflare Domains Manager
+# Instructions to Deploy the Community Challenge App
 
-Manage your Cloudflare domains with ease using the Cloudflare Domains Manager. This responsive and efficient application is built with a Vue.js frontend and a Python Flask backend.
+This project deploys the community challenge on AWS, using Elastic Container Service to deploy the containers using FARGATE as the compute. This readme guides on how you an deploy the application on your specified AWS Account. It uses terraform to spin up the whole resources. The table below, lists the core resources that will be created by terraform
 
-![Screenshot](screenshot.png)
+| Name | Shortcode |
+| --- | --- | 
+| VPC | `:heavy_check_mark:` |
+| 2 private Subnets | `:heavy_check_mark:`|
+| 2 Public Subnets  | `:heavy_check_mark:`|
+| Internet Gateway  | `:heavy_check_mark:`|
+| NAT Gateway       | `:heavy_check_mark:`|
+| ECS Service       | `:heavy_check_mark:`|
+| ECS Cluster       | `:heavy_check_mark:`|
+| Task Definition   | `:heavy_check_mark:`|
+| Load Balancer     | `:heavy_check_mark:`|
+| IAM Roles         | `:heavy_check_mark:`|
+| ECR               | `:heavy_check_mark:`|
+| EC2 (Grafana)     | `:heavy_check_mark:`|
+| Cloud watch log group | `:heavy_check_mark:`|
+
+
+
+![architeture](./img/download.jpeg)
 
 
 ## Prerequisites
 
-Ensure the following prerequisites are installed on your machine:
+Ensure that you have the below listed in the table below in the github actions secrets/environment variables. Consider an exmaple of it in the example section. Ensure you have an AWS Account.
+Head over to your AWS account and create an s3 Bucket. This bucket name is what is going to be passed in the secrets. The bucket will be used to store terraform state files. 
 
-### Backend
+### Environment Variables
 
-- Python 3.9+
-- Flask
+| Environment Variable | Example |
+| --- | | --- |
+| AWS_REGION | us-west-2 |
+| PROJECT_NAME | community-challenge |
 
-### Frontend
+Ensure that the project_name you specify in the environemnt variable is the same with the variable in `terraform.tfvars` file named `project_name`
 
-- Node.js 14+
-- npm or yarn
+### Actions Secrets
+
+| Secret_Name | Example |
+| --- | | --- |
+| AWS_ACCESS_KEY_ID | AKIAIOSFODNN7EXAMPLE  |
+| AWS_SECRET_ACCESS_KEY | wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY  |
+| AWS_BUCKET_NAME | community-challenge-state-bucket-00995544 |
+| AWS_SECRET_ACCESS_KEY | terraform/tfstate |
 
 ## Setup & Installation
 
-Follow these instructions to set up the development environment on your local machine.
+Follow these instructions to set up the development environment on your AWS Account.
 
-### 1. Clone the Repository
+### 1. Deploy Terraform
 
-Clone the repository from [https://github.com/hostspaceng/challenge](https://github.com/hostspaceng/challenge).
+Before you deploy the terraform infra, look in `var.tf` and `terraform.tfvars` you'll find a variable named `key_pair_name` edit the key name there to the name of a specific access key in your AWS Account. You can create one in the management console.
 
-```bash
-git clone https://github.com/hostspaceng/challenge.git
-cd challenge
-```
+After you change the variable, create a new branch locally add and commit your changes. Push to the new branch and then create a pull request to the main branch. The pull request will trigger a pipeline in that will validate the configuration and generate a terraform plan.
 
-### 2. Backend Setup
+You should have a response in the pull requests page similar to the image below
 
-Navigate to the backend directory, install the required packages, and start the Flask development server.
+![Pull_Request](./img/pull_req.png)
 
-#### Install Dependencies
+If the above generates a successful plan, them merge the pull request to the main branch (you can delete the branch). After the merge, it will generate another pipeline in that will apply the terraform configuration to your AWS account.
 
-```bash
-python3 -m pip install -r requirements.txt
-```
+### 2. Set Secrets
 
-#### Set Environment Variables
+If the apply pipeline is successful, head over to your management console. You should find 3 secrets there. Go into the secrets and set the value of each of them. Check in the `/backend` directory, you'll find a file `.env.local` copy only the values of each of them and paste them into the specified secrets.
 
-Replace the placeholders in the `.env` sample file with your actual Cloudflare credentials and configurations or copy from  `.env.sample`
+### 3. Application Setup
 
-```plaintext
-ZONE_ID=your_zone_id_here
-CF_API_KEY=your_CF_API_KEY_here
-CF_API_EMAIL=your_CF_API_EMAIL_here
-```
+Head over to the `/backend` directory and trigger a change there. Maybe just add some empty line of code in the dockerfile to generate a change. Do same in the `/frontend` directory
 
-#### Start the Development Server
+Push the changes. It will trigger two pipelines that will deploy the app in the ECR repository,place the tags and deploy to the cluster.
 
-```bash
-export FLASK_APP=main.py
-export FLASK_ENV=development
-flask run
-```
+### 4 Check application
 
-The Flask API server will be running on [http://localhost:5000](http://localhost:5000).
+If the pipelines run successfully, head over to your management console, check load balancers, you'll find a loadbalancer named `community-challenge-lb` copy the DNS name and access the application from the load balancer.
 
-### 3. Frontend Setup
+## Images
 
-Navigate to the frontend directory, install the required packages, and start the development server.
+ECS Cluster
+![Cluster](./img/aws-1.png)
 
-#### Install Dependencies
+ECS Service
+![Service](./img/aws-2.png)
 
-```bash
-npm install
-```
+ECS Deployments
+![Deployments](./img/deployments.png)
 
-Or if you're using Yarn:
+Tasks
+![Tasks](./img/tasks.png)
 
-```bash
-yarn install
-```
-
-#### Set Environment Variables
-
-Ensure that your `.env` file is populated with the necessary environment variables for development.
-
-```plaintext
-VUE_APP_PROXY_URL=http://localhost:5000/
-```
-
-#### Start the Development Server
-
-```bash
-npm run serve
-```
-
-Or for Yarn users:
-
-```bash
-yarn serve
-```
-
-Access the application on [http://localhost:8080](http://localhost:8080).
+Running Application
+![App](./img/app.png)
 
 ## Participation in the Challenge
 

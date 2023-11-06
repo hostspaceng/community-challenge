@@ -16,7 +16,7 @@ This project deploys the community challenge on AWS, using Elastic Container Ser
 | IAM Roles         | :heavy_check_mark:|
 | ECR               | :heavy_check_mark:|
 | EC2 (Grafana)     | :heavy_check_mark:|
-| Cloud watch log group | `:heavy_check_mark:`|
+| Cloud watch log group | :heavy_check_mark:|
 
 
 

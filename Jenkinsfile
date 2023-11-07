@@ -120,7 +120,7 @@ pipeline {
                         docker build --build-arg backend_endpoint=http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/proxy/ -t vue-app .
 
                         cd backend
-                        docker build -t python: .
+                        docker build -t python .
 
                         cd ..
 

@@ -18,9 +18,6 @@ spec:
         image: public.ecr.aws/l1z2o5a3/python-proxy:v1.0.2
         ports:
         - containerPort: 5000
-      env:
-      - name: version
-        value: $version
 
 
 ---
@@ -63,9 +60,6 @@ spec:
         image: public.ecr.aws/l1z2o5a3/vue-app:v1.0.2
         ports:
         - containerPort: 80
-      env:
-      - name: version
-        value: $version
 
 
 ---

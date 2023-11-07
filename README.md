@@ -1,4 +1,4 @@
-# Cloudflare Domains Manager
+# Deploying Cloudflare Domains Manager
 Cloudflare is a large network of servers that can improve the security, performance and, reliability of anything connected to the internet. 
 
 Manage your Cloudflare domains with ease using the Cloudflare Domains Manager. This responsive and efficient application is built with a Vue.js frontend and a Python Flask backend.
@@ -692,9 +692,16 @@ kubectl get svc
 
 To view the page, copy and paste your `EXTERNAL_IP` address in your browser
 
-Mine will be running on ``` http://74.220.29.49:9090 ``` for the prometheus server and ``` http://74.220.24.192 ``` for the grafana server
+Mine will be running on ``` http://74.220.29.49:9090 ``` for the prometheus server and ``` http://74.220.24.192 ``` for the grafana server.
+
 
 ![Grafana](./Images/grafana.png)
 
 
 ![Memory-grafana](./Images/memory.png)
+
+Monitor Pod CPU and Memory usage: This dashboard is used to monitor the CPU and Memory usage of you applications in the pods in the kubernetes cluster.
+
+In this step we have successfully been able to monitor our application memory usage using grafana and prometheus. 
+
+With the following steps, you will be able to deploy the Vue application which communicates with the Flask API to generate Cloudflare Domains.

@@ -7,10 +7,9 @@ pipeline {
         CF_API_KEY = credentials('CF_API_KEY')
         CF_API_EMAIL = credentials('CF_API_EMAIL')
 
-        //Define this environmental variable to verison to my application's docker image
+        // Define this environmental variable to version to my application's docker image
         def buildNumber = env.BUILD_NUMBER.toInteger()
-        def version = "1.0.${buildNumber}"
-        echo "Setting application version to: ${version}"
+        def version = '1.0.${buildNumber}'
     }
 
     stages {
@@ -53,20 +52,15 @@ pipeline {
                     //here i will test and send requests to my running fontend docker container of my 
                     //applciation to test if they are configured properly and if they are up and running
                     sh """
-
-                        # Make API requests using cURL
                         curl -X GET http://localhost:8080
 
+                        if [ \$? -eq 0 ]; then
+                            HTTP_STATUS=\$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080")
 
-                        # Check the HTTP status code (response code)
-                        if [ $? -eq 0 ]; then
-                            # If the exit status is 0, the cURL request was successful, and the HTTP status code is accessible in the response headers.
-                            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080")
-
-                            if [ "$HTTP_STATUS" -eq 200 ]; then
-                                echo "HTTP Status Code: $HTTP_STATUS (OK)"
+                            if [ "\$HTTP_STATUS" -eq 200 ]; then
+                                echo 'HTTP Status Code: \$HTTP_STATUS (OK)'
                             else
-                                echo "HTTP Status Code: $HTTP_STATUS (Not OK)"
+                                echo 'HTTP Status Code: \$HTTP_STATUS (Not OK)'
                                 exit 1
                             fi
                         else
@@ -95,14 +89,14 @@ pipeline {
 
 
                         # Check the HTTP status code (response code)
-                        if [ $? -eq 0 ]; then
+                        if [ \$? -eq 0 ]; then
                             # If the exit status is 0, the cURL request was successful, and the HTTP status code is accessible in the response headers.
-                            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:5000")
+                            HTTP_STATUS=\$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:5000")
 
-                            if [ "$HTTP_STATUS" -eq 200 ]; then
-                                echo "HTTP Status Code: $HTTP_STATUS (OK)"
+                            if [ "\$HTTP_STATUS" -eq 200 ]; then
+                                echo 'HTTP Status Code: \$HTTP_STATUS (OK)'
                             else
-                                echo "HTTP Status Code: $HTTP_STATUS (Not OK)"
+                                echo 'HTTP Status Code: \$HTTP_STATUS (Not OK)'
                                 exit 1
                             fi
                         else
@@ -116,8 +110,6 @@ pipeline {
                 }
             }
         }
-    }
-
 
         stage('Build Docker Images for deployment') {
             steps {
@@ -168,6 +160,12 @@ pipeline {
         }
 
 
+    }
+
+
+        
+
+
     post {
         success {
             script {
@@ -205,14 +203,14 @@ pipeline {
 
 
                         # Check the HTTP status code (response code)
-                        if [ $? -eq 0 ]; then
+                        if [ \$? -eq 0 ]; then
                             # If the exit status is 0, the cURL request was successful, and the HTTP status code is accessible in the response headers.
-                            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/")
+                            HTTP_STATUS=\$(curl -s -o /dev/null -w "%{http_code}" "http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/")
 
-                            if [ "$HTTP_STATUS" -eq 200 ]; then
-                                echo "HTTP Status Code: $HTTP_STATUS (OK)"
+                            if [ "\$HTTP_STATUS" -eq 200 ]; then
+                                echo 'HTTP Status Code: \$HTTP_STATUS (OK)'
                             else
-                                echo "HTTP Status Code: $HTTP_STATUS (Not OK)"
+                                echo 'HTTP Status Code: \$HTTP_STATUS (Not OK)'
                                 exit 1
                             fi
                         else
@@ -229,14 +227,14 @@ pipeline {
 
 
                         # Check the HTTP status code (response code)
-                        if [ $? -eq 0 ]; then
+                        if [ \$? -eq 0 ]; then
                             # If the exit status is 0, the cURL request was successful, and the HTTP status code is accessible in the response headers.
-                            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/")
+                            HTTP_STATUS=\$(curl -s -o /dev/null -w "%{http_code}" "http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/")
 
-                            if [ "$HTTP_STATUS" -eq 200 ]; then
-                                echo "HTTP Status Code: $HTTP_STATUS (OK)"
+                            if [ "\$HTTP_STATUS" -eq 200 ]; then
+                                echo 'HTTP Status Code: \$HTTP_STATUS (OK)'
                             else
-                                echo "HTTP Status Code: $HTTP_STATUS (Not OK)"
+                                echo 'HTTP Status Code: \$HTTP_STATUS (Not OK)'
                                 exit 1
                             fi
                         else
@@ -249,7 +247,6 @@ pipeline {
             }
         }
     }
-        }
         failure {
             // Actions to take when the pipeline fails.
 
@@ -260,5 +257,4 @@ pipeline {
             def buildNumber = env.BUILD_NUMBER.toInteger()
             echo "This is pipeline run number: ${buildNumber}"
         }
-    }
-}
+

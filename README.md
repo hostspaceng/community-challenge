@@ -621,3 +621,80 @@ Copy and paste the URL in your browser and the output should look like this:
 ![web-page](./Images/web-page.png)
 
 ![load-balancer-proxy](./Images/load-balancer-proxy.png)
+
+
+### 9. Monitoring the application using prometheus and grafana
+
+In this step, we will be monitoring our application memory usage using grafana and prometheus.
+
+We will be using the helm package manager to install both the prometheus and grafana with the help helm charts.
+
+Helm is a package manager for kubernetes. 
+
+To install helm, run the following command: 
+
+```
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+```
+
+To install the helm chart for prometheus and grafana, run the following command:
+
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install [RELEASE_NAME] prometheus-community/kube-prometheus-stack
+
+```
+
+Replace the `RELEASE_NAME` with your release name.
+
+Run the following command to view the running pods and service for the prometheus and grafana server
+
+``` 
+kubectl get pods
+```
+![prom-pod](./Images/prom.png)
+
+```
+kubectl get svc
+```
+
+![prom-pod](./Images/prom-svc.png)
+
+In here, I have already configure the service type of the prometheus and grafana server to run on a LoadBalancer. 
+
+To access the prometheus and grafana page, you need to configure the service type for both the prometheus and grafana service file. 
+
+Run the following command to configure the service type:
+
+```
+kubectl get svc prometheus-kube-prometheus-prometheus -oyaml > prom.yaml
+
+kubectl get svc prometheus-grafana -oyaml > gra.yaml
+```
+Nano into the file and navigate down to the type and change the `ClusterIP` to `LoadBalancer`.
+
+Run the following code to apply the changes to the file:
+
+``` kubectl apply -f prom.yaml ```
+
+``` kubectl apply -f gra.yaml ```
+
+After successfully applying the file. To get the service type, run the following command:
+
+```
+kubectl get svc
+```
+
+![prom-pod](./Images/prom-svc.png)
+
+To view the page, copy and paste your `EXTERNAL_IP` address in your browser
+
+Mine will be running on ``` http://74.220.29.49:9090 ``` for the prometheus server and ``` http://74.220.24.192 ``` for the grafana server
+
+![Grafana](./Images/grafana.png)
+
+
+![Memory-grafana](./Images/memory.png)

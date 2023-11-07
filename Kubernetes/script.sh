@@ -13,7 +13,7 @@ start_time=$(date +%s)
 # Use a while loop to check for the URL
 while true; do
   # Get the load balancer hostname
-  lb_hostname=$(kubectl get svc $service_name -o json | jq -r ".status.loadBalancer.ingress[0].hostname")
+  lb_hostname=$(kubectl get svc $service_name -o json | jq -r ".status.loadBalancer.ingress[0].ip")
   
   if [ "$lb_hostname" != "null" ]; then
     # Construct the URL

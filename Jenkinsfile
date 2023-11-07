@@ -117,10 +117,10 @@ pipeline {
                 // here i will build my docker images and run them locally for testing...
                 sh """
 
-                        docker build --build-arg backend_endpoint=http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/proxy/ -t vue-app .
+                        docker build --build-arg backend_endpoint=http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/proxy/ -t vue-app:${version} .
 
                         cd backend
-                        docker build -t python .
+                        docker build -t python:${version} .
 
                         cd ..
 
@@ -145,12 +145,12 @@ pipeline {
 
                     sh """
 
-                            docker tag python public.ecr.aws/l1z2o5a3/python-proxy:v1.0.2
-                            docker push public.ecr.aws/l1z2o5a3/python-proxy:v1.0.2
+                            docker tag python:${version} public.ecr.aws/l1z2o5a3/python-proxy
+                            docker push public.ecr.aws/l1z2o5a3/python-proxy:latest
 
 
-                            docker tag vue-app public.ecr.aws/l1z2o5a3/vue-app:v1.0.2
-                            docker push public.ecr.aws/l1z2o5a3/vue-app:v1.0.2
+                            docker tag vue-app:{version} public.ecr.aws/l1z2o5a3/vue-app
+                            docker push public.ecr.aws/l1z2o5a3/vue-app:latest
 
                     """
                 }

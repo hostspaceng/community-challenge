@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: vue-js-cloudflare
-        image: franklyn27181/cloudflare:1.1
+        image: franklyn27181/cloudflare:2.1
         ports:
         - containerPort: 80
 
@@ -29,7 +29,7 @@ spec:
   selector:
     app: vue-js-frontend
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
+  - protocol: TCP
+    port: 80
+    targetPort: 80
   type: LoadBalancer

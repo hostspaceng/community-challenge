@@ -376,24 +376,25 @@ nano main.tf
 
 ```
 # Query small instance size
-data "civo_size" "xsmall" {
+data "civo_size" "medium" {
     filter {
-        key = "type"
-        values = ["kubernetes"]
+        key = "name"
+        values = ["g4s.kube.medium"]
+        match_by = "re"
     }
 
 }
 
 
 # Create a firewall
-resource "civo_firewall" "my-firewall" {
-    name = "my-firewall"
+resource "civo_firewall" "my-firewall-demo" {
+    name = "my-firewall-demo"
     
 }
 
 # Create a firewall rule
 resource "civo_firewall_rule" "kubernetes_api" {
-    firewall_id = civo_firewall.my-firewall.id
+    firewall_id = civo_firewall.my-firewall-demo.id
     protocol = "tcp"
     start_port = "6443"
     end_port = "6443"
@@ -405,15 +406,15 @@ resource "civo_firewall_rule" "kubernetes_api" {
 
 
 # Create a cluster with k3s
-resource "civo_kubernetes_cluster" "k8s_demo_1" {
-    name = "k8s_demo_1"
-    applications = ""
-    firewall_id = civo_firewall.my-firewall.id
-    cluster_type = "k3s"
-    pools {
-        size = element(data.civo_size.xsmall.sizes, 0).name
-        node_count = 3
-    }
+resource "civo_kubernetes_cluster" "k8s-cluster" {
+    name       = "k8s-cluster"
+  applications = ""
+  firewall_id = civo_firewall.my-firewall-demo.id
+  num_target_nodes = 3
+  pools {
+    node_count = 3
+    size = element(data.civo_size.medium.sizes, 0).name
+  }
 }
 
 ```
@@ -428,6 +429,178 @@ Run the following commands:
 
 `terraform apply` To apply the resources
 
+![k8s-dashboard](./Images/k8s.png)
 
-You have successfully created your Kubernetes cluster. Next, we will be automating the kubernetes file to deploy the application to a LoadBalancer.
+You have successfully created your Kubernetes cluster. Next, we will be automating the kubernetes manifest files to deploy the application to a LoadBalancer.
 
+### 8. Creating and Automating kubernetes manifests
+
+After applying your resources using terraform, You need to download the Kubernetes configuration file from the civo provider or the provider you created in the `provided.tf` file and store it in a `.kube/config` file before running the kubectl command.
+
+To store the kubeconfig file in the `.kube/config` file:
+
+(i) Create a `.kube/` directory and `cd` into the directory
+
+`mkdir .kube/`
+
+(ii) Create a config file in the `.kube/` directory and copy and paste your kubeconfig contents in the config file
+
+`cd .kube/ && nano config`
+
+Save and exit the file. 
+
+(iii) Verify the kubectl command is running using:
+
+``` kubectl apply -h ```
+
+(iv) Create a `secret.yaml` file to store the value of the `CF_API_KEY` variable. The `CF_API_KEY` value is first encrypted before being added as a data to your file. 
+
+Run the following command for encryption:
+
+```
+echo -n CF_API_KEY | base64 -w 0
+```
+
+Run the ``` kubectl apply -f secret.yaml``` to apply your secret resource.
+
+(v) Create a `configmap.yaml` file to store your environment variables needed by the flask and vue application.
+
+Copy and paste the following code in your `configmap.yaml` file: 
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: application-configmap
+data:
+  zone_id: 88212a53b6feba598b197f3508f35b52 
+  cf_api_email: safe@hostspaceng.com
+#  vue_app_proxy: ''
+
+```
+
+Replace the value in the `zone_id` and `cf_api_email` with your zone_id and cf_api_email address
+
+(vi) Create a single deployment and service file named `python-deployment-service.yaml` to create both the deployment and service used to serve the flask application. The application will be running on a `LoadBalancer` service type. 
+
+copy and paste the following code into the file: 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-flask-backend
+  labels:
+    app: python-flask-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: python-flask-backend
+  template:
+    metadata:
+      labels:
+        app: python-flask-backend
+    spec:
+      containers:
+      - name: python-flask-app-deployment
+        image: franklyn27181/cloudflare:2.0
+        ports:
+        - containerPort: 5000
+        env:
+        - name: ZONE_ID
+          valueFrom:
+            configMapKeyRef:
+              name: application-configmap
+              key: zone_id
+        - name: CF_API_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              name: application-configmap
+              key: cf_api_email
+        - name: CF_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: application-secret
+              key: cf_api_key
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-flask-backend-service
+spec:
+  selector:
+    app: python-flask-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer
+
+```
+
+Run the following command to apply the resources: 
+
+``` kubectl apply -f python-deployment-service.yaml```
+
+
+(vii) Create a single deployment and service file named `vue-js-deployment-service.yaml` to create both the deployment and service used to serve the vue-js application. The application will be running on a `LoadBalancer` service type. 
+
+copy and paste the following code into the file: 
+
+``` 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-js-deployment
+  labels:
+    app: vue-js-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vue-js-frontend
+  template:
+    metadata:
+      labels:
+        app: vue-js-frontend
+    spec:
+      containers:
+      - name: vue-js-cloudflare
+        image: franklyn27181/cloudflare:2.1
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vue-js-frontend-service
+spec:
+  selector:
+    app: vue-js-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+
+```
+
+Run the following command to apply the resources: 
+
+``` kubectl apply -f vue-js-deployment-service.yaml```
+
+After successfully creating and applying your manifest files. 
+
+To see your running pods and services, run the following commands: 
+
+<!-- To get the running pods for your resources-->
+
+``` kubectl get pods ``` 
+
+<!-- To get the running services for your resources  -->
+
+``` kubectl get svc ```

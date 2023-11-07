@@ -15,7 +15,7 @@ spec:
       hostNetwork: true
       containers:
       - name: python-project
-        image: public.ecr.aws/l1z2o5a3/python-proxy:$version
+        image: public.ecr.aws/l1z2o5a3/python-proxy:v1.0.2
         ports:
         - containerPort: 5000
       env:
@@ -60,7 +60,7 @@ spec:
       hostNetwork: true
       containers:
       - name: vue-project
-        image: public.ecr.aws/l1z2o5a3/vue-app:$version
+        image: public.ecr.aws/l1z2o5a3/vue-app:v1.0.2
         ports:
         - containerPort: 80
       env:

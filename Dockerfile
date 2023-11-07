@@ -4,6 +4,7 @@ WORKDIR /app
 COPY frontend/package*.json ./
 RUN npm install
 COPY frontend/ .
+ARG backend_endpoint
 ENV VUE_APP_PROXY_URL=$backend_endpoint
 RUN npm run build
 

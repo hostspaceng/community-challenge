@@ -31,7 +31,7 @@ pipeline {
 
                         export backend_endpoint=http://localhost:5000
 
-                        docker build -t vue-app .
+                        docker build --build-arg  backend_endpoint=http://localhost:5000 -t vue-app .
 
                         cd backend
                         docker build -t python .
@@ -117,12 +117,10 @@ pipeline {
                 // here i will build my docker images and run them locally for testing...
                 sh """
 
-                        export backend_endpoint=http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/proxy/
-
-                        docker build -t vue-app:$version .
+                        docker build --build-arg backend_endpoint=http://aacf724f1ada5446cb70e439e677aa09-761205241.us-east-1.elb.amazonaws.com/proxy/ -t vue-app .
 
                         cd backend
-                        docker build -t python:$version .
+                        docker build -t python: .
 
                         cd ..
 
@@ -147,12 +145,12 @@ pipeline {
 
                     sh """
 
-                            docker tag python:$version public.ecr.aws/l1z2o5a3/python-proxy:$version
-                            docker push public.ecr.aws/l1z2o5a3/python-proxy:$version
+                            docker tag python public.ecr.aws/l1z2o5a3/python-proxy:v1.0.2
+                            docker push public.ecr.aws/l1z2o5a3/python-proxy:v1.0.2
 
 
-                            docker tag vue-app:$version public.ecr.aws/l1z2o5a3/vue-app:$version
-                            docker push public.ecr.aws/l1z2o5a3/vue-app:$version
+                            docker tag vue-app public.ecr.aws/l1z2o5a3/vue-app:v1.0.2
+                            docker push public.ecr.aws/l1z2o5a3/vue-app:v1.0.2
 
                     """
                 }
@@ -183,8 +181,6 @@ pipeline {
                 }
 
                     sh """
-
-                            export version=$version
 
                             kubectl apply -f /k8s/eks_deployments.yaml
 

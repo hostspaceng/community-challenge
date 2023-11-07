@@ -145,11 +145,11 @@ pipeline {
 
                     sh """
 
-                            docker tag python:${version} public.ecr.aws/l1z2o5a3/python-proxy
+                            docker tag python:${version} public.ecr.aws/l1z2o5a3/python-proxy:latest
                             docker push public.ecr.aws/l1z2o5a3/python-proxy:latest
 
 
-                            docker tag vue-app:${version} public.ecr.aws/l1z2o5a3/vue-app
+                            docker tag vue-app:${version} public.ecr.aws/l1z2o5a3/vue-app:latest
                             docker push public.ecr.aws/l1z2o5a3/vue-app:latest
 
                     """

@@ -53,7 +53,7 @@ FROM nginx:alpine
 # change to the working directoy
 WORKDIR /app
 
-# copy the frontend b
+# copy the frontend build to /app/dist
 COPY --from=web /app/dist /app/dist
 
 # remove the default nginx configuration file

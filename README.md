@@ -234,6 +234,8 @@ Once you are done adding the script and credentials, you need to git add, commit
 
 The workflow will be triggered in the response to your push event you created in your file.
 
+To see your running workflow action, navigate to the Actions page, you can see the build running with the git commit message. To see the build running click on the git commit message. You can see, in my own Actions my running build is `update files`
+
 ``` 
 on:
   push:

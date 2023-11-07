@@ -139,9 +139,9 @@ Check out [introduction to github actions](https://www.telerik.com/blogs/introdu
 
 ``` cd .github/workflows ```
 
-(iii) Create a main.yaml file to store your workflow:
+(iii) Create a main.yml file to store your workflow:
 
-``` touch main.yaml ```
+``` touch main.yml ```
 
 You will need to create the credentials for the docker hub to enable you to push the image to docker hub or any private respository of your choice
 
@@ -184,7 +184,7 @@ Click on the `Add secret` to save the secret.
 You have successfully created your secrets to store your private repository credential!. 
 
 
-(v) Copy and paste the following code into the `main.yaml`
+(v) Copy and paste the following code into the `main.yml`
 
 ```
 name: continuous integration
@@ -234,8 +234,6 @@ Once you are done adding the script and credentials, you need to git add, commit
 
 The workflow will be triggered in the response to your push event you created in your file.
 
-To see your running workflow action, navigate to the Actions page, you can see the build running with the git commit message. To see the build running click on the git commit message. You can see, in my own Actions my running build is `update files`
-
 ``` 
 on:
   push:
@@ -244,6 +242,192 @@ on:
 
 ```
 
+To see your running workflow action, navigate to the Actions page, you can see the build running with the git commit message. To see the build running click on the git commit message. You can see, in my Actions my running commit message is `update files`
+
+![github-repo-setting](./Images/github-build.png)
+
+click on your running build, you will find the name of your job which you used in the `main.yml` file. 
+
+```
+jobs:
+  build: # using the build as a reference to the name of the job  
+    runs-on: ubuntu-latest
+    steps:
+```
+
+![github-repo-setting](./Images/github-buld.png.png)
+
+Click on the <b>build</b>, you will find all your running jobs for your workflow.
+
+![github-repo-setting](./Images/github-build2.png)
+
+Now, you have succesfully build and push your docker image to private repository using continuous integration with github actions.
+
+
 ### 6. Pulling and running the docker image locally
 
 In this step, we will be pulling and running our application locally using the `docker run` command.
+
+run this command to pull your docker image from your private repository:
+
+```
+docker pull franklyn27181/cloudflare:2.0
+
+docker pull franklyn27181/cloudflare:2.1
+
+```
+Replace the `franklyn27181/cloudflare:2.1 and franklyn27181/cloudflare:2.0` with your image name and tag.
+
+You should see an output like this:
+
+![docker pull](./Images/docker-pull.png)
+
+
+![docker pull](./Images/docker-pull2.png)
+
+
+To view your docker image use the command below:
+
+`docker images`
+
+run the following command to run your docker image:
+
+```
+docker run -d -p 5000:5000 franklyn27181/cloudflare:2.0
+
+docker run -d -p 80:80 franklyn27181/cloudflare:2.1
+```
+
+![docker pull](./Images/docker-pull3.png)
+
+
+The container will run in detach mode using your built image.The backend container will be running on port 5000 and the frontend container will be running on port 80 or just using the url.
+
+You can access your container on the web page using your ip address and the port you are using to run your containers. Like this:
+
+`http://YOUR_IP_ADDRESS:5000` 
+
+
+`http://YOUR_IP_ADDRESS`
+
+i will be using `http://192.168.0.120/` to run the containers.
+
+
+You should see an output like this:
+
+![docker pull](./Images/local.png)
+
+![docker pull](./Images/local-host.png)
+
+![docker pull](./Images/output.png)
+
+
+### 7. Automating the Kubernetes cluster using terraform
+
+We will be automating our kubernetes cluster using terraform. We will using civo provider to manage the clusters. You can use any cloud provider of your choice.
+
+(i) Create a `Iac` directory 
+```
+mkdir IaC
+```
+
+(ii) Change directory to the Iac directory
+```
+cd IaC
+```
+
+(iii) Create a `provider.tf` and `civo.tf` file. `The provider.tf` will be used to manage your provider infrastructure and the `civo.tf` will be used to automate your cluster.
+
+```
+touch provider.tf && touch main.tf
+```
+
+copy and paste the following code into your `provider.tf` and `civo.tf` file 
+
+```
+nano provider.tf # this command opens the file in an editor
+```
+
+```
+terraform {
+  required_providers {
+    civo = {
+      source = "civo/civo"
+      version = "1.0.39"
+    }
+  }
+}
+
+provider "civo" {
+  token = var.civo_token
+  region = "FRA1"
+}
+
+```
+
+Save the file.
+
+Copy and paste the following code into your `civo.tf` file
+
+```
+nano main.tf
+```
+
+
+```
+# Query small instance size
+data "civo_size" "xsmall" {
+    filter {
+        key = "type"
+        values = ["kubernetes"]
+    }
+
+}
+
+
+# Create a firewall
+resource "civo_firewall" "my-firewall" {
+    name = "my-firewall"
+    
+}
+
+# Create a firewall rule
+resource "civo_firewall_rule" "kubernetes_api" {
+    firewall_id = civo_firewall.my-firewall.id
+    protocol = "tcp"
+    start_port = "6443"
+    end_port = "6443"
+    cidr = ["0.0.0.0/0"]
+    direction = "ingress"
+    label = "kubernetes-api-server"
+    action = "allow"
+}
+
+
+# Create a cluster with k3s
+resource "civo_kubernetes_cluster" "k8s_demo_1" {
+    name = "k8s_demo_1"
+    applications = ""
+    firewall_id = civo_firewall.my-firewall.id
+    cluster_type = "k3s"
+    pools {
+        size = element(data.civo_size.xsmall.sizes, 0).name
+        node_count = 3
+    }
+}
+
+```
+
+After adding the files, save the file and exit the editor using `ctrl + o ` to save and `ctrl + x` to exit. 
+
+Run the following commands:
+
+`terraform init` To initialize your files and provider
+
+`terraform plan` To see your resources that are being created 
+
+`terraform apply` To apply the resources
+
+
+You have successfully created your Kubernetes cluster. Next, we will be automating the kubernetes file to deploy the application to a LoadBalancer.
+

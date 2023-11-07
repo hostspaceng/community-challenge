@@ -37,4 +37,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:2.1
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:1.1

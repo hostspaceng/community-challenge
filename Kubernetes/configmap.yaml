@@ -5,4 +5,4 @@ metadata:
 data:
   zone_id: 88212a53b6feba598b197f3508f35b52
   cf_api_email: safe@hostspaceng.com
-#  vue_app_proxy: 'http://74.220.27.97:5000'
+  vue_app_proxy_url: ''

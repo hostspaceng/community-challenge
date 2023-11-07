@@ -19,7 +19,12 @@ spec:
         image: franklyn27181/cloudflare:1.1
         ports:
         - containerPort: 80
-
+        env:
+        - name: VUE_APP_PROXY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: application-configmap
+              key: vue_app_proxy_url
 ---
 apiVersion: v1
 kind: Service

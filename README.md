@@ -604,3 +604,20 @@ To see your running pods and services, run the following commands:
 <!-- To get the running services for your resources  -->
 
 ``` kubectl get svc ```
+
+![k8s-pods](./Images/pods.png)
+
+
+![k8s-svc](./Images/svc.png)
+
+The applications can be reached with the URLs in the EXTERNAL_IP running on a LoadBalancer.
+
+The URL of the frontend `http://74.220.29.194`. Replace the URL with your LoadBalancer URL. 
+
+To get the API of the flask application, append the `/proxy` to the LoadBalancer URL.
+
+Copy and paste the URL in your browser and the output should look like this:
+
+![web-page](./Images/web-page.png)
+
+![load-balancer-proxy](./Images/load-balancer-proxy.png)

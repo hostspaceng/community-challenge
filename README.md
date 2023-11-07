@@ -224,7 +224,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:2.1
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/cloudflare:1.1
 ```
 
 Replace the `${{ secrets.DOCKERHUB_USERNAME }}` and `${{ secrets.DOCKERHUB_TOKEN }}` with your own environment variable you saved in the `Action` page.
@@ -273,10 +273,10 @@ run this command to pull your docker image from your private repository:
 ```
 docker pull franklyn27181/cloudflare:2.0
 
-docker pull franklyn27181/cloudflare:2.1
+docker pull franklyn27181/cloudflare:1.1
 
 ```
-Replace the `franklyn27181/cloudflare:2.1 and franklyn27181/cloudflare:2.0` with your image name and tag.
+Replace the `franklyn27181/cloudflare:1.1 and franklyn27181/cloudflare:2.0` with your image name and tag.
 
 You should see an output like this:
 
@@ -295,7 +295,7 @@ run the following command to run your docker image:
 ```
 docker run -d -p 5000:5000 franklyn27181/cloudflare:2.0
 
-docker run -d -p 80:80 franklyn27181/cloudflare:2.1
+docker run -d -p 80:80 franklyn27181/cloudflare:1.1
 ```
 
 ![docker pull](./Images/docker-pull3.png)
@@ -310,7 +310,7 @@ You can access your container on the web page using your ip address and the port
 
 `http://YOUR_IP_ADDRESS`
 
-i will be using `http://192.168.0.120/` to run the containers.
+i will be using `http://74.220.27.118` to run the containers.
 
 
 You should see an output like this:
@@ -569,7 +569,7 @@ spec:
     spec:
       containers:
       - name: vue-js-cloudflare
-        image: franklyn27181/cloudflare:2.1
+        image: franklyn27181/cloudflare:1.1
         ports:
         - containerPort: 80
 

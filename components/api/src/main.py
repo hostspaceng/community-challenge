@@ -3,11 +3,13 @@ from flask_cors import CORS
 import requests
 import os
 from dotenv import load_dotenv
+from prometheus_flask_exporter import PrometheusMetrics
 
 # Load environment variables from .env file during development
 load_dotenv()
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 CORS(app)
 
 ZONE_ID = os.getenv('ZONE_ID')

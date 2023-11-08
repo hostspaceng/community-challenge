@@ -1,0 +1,53 @@
+# Use python base as the build image
+FROM python:3.10.0-slim AS build
+
+# Install the Linux dependencies required for the project
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    curl \
+    build-essential
+
+# Install Poetry
+ENV POETRY_HOME="/opt/poetry" \
+    POETRY_VERSION="1.3.2"
+RUN curl -sSL https://install.python-poetry.org/ | python
+
+# Add Poetry to the path
+ENV PATH="$POETRY_HOME/bin:$PATH"
+
+# Allow poetry to create .venv file
+RUN poetry config virtualenvs.in-project true
+
+# Copy project files
+COPY pyproject.toml ./
+
+# Install dependencies
+RUN poetry install --no-root --only main
+
+# Copy source code:
+COPY src/ src/
+COPY .env .env
+
+SHELL ["/bin/bash", "-c"]
+RUN source .venv/bin/activate && pip install --upgrade pip
+RUN source .venv/bin/activate && pip install . --no-deps
+
+# Use python base as the runtime image
+FROM python:3.10.0-slim AS runtime
+
+# Set the working directory to easily interact with the python application
+WORKDIR /api/
+
+# Copy over only the needed resources from the build stage
+COPY --from=build .venv .venv
+COPY --from=build src src
+COPY --from=build .env .env
+
+# Set the python environment to work with the installed dependencies
+ENV PYTHONPATH "/api/.venv/bin:/api/.venv/lib/python3.10/site-packages"
+
+# Expose the Flask apllication port number
+EXPOSE 5000
+
+# Start the Flask application once the image is run
+CMD python src/main.py

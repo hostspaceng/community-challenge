@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-web
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - name: vue-web
+          image: kennedy/vue-web:stg-v1.0.0

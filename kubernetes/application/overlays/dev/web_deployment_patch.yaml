@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-web
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: vue-web
+          image: kennedyuche/vue-web:dev-v1.0.0

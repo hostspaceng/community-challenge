@@ -1,6 +1,10 @@
 # LINKS FOR THE RECORDED VIDEOS WILL BE SEEN AT THE END OF THIS DOCUMENTATION
 
 
+Frontend - Vue.js 
+Backend - Python-Flask
+Reverse Proxy server - Nginx
+
 ### Dockerfiles
 
 `/Dockerfile` for the vuejs front-end application

@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     
-                        git branch: 'main', url: 'https://github.com/abdulfrfr/community-challenge.git'
+                        echo "Checking out!"
                     
                 }
             }

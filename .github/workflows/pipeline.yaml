@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - dev
+      - stg
+      - prod
 
 env: 
   PROJECT_NAME: devops-challenge

@@ -108,7 +108,21 @@ For monitoring the K8s cluster and applications deployed on it, Prometheus and G
 **Screenshots/Links (if applicable):**
 - Include screenshots or links showcasing the deployed application, CI/CD pipelines, and monitoring dashboards.
 
-All images of applications running, pipeline successful run, services running on the cluster, grafana dashboard and prometheus webpage are in the repo of the Pull Requests.
+![web-page](/Images/docker-run-locally.png)
+![web-page-backend](/Images/docker-run-back.png)
+![github-actions](/Images/github-build.png)
+![github-actions](/Images/github-build2.png)
+![k8s](/Images/k8s.png)
+![load-balancer-web-page](/Images/loadbalancer.png)
+![load-balancer-web-page-backend](/Images/load-balancer-proxy.png)
+![grafana](/Images/grafana.png)
+![grafana-memory](/Images/memory.png)
+
+
+
+
+
+
 ---
 
 ### Testing the Solution

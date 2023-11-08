@@ -115,4 +115,4 @@ jobs:
 
     #- name: Run Docker container on EC2
      # run: ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@3.91.84.79 "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"eyChecking=no ubuntu@3.91.84.79 "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
-
+#

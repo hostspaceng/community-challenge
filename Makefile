@@ -57,19 +57,19 @@ run_app:
 .PHONY: deploy-apps
 deploy-apps:
 	@kubectl create namespace $(APP_NAMESPACE) 2>/dev/null || echo "Namespace $(APP_NAMESPACE) already exists"
-	@pushd "kubernetes/application/overlays/$(ENV)"; yq e -i '.spec.template.spec.containers[0].image = "$(DOCKER_USERNAME)/flask-api:$(ENV)-$(TAG)"' api_deployment_patch.yaml; popd
-	@pushd "kubernetes/application/overlays/$(ENV)"; yq e -i '.spec.template.spec.containers[0].image = "$(DOCKER_USERNAME)/vue-web:$(ENV)-$(TAG)"' web_deployment_patch.yaml; popd
-	@pushd "kubernetes/application/overlays/$(ENV)"; yq e -i '.data.PROXY_PASS = "http://api-service.$(APP_NAMESPACE).svc:5000"' web_config_patch.yaml; popd
+	@pushd "$(CWD)/kubernetes/application/overlays/$(ENV)"; yq e -i '.spec.template.spec.containers[0].image = "$(DOCKER_USERNAME)/flask-api:$(ENV)-$(TAG)"' api_deployment_patch.yaml; popd
+	@pushd "$(CWD)/kubernetes/application/overlays/$(ENV)"; yq e -i '.spec.template.spec.containers[0].image = "$(DOCKER_USERNAME)/vue-web:$(ENV)-$(TAG)"' web_deployment_patch.yaml; popd
+	@pushd "$(CWD)/kubernetes/application/overlays/$(ENV)"; yq e -i '.data.PROXY_PASS = "http://api-service.$(APP_NAMESPACE).svc:5000"' web_config_patch.yaml; popd
 	@echo 'Deploying the applications to k8s cluster in the $(APP_NAMESPACE) namespace ==============>'
-	@pushd "kubernetes/application"; kustomize build overlays/$(ENV) | kubectl -n $(APP_NAMESPACE) apply -f -; popd
+	@pushd "$(CWD)/kubernetes/application"; kustomize build overlays/$(ENV) | kubectl -n $(APP_NAMESPACE) apply -f -; popd
 
 .PHONY: setup-monitoring
 setup-monitoring:
 	@echo 'Updating the API service monitor file with the correct Namespace ==============>'
-	@pushd "kubernetes/monitoring/overlays"; yq e -i '.spec.namespaceSelector.matchNames[0] = "$(APP_NAMESPACE)"' api-service-monitor-patch.yaml; popd
+	@pushd "$(CWD)/kubernetes/monitoring/overlays"; yq e -i '.spec.namespaceSelector.matchNames[0] = "$(APP_NAMESPACE)"' api-service-monitor-patch.yaml; popd
 	@echo 'Deploying the monitoring setup to k8s cluster ==============>'
 	@kubectl create namespace monitoring 2>/dev/null || echo "Namespace monitoring already exists"
-	@pushd "kubernetes"; while ! kustomize build monitoring | kubectl apply --server-side -f -; do echo "Retrying to apply resources"; sleep 10; done; popd
+	@pushd "$(CWD)/kubernetes"; while ! kustomize build monitoring | kubectl apply --server-side -f -; do echo "Retrying to apply resources"; sleep 10; done; popd
 
 .PHONY: run-app
 run-app:
@@ -80,5 +80,5 @@ run-app:
 
 .PHONY: cleanup
 cleanup:
-	@pushd "kubernetes/application"; kustomize build base | kubectl -n $(APP_NAMESPACE) delete -f -; popd
-	@pushd "kubernetes"; kustomize build monitoring | kubectl delete -f -; popd
+	@pushd "$(CWD)/kubernetes/application"; kustomize build base | kubectl -n $(APP_NAMESPACE) delete -f -; popd
+	@pushd "$(CWD)/kubernetes"; kustomize build monitoring | kubectl delete -f -; popd

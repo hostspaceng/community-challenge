@@ -32,10 +32,10 @@ export default {
   },
   computed: {
     formattedDomains() {
-      return this.domains.map(domain => ({
-        ...domain,
-        modified_on: new Date(domain.modified_on).toDateString()
-      }));
+    return this.domains.map(domain => ({
+    ...domain,
+    modified_on: new Date(domain.modified_on).toDateString()
+  }));
     }
   },
   data() {

@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python
+  template:
+    metadata:
+      labels:
+        app: python
+    spec:
+      hostNetwork: true
+      containers:
+      - name: python-project
+        image: public.ecr.aws/l1z2o5a3/python-proxy:latest
+        ports:
+        - containerPort: 5000
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-service
+spec:
+  type: ClusterIP
+  selector:
+    app: python
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+
+
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  vue-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vue-app
+  template:
+    metadata:
+      labels:
+        app: vue-app
+    spec:
+      hostNetwork: true
+      containers:
+      - name: vue-project
+        image: public.ecr.aws/l1z2o5a3/vue-app:latest
+        ports:
+        - containerPort: 80
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vue-service
+spec:
+  type: ClusterIP
+  selector:
+    app: vue-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

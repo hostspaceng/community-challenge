@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 ZONE_ID = os.getenv('ZONE_ID')
 CF_API_KEY = os.getenv('CF_API_KEY')

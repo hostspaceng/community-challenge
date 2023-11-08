@@ -95,7 +95,7 @@ run-prometheus:
 	@kubectl -n monitoring port-forward svc/prometheus-k8s 9090
 
 .PHONY: run-grafana
-run-prometheus:
+run-grafana:
 	@kubectl -n monitoring port-forward svc/grafana 3000
 
 .PHONY: cleanup

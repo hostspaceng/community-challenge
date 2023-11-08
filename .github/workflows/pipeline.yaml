@@ -3,9 +3,7 @@ name: Vue Application Workflow
 on:
   push:
     branches:
-      - dev
-      - stg
-      - prod
+      - branch
 
 env: 
   PROJECT_NAME: devops-challenge
@@ -150,7 +148,7 @@ jobs:
 
   # cleanup-project-infrastructure:
   #   runs-on: ubuntu-20.04
-  #   needs: [setup-project-environment]
+  #   needs: [setup-project-environment, deploy-project-applications]
   #   env:
   #     ENV: ${{ needs.setup-project-environment.outputs.env_name }}
   #     IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}

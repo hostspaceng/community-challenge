@@ -336,7 +336,11 @@ metrics = PrometheusMetrics(app)
 ```
 
 **Screenshots/Links (if applicable):**
-- Include screenshots or links showcasing the deployed application, CI/CD pipelines, and monitoring dashboards.
+- Include screenshots or links showcasing the deployed application, CI/CD pipelines, and monitoring dashboards.  
+    
+  [screen record for CI/CD pipeline](https://drive.google.com/file/d/1wCA7rAtvYZBMWS5FUV0bxwLFixwdI9vA)  
+    
+  [screen record for Application/Monitoring](https://drive.google.com/file/d/1O8ow9xrCao0vDDNXJByv1_lqOCEUv1tw)
 
 ---
 
@@ -382,8 +386,6 @@ To test the application, the following steps shoud be taken:
     ```  
       
     You can use any other ENV and TAG values, but it needs to be consistent for both the build and run commands.  
-    
-3. 
 
 ---
 

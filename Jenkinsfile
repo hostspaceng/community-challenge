@@ -16,9 +16,11 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
+
+                    sh """
                     
                         echo "Checking out!"
-                    
+                    """
                 }
             }
         }

@@ -44,7 +44,7 @@ Ensure that the project_name you specify in the environemnt variable is the same
 | AWS_ACCESS_KEY_ID | AKIAIOSFODNN7EXAMPLE  |
 | AWS_SECRET_ACCESS_KEY | wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY  |
 | AWS_BUCKET_NAME | community-challenge-state-bucket-00995544 |
-| AWS_SECRET_ACCESS_KEY | terraform/tfstate |
+| AWS_BUCKET_KEY_NAME | terraform/tfstate |
 
 ## Setup & Installation
 
@@ -52,7 +52,7 @@ Follow these instructions to set up the development environment on your AWS Acco
 
 ### 1. Deploy Terraform
 
-Before you deploy the terraform infra, look in `var.tf` and `terraform.tfvars` you'll find a variable named `key_pair_name` edit the key name there to the name of a specific access key in your AWS Account. You can create one in the management console.
+Before you deploy the terraform infra, look in `var.tf` and `terraform.tfvars` you'll find a variable named `key_pair_name` edit the key name there to the name of a specific key pair name in your AWS Account. You can create one in the management console.
 
 After you change the variable, create a new branch locally add and commit your changes. Push to the new branch and then create a pull request to the main branch. The pull request will trigger a pipeline in that will validate the configuration and generate a terraform plan.
 

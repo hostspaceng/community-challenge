@@ -48,3 +48,4 @@ azs = [ "us-west-2a", "us-west-2b" ]
 # name of key pair for grafana ec2 instance
 
 key_pair_name = "us-west-2-key"
+

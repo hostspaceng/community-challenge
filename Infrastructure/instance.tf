@@ -12,7 +12,7 @@ resource "aws_instance" "app_server" {
     sudo apt-get install -y docker.io
 
     # Log in to Docker Hub
-    sudo docker login -u oluwasanmivic123 -p sanmyyyyy
+    sudo docker login -u oluwasanmivic123 -p ******
 
     # Pull your Docker image
     sudo docker pull oluwasanmivic123/myapp:latest

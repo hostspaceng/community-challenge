@@ -100,10 +100,3 @@ yarn serve
 
 Access the application on [http://localhost:8080](http://localhost:8080).
 
-## Participation in the Challenge
-
-For details on participating in the challenge, including writing a Dockerfile, setting up a CI/CD pipeline, and implementing Infrastructure as Code (IaC), please refer to the detailed challenge instructions provided.
-
-Make sure to use the provided pull request template when submitting your solutions to facilitate a uniform and organized evaluation process.
-
-For any questions or clarifications, reach out on the dedicated Slack channel. Happy coding!

@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  ui:
+    build:
+    #This sets the build context to the frontend directory
+    #This way, the files needed for the build is gotten from the frontend directory
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    container_name: ui
+    
+  backend:
+    build:
+      context: ./backend      
+      dockerfile: Dockerfile
+    #can use expose as well. Ports allows to specify external and internal network port
+    #This way you can test the backend with localhost or public ip on port 5000
+    ports:
+      - 5000:5000
+    container_name: backend
+    env_file:
+      - ./backend/.env

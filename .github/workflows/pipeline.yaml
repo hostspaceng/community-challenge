@@ -40,117 +40,75 @@ jobs:
       run: |
         echo "sha=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_OUTPUT
 
-  build-and-push-containers:
-    runs-on: ubuntu-20.04
-    needs: [setup-project-environment]
-    env:
-      ENV: ${{ needs.setup-project-environment.outputs.env_name }}
-      IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}
-      
-    steps:
-    - name: Checkout GitHub Action
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create .env for the Flask App
-      run: |
-        echo 'Creating Flask App .env file for ${{ env.ENV }} environment'
-        pushd "components/api"; echo ZONE_ID=${{ secrets.ZONE_ID }} > .env; popd
-        pushd "components/api"; echo CF_API_KEY=${{ secrets.CF_API_KEY }} >> .env; popd
-        pushd "components/api"; echo CF_API_EMAIL=${{ secrets.CF_API_EMAIL }} >> .env; popd
-        
-    - name: Create .env file for Vue Web App
-      run: |
-        echo 'Creating Vue Web App .env file for ${{ env.ENV }} environment'
-        pushd "components/web"; echo VUE_APP_PROXY_URL=http://127.0.0.1:5000/ > .env; popd
-
-    - name: Install Skaffold for Project Builds
-      run: |
-        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
-        sudo install skaffold /usr/local/bin/
-
-    - name: Authenticate to Docker Registry
-      run: |
-        make docker-login DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Build the Project Container Images
-      run: |
-        make skaffold-build DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} TAG=${{ env.IMG_TAG }} ENV=${{ env.ENV }}
-
-  build-project-infrastructure:
-    runs-on: ubuntu-20.04
-    needs: [setup-project-environment, build-and-push-containers]
-    env:
-      ENV: ${{ needs.setup-project-environment.outputs.env_name }}
-    steps:
-    - name: Checkout GitHub Action
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Configure AWS CLI
-      run: |
-        aws configure set aws_access_key_id ${{secrets.AWS_ACCESS_KEY }} --profile default
-        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_KEY }} --profile default
-        aws configure set default.region ${{ secrets.AWS_REGION }} --profile default
-        aws configure set default.output csv --profile default
-
-    - name: Initialize Terraform Modules
-      run: pushd "terraform/${{ env.ENV }}"; terraform init; popd
-
-    - name: Provision EKS with Terraform apply
-      run: |
-        cd terraform/${{ env.ENV }}
-        terraform apply -auto-approve -var-file="vars.tfvars" -var="user_access_key=${{ secrets.AWS_ACCESS_KEY }}" \
-                                      -var="user_secret_key=${{ secrets.AWS_SECRET_KEY }}" -var="aws_region=${{ secrets.AWS_REGION }}" \
-                                      -var="env=${{ env.ENV }}" -var="project_name=${{ env.PROJECT_NAME }}"
-
-  deploy-project-applications:
-    runs-on: ubuntu-20.04
-    needs: [setup-project-environment, build-project-infrastructure]
-    env:
-      ENV: ${{ needs.setup-project-environment.outputs.env_name }}
-      IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}
-    steps:
-    - name: Checkout GitHub Action
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Configure AWS CLI
-      run: |
-        aws configure set aws_access_key_id ${{secrets.AWS_ACCESS_KEY }} --profile default
-        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_KEY }} --profile default
-        aws configure set default.region ${{ secrets.AWS_REGION }} --profile default
-        aws configure set default.output csv --profile default
-
-    - name: Authenticate to AWS EKS
-      run: aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ env.PROJECT_NAME }}-${{ env.ENV }}
-
-    - name: Fetch EKS Nodes
-      run: kubectl get nodes
-
-    - name: Install yq for updating the deployment manifests
-      run: |
-        sudo apt-get update
-        sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-        sudo chmod a+x /usr/local/bin/
-
-    - name: Deploy Application to EKS
-      run: make deploy-apps DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=${{ env.ENV }} TAG=${{ env.IMG_TAG }}
-
-    - name: Deploy Monitoring Resources to EKS
-      run: make setup-monitoring ENV=${{ env.ENV }}
-
-    - name: View Application Rollout Status
-      run: |
-        kubectl -n ${{ env.ENV }}-platform rollout status deployment/${{ env.API_DEPLOYMENT }}
-        kubectl -n ${{ env.ENV }}-platform rollout status deployment/${{ env.WEB_DEPLOYMENT }}
-
-  # cleanup-project-infrastructure:
+  # build-and-push-containers:
   #   runs-on: ubuntu-20.04
   #   needs: [setup-project-environment]
+  #   env:
+  #     ENV: ${{ needs.setup-project-environment.outputs.env_name }}
+  #     IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}
+      
+  #   steps:
+  #   - name: Checkout GitHub Action
+  #     uses: actions/checkout@v3
+  #     with:
+  #       token: ${{ secrets.GITHUB_TOKEN }}
+
+  #   - name: Create .env for the Flask App
+  #     run: |
+  #       echo 'Creating Flask App .env file for ${{ env.ENV }} environment'
+  #       pushd "components/api"; echo ZONE_ID=${{ secrets.ZONE_ID }} > .env; popd
+  #       pushd "components/api"; echo CF_API_KEY=${{ secrets.CF_API_KEY }} >> .env; popd
+  #       pushd "components/api"; echo CF_API_EMAIL=${{ secrets.CF_API_EMAIL }} >> .env; popd
+        
+  #   - name: Create .env file for Vue Web App
+  #     run: |
+  #       echo 'Creating Vue Web App .env file for ${{ env.ENV }} environment'
+  #       pushd "components/web"; echo VUE_APP_PROXY_URL=http://127.0.0.1:5000/ > .env; popd
+
+  #   - name: Install Skaffold for Project Builds
+  #     run: |
+  #       curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
+  #       sudo install skaffold /usr/local/bin/
+
+  #   - name: Authenticate to Docker Registry
+  #     run: |
+  #       make docker-login DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}
+
+  #   - name: Build the Project Container Images
+  #     run: |
+  #       make skaffold-build DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} TAG=${{ env.IMG_TAG }} ENV=${{ env.ENV }}
+
+  # build-project-infrastructure:
+  #   runs-on: ubuntu-20.04
+  #   needs: [setup-project-environment, build-and-push-containers]
+  #   env:
+  #     ENV: ${{ needs.setup-project-environment.outputs.env_name }}
+  #   steps:
+  #   - name: Checkout GitHub Action
+  #     uses: actions/checkout@v3
+  #     with:
+  #       token: ${{ secrets.GITHUB_TOKEN }}
+
+  #   - name: Configure AWS CLI
+  #     run: |
+  #       aws configure set aws_access_key_id ${{secrets.AWS_ACCESS_KEY }} --profile default
+  #       aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_KEY }} --profile default
+  #       aws configure set default.region ${{ secrets.AWS_REGION }} --profile default
+  #       aws configure set default.output csv --profile default
+
+  #   - name: Initialize Terraform Modules
+  #     run: pushd "terraform/${{ env.ENV }}"; terraform init; popd
+
+  #   - name: Provision EKS with Terraform apply
+  #     run: |
+  #       cd terraform/${{ env.ENV }}
+  #       terraform apply -auto-approve -var-file="vars.tfvars" -var="user_access_key=${{ secrets.AWS_ACCESS_KEY }}" \
+  #                                     -var="user_secret_key=${{ secrets.AWS_SECRET_KEY }}" -var="aws_region=${{ secrets.AWS_REGION }}" \
+  #                                     -var="env=${{ env.ENV }}" -var="project_name=${{ env.PROJECT_NAME }}"
+
+  # deploy-project-applications:
+  #   runs-on: ubuntu-20.04
+  #   needs: [setup-project-environment, build-project-infrastructure]
   #   env:
   #     ENV: ${{ needs.setup-project-environment.outputs.env_name }}
   #     IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}
@@ -159,7 +117,7 @@ jobs:
   #     uses: actions/checkout@v3
   #     with:
   #       token: ${{ secrets.GITHUB_TOKEN }}
-    
+
   #   - name: Configure AWS CLI
   #     run: |
   #       aws configure set aws_access_key_id ${{secrets.AWS_ACCESS_KEY }} --profile default
@@ -167,12 +125,54 @@ jobs:
   #       aws configure set default.region ${{ secrets.AWS_REGION }} --profile default
   #       aws configure set default.output csv --profile default
 
-  #   - name: Cleanup EKS Infrastructure
-  #     run: |
-  #       echo 'Cleaning up EKS infrastructure for ${{ env.ENV }} Environment ===============>'
+  #   - name: Authenticate to AWS EKS
+  #     run: aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ env.PROJECT_NAME }}-${{ env.ENV }}
 
-  #       cd terraform/${{ env.ENV }}
-  #       terraform init
-  #       terraform destroy -auto-approve -var-file="vars.tfvars" -var="user_access_key=${{ secrets.AWS_ACCESS_KEY }}" \
-  #                                     -var="user_secret_key=${{ secrets.AWS_SECRET_KEY }}" -var="aws_region=${{ secrets.AWS_REGION }}" \
-  #                                     -var="env=${{ env.ENV }}" -var="project_name=${{ env.PROJECT_NAME }}"
+  #   - name: Fetch EKS Nodes
+  #     run: kubectl get nodes
+
+  #   - name: Install yq for updating the deployment manifests
+  #     run: |
+  #       sudo apt-get update
+  #       sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+  #       sudo chmod a+x /usr/local/bin/
+
+  #   - name: Deploy Application to EKS
+  #     run: make deploy-apps DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} ENV=${{ env.ENV }} TAG=${{ env.IMG_TAG }}
+
+  #   - name: Deploy Monitoring Resources to EKS
+  #     run: make setup-monitoring ENV=${{ env.ENV }}
+
+  #   - name: View Application Rollout Status
+  #     run: |
+  #       kubectl -n ${{ env.ENV }}-platform rollout status deployment/${{ env.API_DEPLOYMENT }}
+  #       kubectl -n ${{ env.ENV }}-platform rollout status deployment/${{ env.WEB_DEPLOYMENT }}
+
+  cleanup-project-infrastructure:
+    runs-on: ubuntu-20.04
+    needs: [setup-project-environment]
+    env:
+      ENV: ${{ needs.setup-project-environment.outputs.env_name }}
+      IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}
+    steps:
+    - name: Checkout GitHub Action
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Configure AWS CLI
+      run: |
+        aws configure set aws_access_key_id ${{secrets.AWS_ACCESS_KEY }} --profile default
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_KEY }} --profile default
+        aws configure set default.region ${{ secrets.AWS_REGION }} --profile default
+        aws configure set default.output csv --profile default
+
+    - name: Cleanup EKS Infrastructure
+      run: |
+        echo 'Cleaning up EKS infrastructure for ${{ env.ENV }} Environment ===============>'
+
+        cd terraform/${{ env.ENV }}
+        terraform init
+        terraform destroy -auto-approve -var-file="vars.tfvars" -var="user_access_key=${{ secrets.AWS_ACCESS_KEY }}" \
+                                      -var="user_secret_key=${{ secrets.AWS_SECRET_KEY }}" -var="aws_region=${{ secrets.AWS_REGION }}" \
+                                      -var="env=${{ env.ENV }}" -var="project_name=${{ env.PROJECT_NAME }}"

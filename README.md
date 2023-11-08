@@ -55,3 +55,25 @@ Prometheus
 Grafana 
 
 ![Grafana](<Screenshot from 2023-11-06 22-09-53.png>)
+
+
+## STEPS TO BUILD AND RUN THE IMAGES
+
+To run and test this application locally, you will need to build this application usiing the `docker build` command.
+For the front-end abblication, you should run 
+`docker build --build-arg  backend_endpoint=http://localhost:5000 -t <preferred image name> .` 
+and the image will be built, then to run the image and have your running container, you the should the following command 
+`docker run -d -p 8080:80 --name <choose a container name> <image name>`.
+then you can visit `http://localhost:8080` to access the application, but before that, you should build and run the backend application first.
+To do that use the following command
+`cd backend`
+`docker build -t <preferred image name> .`
+then, the image would be built, it run the image, run;
+`docker run -d -p 5000:5000 --name <choose a container name> <image name>`.
+
+
+## Running thd=e jenkins file
+
+To run the jenkins file, you are to have jenkins installed on your local machine either using the docker image, or installing jenkins.
+AFter that, create a job and configure your pipeline, and set up your environmental variables using credentails, use the key and value pairs found inside the `.env.sample` file in the root directory of this repro. After that, conect the jenkins file to this repro and run the your build.
+

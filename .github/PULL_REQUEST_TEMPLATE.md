@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-### Submission Pull Request Template
-
-**Title:** [Submission] - [Your Name]
-
-**Description:**
-
-Provide a detailed summary of the changes included in this submission. Explain the problem you aimed to solve, the solutions you implemented, and the results achieved. Include any challenges faced and how they were overcome.
-=======
 **Title:** [Submission] - Adeyemi Joshua Adepoju
 
 **Description:**
@@ -14,25 +5,12 @@ Provide a detailed summary of the changes included in this submission. Explain t
 <!-- Provide a detailed summary of the changes included in this submission. Explain the problem you aimed to solve, the solutions you implemented, and the results achieved. Include any challenges faced and how they were overcome. -->
 
 This solution containerizes a fullstack application written in vue.js for the frontend and python flask framework for the backend with Nginx as a reverse proxy. I implemented Docker iamges and containers for both frontend and backend applications and storing the images in Aws Elastic container registry and deploying the containers on Aws container service using the fargate option. I utilized Terraform as the Infrastructure as code tool to configure the Aws infrastructure for the ECR, ECS, Services and Task definitions including networking configurations using Awsvpc.
->>>>>>> 2001a17 (tasks completed)
 
 ---
 
 ### Solution Details
 
 **Dockerfile & Application Configuration:**
-<<<<<<< HEAD
-- Briefly describe how the Dockerfile was structured and how the application was configured, including any optimizations or specific configurations used.
-
-**CI/CD Pipeline:**
-- Explain the CI/CD pipeline’s flow, including the build, test, and deployment stages. Specify the tools and services used, and the reasons for choosing them.
-
-**Infrastructure as Code (IaC):**
-- Provide information on the IaC scripts or tools used for provisioning and deployment. Include details of the deployment platform or cloud service utilized.
-
-**Monitoring Setup (Bonus):**
-- If implemented, describe the monitoring tools and configurations used. Include any custom dashboards or alerts set up to track application and infrastructure health.
-=======
 <!-- - Briefly describe how the Dockerfile was structured and how the application was configured, including any optimizations or specific configurations used. -->
 
 For the frontend, the dockerfile can be found in the frontend directory. This is a multi-stage dockerfile using node as the base image, installing npm and running the build all in the "build stage". In the "production stage", Nginx is used as the base image. The built application is stored in the /app/dist directory which is then sent to the /app/dist directory in Nginx. This directory is set as the root directory for Nginx to serve the index.html file. This configuration can be found in the Nginx.conf file. It is also worth noting that in the "production stage", the default Nginx.conf file as been replaced with our custom Nginx.conf file.
@@ -46,7 +24,7 @@ For the CI/CD pipeline, Github actions was the preffered tool.GitHub Actions is 
 
 The pipeline is triggered to run on push to the main branch. It includes a job with steps to build the docker images and push to Aws Elastic Container Registry, login to ECR, configure credential and deploy to Aws Elastic Container Service.
 
-The first step in the pipeline is to checkout using git, followed by configuring the AWS credentials to verify the Aws user account. For security purpose, the access key and secret key are stored in the repository's github actions environment variables.  
+The pipeline uses variables stored in the github actions repository secrets. The first step in the pipeline is to checkout using git, followed by configuring the AWS credentials to verify the Aws user account. For security purpose, the access key and secret key are stored in the repository's github actions environment variables.  
 
 If the above step is successful, the pipeline invokes a login to ECR then builds the docker iamges using docker compose and pushes the images to ECR. After this step, the pushed images are filled in a new image ID in the Amazon ECS (Elastic Container Service) task definition. The purpose of this step is to update the task definition in Amazon ECS to use the new Docker image that has been built. The last step starts up the containers in ECS by running the task using the provided task definition.
 
@@ -71,14 +49,11 @@ MEMORY UTILIZATION
 RUNNING TASK COUNT - Number of running tasks
 PENDING TASK COUNT - Number of pending tasks
 
->>>>>>> 2001a17 (tasks completed)
 
 **Screenshots/Links (if applicable):**
 - Include screenshots or links showcasing the deployed application, CI/CD pipelines, and monitoring dashboards.
 
 ---
-<<<<<<< HEAD
-=======
 ![Screenshot of Elastic Container Registry with the Images](../screenshots/ecr.png)
 ![Screenshot of the running task ID](../screenshots/runningtask.png)
 ---
@@ -91,28 +66,12 @@ PENDING TASK COUNT - Number of pending tasks
 ![Screenshot showing the logs displaying succesful calls to the application](../screenshots/logs.png)
 ---
 ![Screenshot displaying the monitoring dashboard](../screenshots/monitoring.png)
->>>>>>> 2001a17 (tasks completed)
 
 ### Testing the Solution
 
 Provide clear instructions on how the evaluators can test and verify your solution. Include steps to:
 
 1. Clone your forked repository.
-<<<<<<< HEAD
-2. Build and run the application using the provided Dockerfile.
-3. Deploy the application using the IaC scripts.
-4. Access and test the application’s functionality.
-5. View and analyze the monitoring dashboards.
-
----
-
-### Additional Information
-
-Include any other relevant information like:
-- Challenges faced during the challenge and how they were overcome.
-- Any improvements or features that could be added in the future.
-- Feedback or comments on the challenge and your learning experience.
-=======
 in your terminal, run 
 git clone https://github.com/The-indigo/hostspace
 
@@ -133,25 +92,15 @@ After this command runs successfully, make a push request to main branch to run 
 In the Aws console,type Ecr in the search bar and click Elastic container registry to go to the Erc page. Check that the docker image is stored in the respective repository (backend and ui)
 Enter Ecs in the dashboard and click Elastic container servie. Click on clusters > theyemihostspacecluster
 In the task tab, click on the running task , copy the public ip and paste in your browser to view the application running.
->>>>>>> 2001a17 (tasks completed)
 
 ---
 
 **Checklist:**
-<<<<<<< HEAD
-- [ ] The submission follows the format specified in the challenge instructions.
-- [ ] The Dockerfile builds successfully and is optimized.
-- [ ] The CI/CD pipeline is complete and functional.
-- [ ] The IaC scripts are modular and reusable.
-- [ ] The README file is clear and comprehensive.
-- [ ] (Bonus) The monitoring setup is functional and comprehensive.
-=======
 - [x ] The submission follows the format specified in the challenge instructions.
 - [x ] The Dockerfile builds successfully and is optimized.
 - [x ] The CI/CD pipeline is complete and functional.
 - [x ] The IaC scripts are modular and reusable.
 - [x ] The README file is clear and comprehensive.
 - [x ] (Bonus) The monitoring setup is functional and comprehensive.
->>>>>>> 2001a17 (tasks completed)
 
 By submitting this pull request, I confirm that my contribution is made under the terms of the challenge’s requirements.

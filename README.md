@@ -76,8 +76,3 @@ then, the image would be built, it run the image, run;
 `docker run -d -p 5000:5000 --name <choose a container name> <image name>`.
 
 
-## Running thd=e jenkins file
-
-To run the jenkins file, you are to have jenkins installed on your local machine either using the docker image, or installing jenkins.
-AFter that, create a job and configure your pipeline, and set up your environmental variables using credentails, use the key and value pairs found inside the `.env.sample` file in the root directory of this repro. After that, conect the jenkins file to this repro and run the your build.
-

@@ -27,6 +27,10 @@ install-docker:
 	sudo apt install docker-ce && \
 	sudo usermod -aG docker $$USER && newgrp docker
 
+.PHONY: connect-eks
+connect-eks:
+	@aws eks --region us-east-1 update-kubeconfig --name devops-challenge-$(ENV)
+
 .PHONY: docker-login
 docker-login:
 	@echo 'Authenticating to Docker Registry ===============>'
@@ -77,6 +81,22 @@ run-app:
 	@echo 'Open http://localhost:8080 on your browser to access the UI'
 	@echo 'Terminate the session using CTRL + C'
 	@kubectl -n $(APP_NAMESPACE) port-forward svc/web-service 8080:80
+
+.PHONY: run-api
+run-api:
+	@kubectl -n $(APP_NAMESPACE) port-forward svc/api-service 5000
+
+.PHONY: run-web
+run-web:
+	@kubectl -n $(APP_NAMESPACE) port-forward svc/web-service 8080:80
+
+.PHONY: run-prometheus
+run-prometheus:
+	@kubectl -n monitoring port-forward svc/prometheus-k8s 9090
+
+.PHONY: run-grafana
+run-prometheus:
+	@kubectl -n monitoring port-forward svc/grafana 3000
 
 .PHONY: cleanup
 cleanup:

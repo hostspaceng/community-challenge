@@ -148,31 +148,31 @@ jobs:
         kubectl -n ${{ env.ENV }}-platform rollout status deployment/${{ env.API_DEPLOYMENT }}
         kubectl -n ${{ env.ENV }}-platform rollout status deployment/${{ env.WEB_DEPLOYMENT }}
 
-  cleanup-project-infrastructure:
-    runs-on: ubuntu-20.04
-    needs: [setup-project-environment]
-    env:
-      ENV: ${{ needs.setup-project-environment.outputs.env_name }}
-      IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}
-    steps:
-    - name: Checkout GitHub Action
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+  # cleanup-project-infrastructure:
+  #   runs-on: ubuntu-20.04
+  #   needs: [setup-project-environment]
+  #   env:
+  #     ENV: ${{ needs.setup-project-environment.outputs.env_name }}
+  #     IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}
+  #   steps:
+  #   - name: Checkout GitHub Action
+  #     uses: actions/checkout@v3
+  #     with:
+  #       token: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Configure AWS CLI
-      run: |
-        aws configure set aws_access_key_id ${{secrets.AWS_ACCESS_KEY }} --profile default
-        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_KEY }} --profile default
-        aws configure set default.region ${{ secrets.AWS_REGION }} --profile default
-        aws configure set default.output csv --profile default
+  #   - name: Configure AWS CLI
+  #     run: |
+  #       aws configure set aws_access_key_id ${{secrets.AWS_ACCESS_KEY }} --profile default
+  #       aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_KEY }} --profile default
+  #       aws configure set default.region ${{ secrets.AWS_REGION }} --profile default
+  #       aws configure set default.output csv --profile default
 
-    - name: Cleanup EKS Infrastructure
-      run: |
-        echo 'Cleaning up EKS infrastructure for ${{ env.ENV }} Environment ===============>'
+  #   - name: Cleanup EKS Infrastructure
+  #     run: |
+  #       echo 'Cleaning up EKS infrastructure for ${{ env.ENV }} Environment ===============>'
 
-        cd terraform/${{ env.ENV }}
-        terraform init
-        terraform destroy -auto-approve -var-file="vars.tfvars" -var="user_access_key=${{ secrets.AWS_ACCESS_KEY }}" \
-                                      -var="user_secret_key=${{ secrets.AWS_SECRET_KEY }}" -var="aws_region=${{ secrets.AWS_REGION }}" \
-                                      -var="env=${{ env.ENV }}" -var="project_name=${{ env.PROJECT_NAME }}"
+  #       cd terraform/${{ env.ENV }}
+  #       terraform init
+  #       terraform destroy -auto-approve -var-file="vars.tfvars" -var="user_access_key=${{ secrets.AWS_ACCESS_KEY }}" \
+  #                                     -var="user_secret_key=${{ secrets.AWS_SECRET_KEY }}" -var="aws_region=${{ secrets.AWS_REGION }}" \
+  #                                     -var="env=${{ env.ENV }}" -var="project_name=${{ env.PROJECT_NAME }}"

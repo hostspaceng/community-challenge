@@ -32,6 +32,7 @@ Github Action was used because it simplifies the automation of your software dev
 
 **Infrastructure as Code (IaC):**
 - Provide information on the IaC scripts or tools used for provisioning and deployment. Include details of the deployment platform or cloud service utilized.
+- 
 IaC Scripts and Tools:In this project, Infrastructure as Code was used to provision and manage cloud resources. Terraform, a popular IaC tool, was utilized to define and deploy the infrastructure.Terraform scripts, written in HashiCorp Configuration Language (HCL), defined the AWS infrastructure components, such as EC2 instances, security groups, subnets, and more.These Terraform scripts were structured to create a Monitoring Server and a Web Application Server on AWS.
 
 **Monitoring Setup (Bonus):**

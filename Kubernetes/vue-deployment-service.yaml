@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-js-deployment
+  labels:
+    app: vue-js-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vue-js-frontend
+  template:
+    metadata:
+      labels:
+        app: vue-js-frontend
+    spec:
+      containers:
+      - name: vue-js-cloudflare
+        image: franklyn27181/cloudflare:1.1
+        ports:
+        - containerPort: 80
+        env:
+        - name: VUE_APP_PROXY_URL
+          valueFrom:
+            configMapKeyRef:
+              name: application-configmap
+              key: vue_app_proxy_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vue-js-frontend-service
+spec:
+  selector:
+    app: vue-js-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer

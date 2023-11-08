@@ -1,0 +1,2 @@
+#don't include the dotenv file in docker build for the ui
+.env

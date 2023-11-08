@@ -147,22 +147,22 @@ You will need to create the credentials for the docker hub to enable you to push
 
 (iv) Naviagte to your repository, Click on the `settings` and click on the `Secrets and Variables`
 
-![github-repo-setting](./github-secret.png)
+![github-repo-setting](./Images/github-secret.png)
 
 
 
-![github-repo-setting](./github-secret2.png)
+![github-repo-setting](./Images/github-secret2.png)
 
 
 Then click on `Actions` 
 
-![github-repo-setting](./github-secret3.png)
+![github-repo-setting](./Images/github-secret3.png)
 
 You can see, I have already created a secret to store my dockerhub username and password. 
 
 To store your dockerhub or any private repository of your choice, click on the `New repository secret`
 
-![github-repo-setting](./github-secret4.png)
+![github-repo-setting](./Images/github-secret4.png)
 
 Replace the `YOUR_VARIABLE_NAME` with docker hub or your private repository.
 
@@ -173,7 +173,7 @@ Click on the `Add secret` to save the secret.
 
 We will repeat the same thing for the password
 
-![github-repo-setting](./github-secret5.png)
+![github-repo-setting](./Images/github-secret5.png)
 
 Replace the `YOUR_VARIABLE_NAME` with docker hub or your private repository.
 

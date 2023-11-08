@@ -11,6 +11,7 @@ Provide a detailed summary of the changes included in this submission. Explain t
 
 **Dockerfile & Application Configuration:**
 - Briefly describe how the Dockerfile was structured and how the application was configured, including any optimizations or specific configurations used.
+
 The Dockerfile is structured to create a Docker image for the application. It starts with a base image, often a minimal Linux distribution, and follows these general steps:
 1. Set the working directory.
 2. Copy application source code and configuration files into the image.
@@ -20,6 +21,7 @@ The Dockerfile is structured to create a Docker image for the application. It st
 
 **CI/CD Pipeline:**
 - Explain the CI/CD pipeline’s flow, including the build, test, and deployment stages. Specify the tools and services used, and the reasons for choosing them.
+- 
 1. The CI/CD pipeline follows these stages:
 2. Build: Source code is built into executable artifacts.
 3. Test: Automated tests are run to validate code quality and functionality.

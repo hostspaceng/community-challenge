@@ -3,7 +3,7 @@
 
 Frontend - Vue.js 
 Backend - Python-Flask
-Reverse Proxy server - Nginx
+Reverse Proxy server - Nginx server
 
 ### Dockerfiles
 

@@ -84,7 +84,7 @@ With the help of the README.md file you can be able to deploy the application lo
 
 - The CI/CD system employed for this project is Github Actions. Github Actions is an event-driven automation platform that allows you to run a series of commands after a specified event has occurred. 
 
-- I created a environmental variable to store my container registry using the github action secrets 
+- I created an environmental variable to store my container registry using the github action secrets 
 
 - I built and push the docker image using the --target arg to target the backend build stage 
 
@@ -92,16 +92,16 @@ With the help of the README.md file you can be able to deploy the application lo
 **Infrastructure as Code (IaC):**
 - Provide information on the IaC scripts or tools used for provisioning and deployment. Include details of the deployment platform or cloud service utilized.
 
-For this task, i implemented terraform to provisioned a civo kubernetes to be able to deploy the application in a kubernetes cluster
+For this task, I implemented terraform to provision a civo kubernetes to be able to deploy the application in a kubernetes cluster
 
 - I created a provider.tf file to store the provider information
 
 - I created a civo.tf file to build and provision the kubernetes cluster 
 
 **Monitoring Setup (Bonus):**
-- If implemented, describe the monitoring tools and configurations used. Include any custom dashboards or alerts set up to track application and infrastructure health.
+- If implemented, describe the monitoring tools and configurations used. Include any custom dashboards or alerts to track application and infrastructure health.
 
-For monitoring the K8s cluster and applications deployed on it, Prometheus and Grafana are deployed for the purpose using helm package. The following dashboard were implemented:
+For monitoring the K8s cluster and applications deployed on it, Prometheus and Grafana are deployed to use helm package. The following dashboard was implemented:
 
 - Monitor Pod CPU and Memory usage: These dashboards monitor the CPU and Memory usage, Network IOPs etc of the pods in the cluster.
 
@@ -129,9 +129,9 @@ For monitoring the K8s cluster and applications deployed on it, Prometheus and G
 
 Provide clear instructions on how the evaluators can test and verify your solution. Include steps to:
 
-The application is built, ran and deployed locally and in cloud using civo provider as the cloud provider.
+The application is built, run, and deployed locally and in the cloud using Civo provider as the cloud provider.
 
-All instructions on how to build,run and deploy successfully can be found in the [README.md](/README.md) file
+All instructions on how to build, run and deploy successfully can be found in the [README.md](/README.md) file
 
 
 ---
@@ -140,9 +140,9 @@ All instructions on how to build,run and deploy successfully can be found in the
 
 Include any other relevant information like:
 **Challenges faced during the challenge and how they were overcome.** :
-- Containerization of the docker images: Building and dockerizing a multi stage application is quite difficult when you are new to the tools, so i had a hard time trying to figure out how i can be able to build the application using a multi stage processes. 
+- Containerization of the docker images: Building and dockerizing a multi-stage application is quite difficult when you are new to the tools, so I had a hard time trying to figure out how I can be able to build the application using multi-stage processes. 
 
-- Solution: I visited [docker website](https://docs.docker.com/build/guide/multi-stage/) for more information on muilti stage processes
+- Solution: I visited [docker website](https://docs.docker.com/build/guide/multi-stage/) for more information on multi-stage processes
 **Any improvements or features that could be added in the future** :
 
 - I am completely satisfied with the entire process because the community has genuinely motivated me to perform better by consistently holding meetings and responding to questions and challenges we encountered on Slack.

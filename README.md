@@ -31,7 +31,7 @@ Upon deploying my images to my ECR repros, i then moved on to deploy my cloudfor
 
 
 
-### VIDEO LINK FOR MAIN CHALLENGE
+# VIDEO LINK FOR MAIN CHALLENGE
 `https://www.loom.com/share/9b62235061bf4f75950af2ea6ec5f439?sid=2e41f249-cb75-473e-a38d-baf6b5feb432`
 
 
@@ -45,7 +45,7 @@ Back-End PNG
 
 
 
-### Monitoring Implementation
+# Monitoring Implementation
 
 I have implemented my monitoring using Premetheus and Grafana, configured together to bring metrics from the pods running on my EKS cluster... below is a link to the recorded video showing the monitoring i implemented...
 

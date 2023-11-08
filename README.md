@@ -298,7 +298,7 @@ docker run -d -p 5000:5000 franklyn27181/cloudflare:2.0
 docker run -d -p 80:80 franklyn27181/cloudflare:1.1
 ```
 
-![docker pull](./Images/docker-pull3.png)
+![docker pull](./Images/png)
 
 
 The container will run in detach mode using your built image.The backend container will be running on port 5000 and the frontend container will be running on port 80 or just using the url.

@@ -298,7 +298,7 @@ docker run -d -p 5000:5000 franklyn27181/cloudflare:2.0
 docker run -d -p 80:80 franklyn27181/cloudflare:1.1
 ```
 
-![docker pull](./Images/png)
+![docker pull](./Images/docker-pull3.png)
 
 
 The container will run in detach mode using your built image.The backend container will be running on port 5000 and the frontend container will be running on port 80 or just using the url.
@@ -315,11 +315,9 @@ i will be using `http://74.220.27.118` to run the containers.
 
 You should see an output like this:
 
-![docker pull](./Images/local.png)
+![docker pull](./Images/docker-run-locally.png)
 
-![docker pull](./Images/local-host.png)
-
-![docker pull](./Images/output.png)
+![docker pull](./Images/docker-run-back.png)
 
 
 ### 7. Automating the Kubernetes cluster using terraform

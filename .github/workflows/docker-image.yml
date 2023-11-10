@@ -96,7 +96,7 @@ jobs:
            ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
-           sudo docker run -d -p 8082:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+           sudo docker run -d -p 8083:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
            exit'
 
 

@@ -1,0 +1,118 @@
+name: Deploy Docker Image to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+#
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+    
+    - name: Install Docker
+      run: |
+       # Install Docker on the runner
+       sudo apt-get update -y
+       sudo apt-get remove containerd.io
+       sudo apt-get install -y docker.io
+      if: runner.os == 'Linux'
+
+    - name: Build Docker Image
+      run: |
+        # Build your Docker image (change the build command accordingly)
+        docker build -t myapp1:latest .
+      working-directory: ./  
+
+    - name: Tag the Docker image
+      run: |
+        docker tag myapp1:latest ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+      working-directory: ./
+
+    - name: Push Docker Image to Docker Hub
+      run: |
+        # Login to Docker Hub and push the Docker image
+        # Set up Docker configuration to perform a non-interactive login
+        echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Copy SSH private key
+      run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+    - name: Set key file permissions
+      run: chmod 600 key.pem
+
+    - name: Install Docker on EC2
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+        chmod 600 key.pem
+        ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+          # Install Docker on the EC2 instance
+          sudo apt-get update -y
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+        '
+        
+      env:
+       # SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+         AWS_REGION: ${{ secrets.AWS_REGION }}
+         SSH_USER: ${{ secrets.SSH_USER }}
+         EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
+
+    #- name: Add user to Docker group on EC2
+      #run: |
+      #  ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+      #    sudo adduser ${{ secrets.DOCKER_USER }}
+       #   sudo usermod -aG docker ${{ secrets.DOCKER_USER }}
+     #     '
+          
+      #env
+          #DOCKER_USER: ${{ secrets.DOCKER_USER }}
+
+
+ #   - name: Add user to Docker group
+  #    run: |
+   #       sudo adduser ${{ secrets.DOCKER_USER }}
+    #      sudo usermod -aG docker ${{ secrets.DOCKER_USER }}
+     # if: runner.os == 'Linux'
+      
+    - name: Deploy Apps
+      run: |
+           echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+           chmod 600 key.pem
+           ssh -i key.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+           sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+           sudo docker run -d -p 8086:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest
+           exit'
+
+
+#    - name: Deploy to EC2
+ #     run: |
+  #       Copy the private key to the runner for SSH authentication
+   #      echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+    # #    chmod 600 key.pem
+
+    #- name: Pull Docker image on EC2
+ #     run:  |
+ #           ssh -i key.pem -o StrictHostKeyChecking=no -c aes128-ctr ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+  #          docker run myapp1
+             #docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
+ #           exit'
+
+    #- name: Run Docker container on EC2
+     # run: ssh -i key.pem -o StrictHostKeyChecking=no ubuntu@3.91.84.79 "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"eyChecking=no ubuntu@3.91.84.79 "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"=no ubuntu@${{ secrets.EC2_INSTANCE_IP }} "docker run -d -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/myapp1:latest"
+

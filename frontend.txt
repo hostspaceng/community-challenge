@@ -19,8 +19,8 @@ FROM nginx:latest
 COPY --from=builder /app/dist /usr/share/nginx/html
 # copies the cginx configuration file to configure nginx
 COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/nginx.conf
-# set vue env variables 
-COPY entrypoint.sh /usr/share/nginx/
+# set vue env variables
+COPY --from=builder /app/entrypoint.sh /usr/share/nginx/
 RUN chmod +x /usr/share/nginx/entrypoint.sh
 ENTRYPOINT ["/usr/share/nginx/entrypoint.sh"]
 #exposes port 80

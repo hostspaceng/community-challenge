@@ -48,7 +48,9 @@ jobs:
       
     steps:
     - name: Test Variable
-      run: echo "${{ secrets[env.ENV_SECRET] }}"
+      run: |
+        echo ${{ secrets[env.ENV_SECRET] }} > .env
+        cat .env
   #   - name: Checkout GitHub Action
   #     uses: actions/checkout@v3
   #     with:

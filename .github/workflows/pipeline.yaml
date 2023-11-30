@@ -44,7 +44,7 @@ jobs:
     env:
       ENV: ${{ needs.setup-project-environment.outputs.env_name }}
       IMG_TAG: ${{ needs.setup-project-environment.outputs.sha }}
-      ENV_SECRET: ${{ env.ENV }}_ENV_VARS
+      ENV_SECRET: "${{ env.ENV }}_ENV_VARS"
       
     steps:
     - name: Test Variable

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hostspace-challenge",
+  "private_key_id": "a68ca28119e7ab4cb06652809ed9ff5bc3e8836f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCoLyrdEVGQTS/2\nTBiG37uy4W4M4MCDsO1gpd4Ntc6aZJjiH8i9VMamb6bM6CEK3gX7yarEYs+2gEB0\nqgKR5XCbNOWSEz7nV9YpEa5ZWB7LyX5AXAKUc/+teqIhRuT2wN4DJQR+dPLgAN9I\njE6NzEB3FFJ4Qx12yEnh0MIcscILGl8kKZd/XctzqjUwHwoNSk39LjcgnvRMUhzw\nvxW7w3iW2X3Xs/crcUKdi3a6idcceCDdWKBCtEoD86QhHllFoqYNrrjEB/tWh9qr\nHLaddw/wjAULRRZWn3FuVT6toU8NVHG4pIYAIeKrH/GVRqSoX34kfnp3ud3U9Biz\nXP0uJzLZAgMBAAECggEAQm266u1jv3DVYF2HFIK7Uvi6bIi7UWipIdLx5Y1paM8S\nGcJ/GdUpz2RrSCTppC60w1JQylfS/h0jGFFsSW8L7qnSgUNrxZmKg9cxe6WUKF7S\nKJ6PAE7e7ojxD96+If5k0m4lG8OaiMKfbrrIbjZ+Qep7dnff4+JRWEmJ2iaV46cm\nDgw4xyTzCxWowfQ4YPK0+mTAuNyVuTAYaLBybdg6gTp7mNKfUQZdvdfZpi+1F7rZ\nvIwB72SYMsrOUyab6/8pR/igrOub6t1r3tvuNbDEPv9mta6sTrXy+1JUMVvYJoCJ\nETJ+77imPsikszUW6PbKQU6Lq/BNpKeiTNnQRD5R5wKBgQDtBCwG8/Mx9r1OLSVH\n+BdG4XCHYD66a/c7K05jp81gY0MndONSLConzWFQnnFtsMRGCrAtdcu7wnAkxiPM\nTBiv4fcmNhkaAQZ/shHtedSogr93LQUpn42grj7SIwsTxucKgN3uSaDsO1PcW9Xf\nZXu2zurLkVba0xf1Y7JYLzvmmwKBgQC1p6ZZWfm7PwTOr9A0B8SsmMY0kvRRkwoA\nwL00xwcYr8CtUEE7haHvIhhSn3oBb56T0NiEfTjI959nsxtGZpjJ2UcC5qkniU3h\nzmod6Z3dgmcdB93jWwxb/qbZIif3Vtt1yb4EVZf7NEbwHV7jiHyRR/h6s8WApYHQ\n0Pz66DdpmwKBgDEDyNsTPfraLOHq4ifU/XNSEcRdOfuxcipRVV+0hvtk67FQMeZ/\nbaRXi8VxTsHBaYWWlkKAdsZ4elqQgzyvi/drgoHrdBt1lNN5js2OgVTr3Q6XR9cI\nwPA2uJUaXCMV4hfA+KRbo6TWzAvpDfyp7wCqH9JDVzPfrbe4i1xDQF77AoGALxZS\nDH9COMNRH7J7KcGJvaOsXRxqsGqJAUD0yqV8tW15aHORNTiijTYtT91+5rhkRrSw\nK0e6XH2zmFHZFBqsKEZmHd5kopb41TuITlCsVyriR6guYCzNu1r7LPWpnnepU5MD\n6mO1jawzZzJ10k0i3RXm1weafopoaBSEPxXKp1kCgYEAmtW/FskIcZHdyjeMzbgJ\nj8Ei9O5sL28xzl83ii9/1VzS8VBYmElhH+a9g5NouJwk2hQ3z+PNTPbrPNOJ8Rxg\n4cBMC9gkHf5LU0nyAylzU0xwsvKuTIoNSlZaB6+QbuDpjYNkK4n+5tYaQG0lQ+X5\ndxDUvfGzkCSMulbRL8cgMcI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "hostspace-access@hostspace-challenge.iam.gserviceaccount.com",
+  "client_id": "104413705771837039512",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hostspace-access%40hostspace-challenge.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

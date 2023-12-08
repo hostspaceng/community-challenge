@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patches:
+  - path: api_deployment_patch.yaml
+    target:
+      kind: Deployment
+      name: flask-api
+  - path: web_deployment_patch.yaml
+    target:
+      kind: Deployment
+      name: vue-web
+  - path: web_config_patch.yaml
+    target:
+      kind: ConfigMap
+      name: web-config

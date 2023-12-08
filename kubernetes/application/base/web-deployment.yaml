@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vue-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vue-web
+  template:
+    metadata:
+      labels:
+        app: vue-web
+    spec:
+      containers:
+      - name: vue-web
+        image: kennedyuche/vue-web:dev-v1.0.0
+        env:
+        - name: PROXY_PASS
+          valueFrom:
+            configMapKeyRef:
+              name: web-config
+              key: PROXY_PASS
+        command:
+        - /bin/sh
+        - -c
+        - |
+          envsubst '${PROXY_PASS}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+          nginx -g 'daemon off;'
+        ports:
+        - containerPort: 80

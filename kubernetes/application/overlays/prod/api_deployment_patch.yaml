@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-api
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: flask-api
+          image: kennedy/flask-api:prod-v1.0.0

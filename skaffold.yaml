@@ -1,0 +1,22 @@
+apiVersion: skaffold/v3alpha1
+kind: Config
+metadata:
+  name: skaffold-deployment
+build:
+  artifacts:
+  - image: flask-api
+    context: components/api
+    sync:
+      infer:
+      - '**/*'
+    docker:
+      dockerfile: docker-images/Dockerfile.api
+  - image: vue-web
+    context: components/web
+    sync:
+      infer:
+      - '**/*'
+    docker:
+      dockerfile: docker-images/Dockerfile.web
+  tagPolicy:
+    gitCommit: {}
